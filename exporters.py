@@ -40,6 +40,8 @@ class ResultExporter:
     async def _export_json(self, proxies: List[Dict]):
         """导出JSON格式"""
         output_file = Path(self.config.output_file)
+        # 确保输出目录存在
+        output_file.parent.mkdir(parents=True, exist_ok=True)
         
         # 计算评分统计
         premium_count = sum(1 for p in proxies if p.get('rating', {}).get('quality_tier') == 'premium')
