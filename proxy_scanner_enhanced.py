@@ -163,6 +163,39 @@ async def main():
         except Exception as e:
             logger.error(f"处理代理 {proxy_data.get('proxy')} 时出错: {e}")
     
+    # 保存失败代理的验证记录（用于黑名单系统）
+    logger.info("\n保存失败代理的验证记录...")
+    failed_count = 0
+    for result in valid_results:
+        if not result.get('is_valid'):
+            try:
+                proxy_address = result.get('proxy')
+                if proxy_address:
+                    # 尝试保存代理信息（如果有基本信息）
+                    try:
+                        db.save_proxy({
+                            'proxy': proxy_address,
+                            'country': 'Unknown',
+                            'country_code': 'UN',
+                            'city': 'Unknown'
+                        })
+                    except:
+                        pass  # 代理可能已存在
+                    
+                    # 保存失败的验证记录
+                    db.save_validation_result(proxy_address, {
+                        'is_valid': False,
+                        'response_time': None,
+                        'test_url': config.test_urls[0] if config.test_urls else None,
+                        'error': result.get('error', 'Validation failed'),
+                        'score': 0
+                    })
+                    failed_count += 1
+            except Exception as e:
+                logger.debug(f"保存失败记录时出错 {proxy_address}: {e}")
+    
+    logger.info(f"   ✅ 已保存 {failed_count} 个失败代理的验证记录")
+    
     # 导出结果
     logger.info(f"\n导出结果到 {args.output}...")
     exporter = ResultExporter(config)
