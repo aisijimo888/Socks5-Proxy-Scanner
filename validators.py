@@ -33,23 +33,27 @@ class ProxyValidator:
         all_results = []  # 改为保存所有结果
 
         # 使用 asyncio.as_completed 和 tqdm 手动处理进度
-        with tqdm(total=len(proxies), desc="验证代理", unit="个") as pbar:
-            for future in asyncio.as_completed(tasks):
-                try:
-                    result = await future
-                    # 保存所有结果（成功和失败的）
-                    all_results.append(result)
-                except Exception as e:
-                    # 代理验证过程中可能会抛出各种异常 (e.g., connection errors)
-                    # 我们在这里捕获它们，记录日志，然后继续处理下一个
-                    self.logger.debug(f"代理验证失败: {e}")
-                finally:
-                    pass
+        use_tqdm = sys.stdout.isatty()
+        iterable = asyncio.as_completed(tasks)
+        
+        if use_tqdm:
+            pbar = tqdm(total=len(proxies), desc="验证代理", unit="个")
+            
+        for future in iterable:
+            try:
+                result = await future
+                # 保存所有结果（成功和失败的）
+                all_results.append(result)
+            except Exception as e:
+                # 代理验证过程中可能会抛出各种异常 (e.g., connection errors)
+                # 我们在这里捕获它们，记录日志，然后继续处理下一个
+                self.logger.debug(f"代理验证失败: {e}")
+            finally:
+                if use_tqdm:
+                    pbar.update(1)
         
         if use_tqdm:
             pbar.close()
-                finally:
-                    pbar.update(1)
         
         # 统计有效代理
         valid_proxies = [r for r in all_results if r and r.get('is_valid')]
