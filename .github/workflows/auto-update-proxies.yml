@@ -61,7 +61,14 @@ jobs:
               # 从 subscribe 目录读取
               if os.path.exists('subscribe/proxies.json'):
                   with open('subscribe/proxies.json', 'r', encoding='utf-8') as f:
-                      proxies = json.load(f)
+                      data = json.load(f)
+                      # 处理新格式：包含metadata的包装结构
+                      if isinstance(data, dict) and 'proxies' in data:
+                          proxies = data['proxies']
+                      elif isinstance(data, list):
+                          proxies = data
+                      else:
+                          proxies = []
               else:
                   proxies = []
               
@@ -133,6 +140,7 @@ jobs:
         with:
           name: proxy-results
           path: |
-            subscribe/proxies.json
+            subscribe/
             proxies.db
           retention-days: 5
+

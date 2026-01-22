@@ -30,19 +30,36 @@ class SubscriptionGenerator:
         
         try:
             with open(self.json_path, 'r', encoding='utf-8') as f:
-                return json.load(f)
+                data = json.load(f)
+                # 处理新格式：包含metadata的包装结构
+                if isinstance(data, dict) and 'proxies' in data:
+                    return data['proxies']
+                # 向后兼容：如果是旧的纯数组格式
+                elif isinstance(data, list):
+                    return data
+                else:
+                    self.logger.error(f"未知的JSON格式")
+                    return []
         except Exception as e:
             self.logger.error(f"加载代理文件失败: {e}")
             return []
+    
+    def _get_score(self, proxy: Dict) -> float:
+        """获取代理评分，兼容新旧格式"""
+        # 优先使用新的rating系统
+        if 'rating' in proxy and isinstance(proxy['rating'], dict):
+            return proxy['rating'].get('overall_score', 0)
+        # 向后兼容旧的score字段
+        return proxy.get('score', 0)
     
     def generate_all_formats(self, min_score: float = 10.0):
         """生成所有格式的订阅文件"""
         # 过滤评分 (假设满分100，这里默认只取10分以上的，或者根据实际评分逻辑调整)
         # 注意：新的评分系统可能是 0-100 分制
-        valid_proxies = [p for p in self.proxies if p.get('score', 0) >= min_score]
+        valid_proxies = [p for p in self.proxies if self._get_score(p) >= min_score]
         
         # 按分数排序
-        valid_proxies.sort(key=lambda x: x.get('score', 0), reverse=True)
+        valid_proxies.sort(key=lambda x: self._get_score(x), reverse=True)
         
         if not valid_proxies:
             self.logger.warning("没有符合条件的代理")
@@ -72,11 +89,17 @@ class SubscriptionGenerator:
                 
             ip, port = address.split(':')
             country = proxy.get('country', 'UN')
-            score = proxy.get('score', 0)
+            score = self._get_score(proxy)
             
-            # 获取匿名性和速度等级
-            anonymity = proxy.get('anonymity_level', 'Unknown')[:1]  # E/A/T/U
-            speed = proxy.get('speed_tier', 'Unknown')[:1]  # F/M/S/U
+            # 获取匿名性和速度等级（兼容新旧格式）
+            if 'rating' in proxy and isinstance(proxy['rating'], dict):
+                # 新格式
+                anonymity = proxy['rating'].get('anonymity_level', 'Unknown')[:1]
+                speed = proxy['rating'].get('speed_tier', 'Unknown')[:1]
+            else:
+                # 旧格式
+                anonymity = proxy.get('anonymity_level', 'Unknown')[:1]  # E/A/T/U
+                speed = proxy.get('speed_tier', 'Unknown')[:1]  # F/M/S/U
             
             # 生成增强的代理名称: Country_idx_Score_Anonymity_Speed
             name = f"{country}_{idx:03d}_S{int(score)}_{anonymity}{speed}"
@@ -258,7 +281,7 @@ class SubscriptionGenerator:
                 f.write(f"\n# {country} - {len(country_proxies)} 个代理\n")
                 for proxy in country_proxies:
                     address = proxy.get('proxy', '') or f"{proxy.get('ip')}:{proxy.get('port')}"
-                    score = proxy.get('score', 0)
+                    score = self._get_score(proxy)
                     response_time = proxy.get('response_time', 0)
                     f.write(f"socks5://{address} # Score: {score:.1f}, RT: {response_time:.2f}s\n")
         
@@ -275,7 +298,7 @@ class SubscriptionGenerator:
                 
             ip, port = address.split(':')
             country = proxy.get('country', 'UN')
-            score = proxy.get('score', 0)
+            score = self._get_score(proxy)
             
             # ShadowRocket SOCKS5 格式
             # socks5://ip:port#备注
@@ -329,25 +352,55 @@ def main():
         format='%(asctime)s - %(levelname)s - %(message)s'
     )
     
-    print("="*60)
-    print("订阅链接生成器")
-    print("="*60)
+    logger = logging.getLogger(__name__)
     
-    generator = SubscriptionGenerator()
-    
-    # 生成所有格式 (降低分数阈值，确保包含所有有效代理)
-    generator.generate_all_formats(min_score=1.0)
-    
-    # 显示统计信息
-    info = generator.get_subscription_info()
-    print(f"\n📊 订阅统计:")
-    print(f"  总代理数: {info['total_proxies']}")
-    print(f"\n📁 生成的文件:")
-    for file_name, file_info in info['files'].items():
-        print(f"  ✅ {file_name} ({file_info['size_kb']} KB)")
-    
-    print(f"\n✨ 完成！订阅文件已保存到 subscribe/ 目录")
+    try:
+        print("="*60)
+        print("订阅链接生成器")
+        print("="*60)
+        
+        generator = SubscriptionGenerator()
+        
+        if not generator.proxies:
+            logger.error("❌ 没有加载到任何代理数据")
+            logger.error("   请检查 subscribe/proxies.json 文件是否存在且格式正确")
+            return 1
+        
+        # 生成所有格式 (降低分数阈值，确保包含所有有效代理)
+        generator.generate_all_formats(min_score=1.0)
+        
+        # 显示统计信息
+        info = generator.get_subscription_info()
+        print(f"\n📊 订阅统计:")
+        print(f"  总代理数: {info['total_proxies']}")
+        print(f"\n📁 生成的文件:")
+        
+        if not info['files']:
+            logger.warning("⚠️ 没有生成任何订阅文件")
+            return 1
+        
+        for file_name, file_info in info['files'].items():
+            print(f"  ✅ {file_name} ({file_info['size_kb']} KB)")
+        
+        print(f"\n✨ 完成！订阅文件已保存到 subscribe/ 目录")
+        return 0
+        
+    except FileNotFoundError as e:
+        logger.error(f"❌ 文件未找到: {e}")
+        logger.error("   请确保 subscribe/proxies.json 存在")
+        return 1
+    except json.JSONDecodeError as e:
+        logger.error(f"❌ JSON格式错误: {e}")
+        logger.error("   请检查 subscribe/proxies.json 文件格式")
+        return 1
+    except Exception as e:
+        logger.error(f"❌ 生成订阅文件时发生错误: {e}")
+        import traceback
+        traceback.print_exc()
+        return 1
 
 
 if __name__ == '__main__':
-    main()
+    import sys
+    sys.exit(main())
+
