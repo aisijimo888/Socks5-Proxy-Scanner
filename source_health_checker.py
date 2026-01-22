@@ -48,7 +48,7 @@ class SourceHealthChecker:
             
             async with aiohttp.ClientSession(
                 headers={"User-Agent": "SOCKS5-Scanner/2.0"},
-                timeout=aiohttp.ClientTimeout(total=self.timeout)
+                timeout=aiohttp.ClientTimeout(total=self.timeout, sock_connect=5.0)
             ) as session:
                 async with session.get(source_url, ssl=False) as response:
                     response_time = time.time() - start_time

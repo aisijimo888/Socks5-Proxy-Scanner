@@ -96,9 +96,15 @@ class ProxyValidator:
                 
                 connector = ProxyConnector.from_url(f"socks5://{proxy}")
                 
+                # 智能超时设置
+                # sock_connect=5: 连接超时（快速失败死代理）
+                # total=config.timeout: 总超时（给予数据传输足够时间）
+                conn_timeout = 5.0
+                total_timeout = float(self.config.timeout)
+                
                 async with aiohttp.ClientSession(
                     connector=connector,
-                    timeout=aiohttp.ClientTimeout(total=self.config.timeout)
+                    timeout=aiohttp.ClientTimeout(total=total_timeout, sock_connect=conn_timeout)
                 ) as session:
                     
                     test_url = self.config.test_urls[0]
@@ -137,6 +143,15 @@ class ProxyValidator:
                                 'error': f'HTTP {response.status}'
                             }
                             
+            except asyncio.TimeoutError:
+                # 显式捕获超时错误，不再打印到 debug
+                return {
+                    'proxy': proxy,
+                    'ip': ip,
+                    'port': port,
+                    'is_valid': False,
+                    'error': 'Timeout'
+                }
             except Exception as e:
                 self.logger.debug(f"代理 {proxy} 验证时出错: {e}")
                 # 返回失败结果
