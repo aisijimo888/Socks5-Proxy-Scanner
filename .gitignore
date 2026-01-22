@@ -9,6 +9,14 @@
 output/*
 !output/README.md
 !output/.gitkeep
+
+# 订阅文件目录 (允许提交)
+!subscribe/
+!subscribe/*.txt
+!subscribe/*.json
+!subscribe/*.yaml
+
+# 但忽略其他目录的这些文件
 *.json
 *.txt
 *.csv
