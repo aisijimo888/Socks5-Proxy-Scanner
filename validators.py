@@ -167,9 +167,9 @@ class ProxyValidator:
                             'proxy': data.get('proxy', False),
                             'anonymity': self._determine_anonymity(data)
                         }
-        except Exception as e:
-            self.logger.warning(f"获取地理位置失败: {e}")
-            raise  # 重新抛出异常，让上层捕获
+            except Exception as e:
+                self.logger.warning(f"获取地理位置失败: {e}")
+                raise  # 重新抛出异常，让上层捕获
     
     def _calculate_score(self, response_time: float, geo_info: Dict) -> float:
         """计算代理评分"""
