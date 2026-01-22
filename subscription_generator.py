@@ -335,8 +335,8 @@ def main():
     
     generator = SubscriptionGenerator()
     
-    # 生成所有格式
-    generator.generate_all_formats(min_score=10.0)
+    # 生成所有格式 (降低分数阈值，确保包含所有有效代理)
+    generator.generate_all_formats(min_score=1.0)
     
     # 显示统计信息
     info = generator.get_subscription_info()
