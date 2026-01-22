@@ -7,10 +7,10 @@ import asyncio
 import argparse
 import logging
 import sys
+import os
 from datetime import datetime
 
 from config import Config
-from config_manager import ConfigManager
 from proxy_sources_fixed import ProxySourceManager
 from validators import ProxyValidator
 from exporters import ResultExporter
@@ -70,7 +70,6 @@ async def main():
         output_file=args.output
     )
     
-    config_mgr = ConfigManager()
     
     # 初始化数据库
     db = ProxyDatabase(args.db_path)
@@ -260,20 +259,23 @@ async def main():
             logger.error(f"导出黑名单失败: {e}")
     
     # 启动可选功能
-    if args.enable_telegram or config_mgr.enable_telegram:
+    # 启动可选功能
+    if args.enable_telegram:
         logger.info("\n启动Telegram Bot...")
         try:
             from telegram_bot import TelegramBot
-            if config_mgr.telegram_bot_token:
-                bot = TelegramBot(config_mgr.telegram_bot_token, args.db_path)
-                # 在后台运行Bot (需要额外处理)
+            # 注意：此处不再使用 ConfigManager，而是提示用户单独运行
+            # 如果需要集成，应从环境变量或args读取 token
+            token = os.getenv("TELEGRAM_BOT_TOKEN")
+            if token:
+                bot = TelegramBot(token, args.db_path)
                 logger.info("⚠️  Telegram Bot需要单独运行: python telegram_bot.py")
             else:
                 logger.warning("⚠️  未设置TELEGRAM_BOT_TOKEN, 跳过Telegram功能")
         except ImportError:
             logger.warning("⚠️  pyTelegramBotAPI未安装, 跳过Telegram功能")
     
-    if args.enable_web or config_mgr.enable_web:
+    if args.enable_web:
         logger.info("\nWeb Dashboard可单独启动: python web_dashboard.py")
     
     logger.info("\n" + "=" * 70)
