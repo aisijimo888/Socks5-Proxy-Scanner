@@ -4,6 +4,7 @@ aiohttp-socks>=0.8.0
 
 # 数据库和数据处理
 python-dotenv>=1.0.0
+PyYAML>=6.0.1
 
 # Web Dashboard
 flask>=3.0.0
@@ -18,3 +19,4 @@ plotly>=5.18.0
 dnspython==2.4.0
 geoip2==4.7.0
 tqdm==4.66.1
+

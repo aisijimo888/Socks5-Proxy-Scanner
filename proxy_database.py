@@ -451,15 +451,21 @@ class ProxyDatabase:
             """, (cutoff_date,))
             deleted_blacklist = cursor.rowcount
             
-            # 清理数据库
-            cursor.execute("VACUUM")
-            
             self.logger.info(
                 f"清理完成: 删除 {deleted_validations} 条验证记录, "
                 f"{deleted_proxies} 个代理, {deleted_blacklist} 条黑名单记录"
             )
-            
-            return deleted_validations, deleted_proxies
+        
+        # VACUUM 必须在事务外执行
+        try:
+            conn = sqlite3.connect(self.db_path)
+            conn.execute("VACUUM")
+            conn.close()
+            self.logger.info("数据库压缩完成")
+        except Exception as e:
+            self.logger.warning(f"数据库压缩失败: {e}")
+        
+        return deleted_validations, deleted_proxies
     
     def get_database_stats(self) -> Dict:
         """获取数据库统计信息"""
@@ -501,6 +507,17 @@ class ProxyDatabase:
             cursor.execute("SELECT COUNT(*) as count FROM proxy_blacklist")
             stats['blacklisted_count'] = cursor.fetchone()['count']
             
+            # 24小时平均响应时间
+            cursor.execute("""
+                SELECT AVG(response_time) as avg_time
+                FROM validation_history
+                WHERE timestamp >= datetime('now', '-24 hours')
+                    AND is_valid = 1
+                    AND response_time IS NOT NULL
+            """)
+            row = cursor.fetchone()
+            stats['avg_response_time_24h'] = row['avg_time'] if row['avg_time'] else 0
+            
             # 国家分布
             cursor.execute("""
                 SELECT country, COUNT(*) as count
@@ -514,6 +531,12 @@ class ProxyDatabase:
                 {'country': row['country'], 'count': row['count']}
                 for row in cursor.fetchall()
             ]
+            
+            # 简化的国家分布字典（用于兼容性）
+            stats['country_distribution'] = {
+                row['country']: row['count']
+                for row in stats['top_countries']
+            }
             
             return stats
     
