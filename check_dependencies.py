@@ -23,6 +23,7 @@ def check_dependencies():
         'aiohttp': '核心依赖',
         'aiohttp_socks': '代理连接',
         'python-dotenv': '环境变量',
+        'tqdm': '进度条显示',
     }
     
     optional_packages = {
