@@ -101,14 +101,20 @@ class ProxyValidator:
                             response_time = time.time() - start_time
                             geo_info = await self._get_geo_info(session)
                             
-                            # 创建验证结果
+                            # 创建完整的验证结果
                             result = {
                                 'proxy': proxy,
                                 'ip': ip,
                                 'port': port,
+                                'is_valid': True,  # ← 添加
                                 'response_time': response_time,
+                                'test_url': test_url,  # ← 添加
                                 'country': geo_info.get('country', 'Unknown'),
+                                'country_code': self._get_country_code(geo_info.get('country', 'Unknown')),  # ← 添加
                                 'city': geo_info.get('city', 'Unknown'),
+                                'isp': geo_info.get('isp', 'Unknown'),  # ← 添加
+                                'is_mobile': geo_info.get('mobile', False),  # ← 添加
+                                'is_proxy': geo_info.get('proxy', False),  # ← 添加
                                 'score': self._calculate_score(response_time, geo_info)
                             }
                             
@@ -157,3 +163,23 @@ class ProxyValidator:
             score -= 3.0
         
         return max(0.0, score)
+    
+    def _get_country_code(self, country: str) -> str:
+        """根据国家名获取国家代码"""
+        country_codes = {
+            'United States': 'US',
+            'Japan': 'JP',
+            'Germany': 'DE',
+            'Singapore': 'SG',
+            'Netherlands': 'NL',
+            'United Kingdom': 'GB',
+            'Canada': 'CA',
+            'France': 'FR',
+            'South Korea': 'KR',
+            'Taiwan': 'TW',
+            'Switzerland': 'CH',
+            'Sweden': 'SE',
+            'Australia': 'AU',
+            'Unknown': 'UN'
+        }
+        return country_codes.get(country, country[:2].upper() if len(country) >= 2 else 'UN')
