@@ -27,15 +27,15 @@ class ProxyValidator:
         self.logger.info(f"开始验证 {len(proxies)} 个代理")
         
         tasks = [self._validate_single_proxy(proxy) for proxy in proxies]
-        valid_proxies = []
+        all_results = []  # 改为保存所有结果
 
         # 使用 asyncio.as_completed 和 tqdm 手动处理进度
         with tqdm(total=len(proxies), desc="验证代理", unit="个") as pbar:
             for future in asyncio.as_completed(tasks):
                 try:
                     result = await future
-                    if result:
-                        valid_proxies.append(result)
+                    # 保存所有结果（成功和失败的）
+                    all_results.append(result)
                 except Exception as e:
                     # 代理验证过程中可能会抛出各种异常 (e.g., connection errors)
                     # 我们在这里捕获它们，记录日志，然后继续处理下一个
@@ -43,15 +43,19 @@ class ProxyValidator:
                 finally:
                     pbar.update(1)
         
+        # 统计有效代理
+        valid_proxies = [r for r in all_results if r and r.get('is_valid')]
         self.logger.info(f"验证完成，{len(valid_proxies)}/{len(proxies)} 个代理有效")
         
         # 应用国家白名单过滤
         if self.config.target_countries:
             filtered_proxies = self._filter_by_country(valid_proxies)
             self.logger.info(f"国家白名单过滤后，{len(filtered_proxies)}/{len(valid_proxies)} 个代理保留")
-            return filtered_proxies
+            # 返回所有结果：过滤后的成功 + 所有失败
+            failed_results = [r for r in all_results if r and not r.get('is_valid')]
+            return filtered_proxies + failed_results
         
-        return valid_proxies
+        return all_results  # 返回所有结果（包括None的会被过滤）
     
     def _filter_by_country(self, proxies: List[Dict]) -> List[Dict]:
         """根据国家白名单过滤代理"""
@@ -120,11 +124,29 @@ class ProxyValidator:
                             
                             return result
                         else:
-                            return None # 明确返回None
+                            # 返回失败结果而不是 None
+                            return {
+                                'proxy': proxy,
+                                'ip': ip,
+                                'port': port,
+                                'is_valid': False,
+                                'error': f'HTTP {response.status}'
+                            }
                             
             except Exception as e:
                 self.logger.debug(f"代理 {proxy} 验证时出错: {e}")
-                return None # 任何异常都返回None
+                # 返回失败结果
+                try:
+                    ip, port = proxy.split(':')
+                    return {
+                        'proxy': proxy,
+                        'ip': ip,
+                        'port': int(port),
+                        'is_valid': False,
+                        'error': str(e)
+                    }
+                except:
+                    return None  # 如果连解析都失败，返回None
     
     async def _get_geo_info(self, session: aiohttp.ClientSession) -> Dict:
         """获取地理位置信息"""
