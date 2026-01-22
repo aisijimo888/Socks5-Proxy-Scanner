@@ -18,6 +18,8 @@ class ProxyValidator:
         self.config = config
         self.logger = logging.getLogger(__name__)
         self.semaphore = asyncio.Semaphore(config.max_concurrency)
+        # IP-API 速率限制保护 (45次/分钟 → 40次/分钟安全值)
+        self.geo_semaphore = asyncio.Semaphore(40)
         
     async def validate_proxies(self, proxies: List[str]) -> List[Dict]:
         """验证代理列表"""
@@ -110,15 +112,17 @@ class ProxyValidator:
                                 'proxy': proxy,
                                 'ip': ip,
                                 'port': port,
-                                'is_valid': True,  # ← 添加
+                                'is_valid': True,
                                 'response_time': response_time,
-                                'test_url': test_url,  # ← 添加
+                                'test_url': test_url,
                                 'country': geo_info.get('country', 'Unknown'),
-                                'country_code': self._get_country_code(geo_info.get('country', 'Unknown')),  # ← 添加
+                                'country_code': self._get_country_code(geo_info.get('country', 'Unknown')),
                                 'city': geo_info.get('city', 'Unknown'),
-                                'isp': geo_info.get('isp', 'Unknown'),  # ← 添加
-                                'is_mobile': geo_info.get('mobile', False),  # ← 添加
-                                'is_proxy': geo_info.get('proxy', False),  # ← 添加
+                                'isp': geo_info.get('isp', 'Unknown'),
+                                'is_mobile': geo_info.get('mobile', False),
+                                'is_proxy': geo_info.get('proxy', False),
+                                'anonymity_level': geo_info.get('anonymity', 'Unknown'),  # 新增
+                                'speed_tier': self._classify_speed(response_time),  # 新增
                                 'score': self._calculate_score(response_time, geo_info)
                             }
                             
@@ -149,18 +153,20 @@ class ProxyValidator:
                     return None  # 如果连解析都失败，返回None
     
     async def _get_geo_info(self, session: aiohttp.ClientSession) -> Dict:
-        """获取地理位置信息"""
-        try:
-            async with session.get("http://ip-api.com/json/") as response:
-                if response.status == 200:
-                    data = await response.json()
-                    return {
-                        'country': data.get('country', 'Unknown'),
-                        'city': data.get('city', 'Unknown'),
-                        'isp': data.get('isp', 'Unknown'),
-                        'mobile': data.get('mobile', False),
-                        'proxy': data.get('proxy', False)
-                    }
+        """获取地理位置信息（带速率限制保护）"""
+        async with self.geo_semaphore:  # 控制并发调用
+            try:
+                async with session.get("http://ip-api.com/json/") as response:
+                    if response.status == 200:
+                        data = await response.json()
+                        return {
+                            'country': data.get('country', 'Unknown'),
+                            'city': data.get('city', 'Unknown'),
+                            'isp': data.get('isp', 'Unknown'),
+                            'mobile': data.get('mobile', False),
+                            'proxy': data.get('proxy', False),
+                            'anonymity': self._determine_anonymity(data)
+                        }
         except Exception as e:
             self.logger.warning(f"获取地理位置失败: {e}")
             raise  # 重新抛出异常，让上层捕获
@@ -205,3 +211,24 @@ class ProxyValidator:
             'Unknown': 'UN'
         }
         return country_codes.get(country, country[:2].upper() if len(country) >= 2 else 'UN')
+    
+    def _determine_anonymity(self, geo_data: Dict) -> str:
+        """确定匿名级别"""
+        is_proxy = geo_data.get('proxy', False)
+        is_mobile = geo_data.get('mobile', False)
+        
+        if is_proxy:
+            return 'Transparent'  # 被识别为代理
+        elif is_mobile:
+            return 'Anonymous'     # 移动IP，较难追踪
+        else:
+            return 'Elite'         # 未被识别，精英匿名
+    
+    def _classify_speed(self, response_time: float) -> str:
+        """响应时间分级"""
+        if response_time < 1.0:
+            return 'Fast'
+        elif response_time < 3.0:
+            return 'Medium'
+        else:
+            return 'Slow'

@@ -39,10 +39,10 @@ jobs:
         env:
           DATABASE_PATH: proxies.db
           SCAN_TIMEOUT: 8
-          MAX_CONCURRENCY: 50
+          MAX_CONCURRENCY: 100  # 提升到100（适应Actions环境）
         run: |
           # 运行主程序，启用黑名单功能
-          python proxy_scanner_enhanced.py --timeout 8 --max-concurrency 50 --enable-blacklist --auto-blacklist --blacklist-threshold 5
+          python proxy_scanner_enhanced.py --timeout 8 --max-concurrency 100 --enable-blacklist --auto-blacklist --blacklist-threshold 5
       
       - name: 生成订阅文件
         run: |
