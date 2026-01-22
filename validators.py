@@ -36,18 +36,30 @@ class ProxyValidator:
         use_tqdm = sys.stdout.isatty()
         iterable = asyncio.as_completed(tasks)
         
+        # 进度跟踪
+        processed = 0
+        total = len(proxies)
+        
         if use_tqdm:
-            pbar = tqdm(total=len(proxies), desc="验证代理", unit="个")
+            pbar = tqdm(total=total, desc="验证代理", unit="个")
             
         for future in iterable:
             try:
                 result = await future
                 # 保存所有结果（成功和失败的）
                 all_results.append(result)
+                processed += 1
+                
+                # 在非终端环境（如GitHub Actions）中，每1000个打印一次进度
+                if not use_tqdm and processed % 1000 == 0:
+                    valid_count = len([r for r in all_results if r and r.get('is_valid')])
+                    self.logger.info(f"🔄 进度: {processed}/{total} 已验证 ({processed*100//total}%), 有效: {valid_count}")
+                    
             except Exception as e:
                 # 代理验证过程中可能会抛出各种异常 (e.g., connection errors)
                 # 我们在这里捕获它们，记录日志，然后继续处理下一个
                 self.logger.debug(f"代理验证失败: {e}")
+                processed += 1
             finally:
                 if use_tqdm:
                     pbar.update(1)
