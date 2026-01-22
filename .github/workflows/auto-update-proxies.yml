@@ -137,8 +137,8 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          # 添加所有生成的文件（明确指定每个文件类型）
-          git add -f subscribe/*.json subscribe/*.txt subscribe/*.csv subscribe/*.yaml subscribe/*.yml proxies.db
+          # 添加所有生成的文件（使用glob模式，允许文件不存在）
+          git add -f subscribe/*.json subscribe/*.txt subscribe/*.csv subscribe/*.yaml proxies.db 2>/dev/null || true
           # 显示将要提交的文件（调试用）
           echo "Files to commit:"
           git diff --staged --name-only
