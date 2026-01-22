@@ -35,7 +35,7 @@ class ResultExporter:
         # 导出CSV格式（详细信息）
         await self._export_csv(proxies)
         
-        self.logger.info(f"结果已导出到: {self.config.output_file}*")
+        self.logger.info(f"✅ 结果已导出到: {self.config.output_file} (及相关的 .txt, .csv 文件)")
     
     async def _export_json(self, proxies: List[Dict]):
         """导出JSON格式"""
