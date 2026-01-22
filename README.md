@@ -84,10 +84,22 @@ This project is for educational, research, and legitimate network testing purpos
 - 🌙 现代化深色主题
 - 🔄 自动刷新 (30秒)
 
-#### 6. GitHub Actions自动化
-- ⏰ 每小时自动更新代理池
-- 📦 自动提交最新数据
-- 📧 失败时Telegram通知
+#### 6. 🔗 订阅链接系统
+- 📱 **多格式支持**
+  - Clash YAML - 完整配置
+  - V2Ray JSON - 标准格式
+  - ShadowRocket - Base64编码
+  - 通用 Base64 - 兼容多客户端
+  - 纯文本 - 直接使用
+- 🔄 **自动更新**: GitHub Actions 每6小时更新
+- 🌐 **直接访问**: 通过 GitHub Raw URL 获取
+
+#### 7. GitHub Actions自动化
+- ⏰ 每6小时自动更新代理池
+- 📦 自动提交最新数据和订阅文件
+- 📊 Actions Summary 显示详细统计
+- 📧 成功/失败时Telegram通知
+- 🔗 自动生成订阅链接
 
 ## 📦 安装依赖
 
@@ -148,7 +160,68 @@ cp .env.example .env
 python telegram_bot.py
 ```
 
+
+### 5. 使用订阅链接 ⭐
+```bash
+# 方法1: 通过 GitHub Raw URL (无需运行服务)
+# 复制订阅链接，导入到你的代理客户端
+
+# Clash 订阅
+https://raw.githubusercontent.com/你的用户名/仓库名/main/subscribe/clash.yaml
+
+# V2Ray 订阅
+https://raw.githubusercontent.com/你的用户名/仓库名/main/subscribe/v2ray.json
+
+# ShadowRocket 订阅
+https://raw.githubusercontent.com/你的用户名/仓库名/main/subscribe/shadowrocket.txt
+
+# 方法2: 通过API服务器 (需要先运行 proxy_api.py)
+# 启动 API 服务器
+python proxy_api.py
+
+# 然后访问订阅端点
+http://localhost:8080/api/subscribe/clash
+http://localhost:8080/api/subscribe/v2ray
+http://localhost:8080/api/subscribe/base64
+```
+
+### 6. 生成订阅文件
+```bash
+# 从数据库生成所有格式的订阅文件
+python subscription_generator.py
+
+# 生成的文件保存在 subscribe/ 目录:
+# - clash.yaml (Clash)
+# - v2ray.json (V2Ray)
+# - shadowrocket.txt (ShadowRocket)
+# - base64.txt (通用Base64)
+# - proxies.txt (纯文本)
+```
+
+## 📱 客户端配置指南
+
+### Clash
+1. 复制 Clash 订阅链接
+2. 打开 Clash 客户端
+3. 配置 → 添加 →  <订阅 URL>
+4. 更新订阅
+
+### V2RayN/V2RayNG
+1. 复制 V2Ray 订阅链接
+2. 打开 V2RayN/V2RayNG
+3. 订阅 → 订阅设置 → 添加
+4. 输入订阅 URL
+5. 更新订阅
+
+### ShadowRocket (iOS)
+1. 复制 ShadowRocket 订阅链接
+2. 打开 ShadowRocket
+3. 右上角 + → Subscribe
+4. 粘贴 URL
+5. 完成
+
 ## 📚 文档
+
 
 - [配置指南](docs/CONFIGURATION_GUIDE.md) - 超时、黑名单、国家白名单配置
 - [部署指南](docs/DEPLOYMENT_GUIDE.md) - Web Dashboard、局域网、Cloudflare部署
@@ -249,12 +322,21 @@ static/                        # 静态资源
 5. **代理详情** - 点击查看单个代理完整信息
 
 ### API端点
+**基础端点**
 - `GET /api/stats` - 获取统计数据
 - `GET /api/proxies` - 获取代理列表
 - `GET /api/proxy/<address>` - 获取单个代理详情
 - `GET /api/sources` - 获取代理源状态
 - `GET /api/export?format=json|txt|csv` - 导出代理
 - `POST /api/cleanup` - 触发数据库清理
+
+**订阅端点** 🆕
+- `GET /api/subscribe/clash` - Clash YAML 订阅
+- `GET /api/subscribe/v2ray` - V2Ray JSON 订阅
+- `GET /api/subscribe/base64` - Base64 编码订阅
+- `GET /api/subscribe/shadowrocket` - ShadowRocket 订阅
+- `GET /api/subscribe/plain` - 纯文本代理列表
+
 
 ## 🤖 Telegram使用指南
 
@@ -393,7 +475,9 @@ MIT License
 - ✅ 多维度智能评分
 - ✅ Web可视化监控
 - ✅ Telegram Bot集成
-- ✅ GitHub Actions自动化
+- ✅ 🆕 多格式订阅系统 (Clash/V2Ray/ShadowRocket)
+- ✅ GitHub Actions自动化 + 统计输出
 - ✅ 模块化架构设计
+
 
 **⭐ 如果觉得有用，请给个Star!**

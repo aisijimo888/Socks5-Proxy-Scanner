@@ -35,10 +35,15 @@ def index():
             'by_country': '/api/proxy/country/<code>',
             'validate': '/api/proxy/validate',
             'stats': '/api/stats',
-            'export': '/api/export/<format>'
+            'export': '/api/export/<format>',
+            'subscribe_clash': '/api/subscribe/clash',
+            'subscribe_v2ray': '/api/subscribe/v2ray',
+            'subscribe_base64': '/api/subscribe/base64',
+            'subscribe_shadowrocket': '/api/subscribe/shadowrocket'
         },
         'docs': 'https://github.com/yourname/proxy-scanner'
     })
+
 
 
 @app.route('/api/proxy/random')
@@ -306,7 +311,137 @@ def export_proxies(format_type):
         return jsonify({'error': str(e)}), 500
 
 
+
+
+@app.route('/api/subscribe/clash')
+def subscribe_clash():
+    """
+    获取 Clash 订阅
+    
+    Returns:
+        Clash YAML 格式的订阅文件
+    """
+    try:
+        from pathlib import Path
+        subscribe_file = Path('subscribe') / 'clash.yaml'
+        
+        if not subscribe_file.exists():
+            return jsonify({'error': 'Subscription file not found. Please run subscription_generator.py first.'}), 404
+        
+        return send_file(
+            subscribe_file,
+            mimetype='text/yaml',
+            as_attachment=True,
+            download_name='clash.yaml'
+        )
+    except Exception as e:
+        logger.error(f"获取 Clash 订阅失败: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/subscribe/v2ray')
+def subscribe_v2ray():
+    """
+    获取 V2Ray 订阅
+    
+    Returns:
+        V2Ray JSON 格式的订阅文件
+    """
+    try:
+        from pathlib import Path
+        subscribe_file = Path('subscribe') / 'v2ray.json'
+        
+        if not subscribe_file.exists():
+            return jsonify({'error': 'Subscription file not found. Please run subscription_generator.py first.'}), 404
+        
+        return send_file(
+            subscribe_file,
+            mimetype='application/json',
+            as_attachment=True,
+            download_name='v2ray.json'
+        )
+    except Exception as e:
+        logger.error(f"获取 V2Ray 订阅失败: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/subscribe/base64')
+def subscribe_base64():
+    """
+    获取 Base64 订阅
+    
+    Returns:
+        Base64 编码的代理列表
+    """
+    try:
+        from pathlib import Path
+        subscribe_file = Path('subscribe') / 'base64.txt'
+        
+        if not subscribe_file.exists():
+            return jsonify({'error': 'Subscription file not found. Please run subscription_generator.py first.'}), 404
+        
+        return send_file(
+            subscribe_file,
+            mimetype='text/plain',
+            as_attachment=False  # 直接显示内容
+        )
+    except Exception as e:
+        logger.error(f"获取 Base64 订阅失败: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/subscribe/shadowrocket')
+def subscribe_shadowrocket():
+    """
+    获取 ShadowRocket 订阅
+    
+    Returns:
+        ShadowRocket 格式的订阅文件
+    """
+    try:
+        from pathlib import Path
+        subscribe_file = Path('subscribe') / 'shadowrocket.txt'
+        
+        if not subscribe_file.exists():
+            return jsonify({'error': 'Subscription file not found. Please run subscription_generator.py first.'}), 404
+        
+        return send_file(
+            subscribe_file,
+            mimetype='text/plain',
+            as_attachment=False  # 直接显示内容
+        )
+    except Exception as e:
+        logger.error(f"获取 ShadowRocket 订阅失败: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/subscribe/plain')
+def subscribe_plain():
+    """
+    获取纯文本代理列表
+    
+    Returns:
+        纯文本格式的代理列表
+    """
+    try:
+        from pathlib import Path
+        subscribe_file = Path('subscribe') / 'proxies.txt'
+        
+        if not subscribe_file.exists():
+            return jsonify({'error': 'Subscription file not found. Please run subscription_generator.py first.'}), 404
+        
+        return send_file(
+            subscribe_file,
+            mimetype='text/plain',
+            as_attachment=False
+        )
+    except Exception as e:
+        logger.error(f"获取纯文本订阅失败: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/health')
+
 def health_check():
     """健康检查"""
     return jsonify({

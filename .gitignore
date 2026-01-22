@@ -18,6 +18,13 @@ output/*
 # 环境变量配置
 .env
 
+# 本地使用的批处理文件和脚本（不上传GitHub）
+*.bat
+*.cmd
+*.ps1
+start*.sh
+run*.sh
+
 # 演示和个人文件（不上传GitHub）
 demo.py
 demo.db

@@ -10,6 +10,13 @@ jobs:
   update-proxies:
     runs-on: ubuntu-latest
     
+    # 定义 job outputs
+    outputs:
+      proxy-count: ${{ steps.stats.outputs.proxy-count }}
+      country-count: ${{ steps.stats.outputs.country-count }}
+      avg-response-time: ${{ steps.stats.outputs.avg-response-time }}
+      success-rate: ${{ steps.stats.outputs.success-rate }}
+    
     steps:
       - name: 检出代码
         uses: actions/checkout@v3
@@ -46,25 +53,103 @@ jobs:
         run: |
           python proxy_scanner_enhanced.py --timeout 8 --max-concurrency 50
       
-      - name: 生成报告
-        if: always()
+      - name: 生成订阅文件
+        run: |
+          echo "📦 生成订阅文件..."
+          python subscription_generator.py
+          echo "✅ 订阅文件生成完成"
+      
+      - name: 收集统计信息
+        id: stats
         run: |
           python -c "
           from proxy_database import ProxyDatabase
+          import json
+          
           db = ProxyDatabase('proxies.db')
           stats = db.get_database_stats()
-          print('📊 代理池统计:')
-          print(f'总代理数: {stats[\"total_proxies\"]}')
-          print(f'24小时活跃: {stats[\"active_proxies_24h\"]}')
-          print(f'成功率: {stats[\"success_rate_24h\"]*100:.1f}%')
+          
+          # 设置 GitHub Actions outputs
+          print(f'proxy-count={stats.get(\"total_proxies\", 0)}')
+          print(f'country-count={len(stats.get(\"country_distribution\", {}))}')
+          print(f'avg-response-time={stats.get(\"avg_response_time_24h\", 0):.2f}')
+          print(f'success-rate={stats.get(\"success_rate_24h\", 0):.1%}')
+          
+          # 保存到环境变量供后续步骤使用
+          with open('stats.json', 'w') as f:
+              json.dump(stats, f)
+          " >> $GITHUB_OUTPUT
+      
+      - name: 生成 Actions 摘要
+        if: always()
+        run: |
+          python -c "
+          import json
+          from datetime import datetime
+          
+          # 读取统计数据
+          try:
+              with open('stats.json', 'r') as f:
+                  stats = json.load(f)
+          except:
+              stats = {}
+          
+          # 生成 Markdown 摘要
+          summary = f'''
+          # 📊 代理池更新摘要
+          
+          **更新时间:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}
+          
+          ## 📈 统计信息
+          
+          | 指标 | 数值 |
+          |------|------|
+          | ✅ 总代理数 | {stats.get('total_proxies', 0)} |
+          | 🔥 24小时活跃 | {stats.get('active_proxies_24h', 0)} |
+          | 🌍 国家数量 | {len(stats.get('country_distribution', {}))} |
+          | ⚡ 平均响应时间 | {stats.get('avg_response_time_24h', 0):.2f}s |
+          | 📊 成功率 | {stats.get('success_rate_24h', 0)*100:.1f}% |
+          
+          ## 🌍 国家分布 (Top 10)
+          
+          '''
+          
+          # 添加国家分布
+          countries = stats.get('country_distribution', {})
+          if countries:
+              sorted_countries = sorted(countries.items(), key=lambda x: x[1], reverse=True)[:10]
+              summary += '| 国家 | 数量 |\\n|------|------|\\n'
+              for country, count in sorted_countries:
+                  summary += f'| {country} | {count} |\\n'
+          else:
+              summary += '*暂无数据*\\n'
+          
+          summary += '''
+          
+          ## 📁 订阅链接
+          
+          点击下方链接获取最新代理订阅：
+          
+          - 🔷 [Clash 订阅](https://raw.githubusercontent.com/${{ github.repository }}/main/subscribe/clash.yaml)
+          - 🔶 [V2Ray 订阅](https://raw.githubusercontent.com/${{ github.repository }}/main/subscribe/v2ray.json)
+          - 🔸 [ShadowRocket 订阅](https://raw.githubusercontent.com/${{ github.repository }}/main/subscribe/shadowrocket.txt)
+          - 📄 [纯文本列表](https://raw.githubusercontent.com/${{ github.repository }}/main/subscribe/proxies.txt)
+          - 🔐 [Base64 编码](https://raw.githubusercontent.com/${{ github.repository }}/main/subscribe/base64.txt)
+          '''
+          
+          # 写入到 GitHub Step Summary
+          with open('$GITHUB_STEP_SUMMARY', 'w') as f:
+              f.write(summary)
+          
+          print('✅ Actions 摘要已生成')
           "
       
       - name: 提交更新
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add proxies.json proxies.txt proxies.csv proxies.db || true
-          git diff --quiet && git diff --staged --quiet || git commit -m "自动更新代理池 $(date +'%Y-%m-%d %H:%M:%S')"
+          git add proxies.json proxies.txt proxies.csv proxies.db subscribe/ || true
+          git diff --quiet && git diff --staged --quiet || git commit -m "🔄 自动更新代理池 $(date +'%Y-%m-%d %H:%M:%S')"
           git push || echo "没有更新需要推送"
       
       - name: 清理旧数据
@@ -76,7 +161,56 @@ jobs:
           print(f'清理完成: 删除{deleted_v}条验证记录, {deleted_p}个代理')
           "
       
-      - name: 发送Telegram通知
+      - name: 发送成功通知
+        if: success()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ]; then
+            python -c "
+          import requests
+          import json
+          import os
+          
+          try:
+              with open('stats.json', 'r') as f:
+                  stats = json.load(f)
+          except:
+              stats = {}
+          
+          # 构建通知消息
+          message = f'''🎉 代理池更新成功！
+          
+          📊 统计信息：
+          ✅ 总代理数：{stats.get('total_proxies', 0)}
+          🔥 活跃代理：{stats.get('active_proxies_24h', 0)}
+          🌍 国家数量：{len(stats.get('country_distribution', {}))}
+          ⚡ 平均响应：{stats.get('avg_response_time_24h', 0):.2f}s
+          📊 成功率：{stats.get('success_rate_24h', 0)*100:.1f}%
+          
+          🔗 订阅链接：
+          Clash: https://raw.githubusercontent.com/${{ github.repository }}/main/subscribe/clash.yaml
+          V2Ray: https://raw.githubusercontent.com/${{ github.repository }}/main/subscribe/v2ray.json
+          '''
+          
+          # 发送到 Telegram
+          url = f\"https://api.telegram.org/bot{os.getenv('TELEGRAM_BOT_TOKEN')}/sendMessage\"
+          data = {
+              'chat_id': os.getenv('TELEGRAM_CHAT_ID'),
+              'text': message,
+              'parse_mode': 'HTML'
+          }
+          
+          response = requests.post(url, json=data)
+          if response.status_code == 200:
+              print('✅ Telegram 通知已发送')
+          else:
+              print(f'❌ Telegram 通知发送失败: {response.text}')
+            "
+          fi
+      
+      - name: 发送失败通知
         if: failure()
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -85,5 +219,6 @@ jobs:
           if [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ]; then
             curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
               -d chat_id="${TELEGRAM_CHAT_ID}" \
-              -d text="⚠️ 代理池更新失败！请检查GitHub Actions日志。"
+              -d text="⚠️ 代理池更新失败！请检查GitHub Actions日志：https://github.com/${{ github.repository }}/actions"
           fi
+
