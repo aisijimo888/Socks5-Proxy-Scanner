@@ -2,8 +2,8 @@ name: 自动更新代理池
 
 on:
   schedule:
-    # 每6小时运行一次
-    - cron: '0 */6 * * *'
+    # 每天运行两次 (00:00 UTC, 12:00 UTC)
+    - cron: '0 0,12 * * *'
   workflow_dispatch:  # 允许手动触发
 
 permissions:
