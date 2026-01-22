@@ -1,5 +1,6 @@
 # 数据库文件
 *.db
+!proxies.db  # 允许提交 proxies.db (用于 Actions 持久化)
 !GeoLite2-ASN.mmdb
 
 # 日志文件
