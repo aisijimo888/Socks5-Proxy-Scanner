@@ -6,6 +6,7 @@ import asyncio
 import aiohttp
 import time
 import logging
+import sys
 from typing import List, Dict
 from aiohttp_socks import ProxyConnector
 from tqdm.asyncio import tqdm # 引入tqdm
@@ -42,6 +43,11 @@ class ProxyValidator:
                     # 代理验证过程中可能会抛出各种异常 (e.g., connection errors)
                     # 我们在这里捕获它们，记录日志，然后继续处理下一个
                     self.logger.debug(f"代理验证失败: {e}")
+                finally:
+                    pass
+        
+        if use_tqdm:
+            pbar.close()
                 finally:
                     pbar.update(1)
         
