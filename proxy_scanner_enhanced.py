@@ -130,7 +130,7 @@ async def main():
     else:
         # 使用标准验证器
         validator = ProxyValidator(config)
-        valid_results = await validator.validate_all(all_proxies)
+        valid_results = await validator.validate_proxies(list(all_proxies))
     
     # 过滤有效代理
     valid_proxies = [r for r in valid_results if r.get('is_valid')]
@@ -166,7 +166,7 @@ async def main():
     # 导出结果
     logger.info(f"\n导出结果到 {args.output}...")
     exporter = ResultExporter(config)
-    await exporter.export_all(valid_proxies)
+    await exporter.export_results(valid_proxies)
     
     # 获取最佳代理并额外导出
     logger.info("\n生成最佳代理列表...")
