@@ -13,7 +13,7 @@ class Config:
     # 基础配置
     timeout: int = 10
     max_concurrency: int = 50
-    output_file: str = "proxies.json"
+    output_file: str = "subscribe/proxies.json"  # 输出到 subscribe 目录
     
     # 代理源配置
     sources: List[str] = None
