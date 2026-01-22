@@ -36,15 +36,17 @@ jobs:
           pip install -r requirements.txt
       
       - name: 运行代理扫描器
+        env:
+          DATABASE_PATH: proxies.db
+          SCAN_TIMEOUT: 8
+          MAX_CONCURRENCY: 50
         run: |
-          # 运行主程序，它会生成 proxies.json 和 proxy_history.json
-          python proxy_scanner_final.py
+          # 运行主程序，启用黑名单功能
+          python proxy_scanner_enhanced.py --timeout 8 --max-concurrency 50 --enable-blacklist --auto-blacklist --blacklist-threshold 5
       
       - name: 生成订阅文件
         run: |
           echo "📦 生成订阅文件..."
-          # 确保 subscribe 目录存在
-          mkdir -p subscribe
           python subscription_generator.py
           echo "✅ 订阅文件生成完成"
       
@@ -56,8 +58,9 @@ jobs:
           from datetime import datetime
           
           try:
-              if os.path.exists('proxies.json'):
-                  with open('proxies.json', 'r', encoding='utf-8') as f:
+              # 从 subscribe 目录读取
+              if os.path.exists('subscribe/proxies.json'):
+                  with open('subscribe/proxies.json', 'r', encoding='utf-8') as f:
                       proxies = json.load(f)
               else:
                   proxies = []

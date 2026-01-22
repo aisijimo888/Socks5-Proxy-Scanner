@@ -7,46 +7,55 @@ import base64
 import json
 import yaml
 import logging
+import os
 from pathlib import Path
 from typing import List, Dict
 from datetime import datetime
 
-from proxy_database import ProxyDatabase
-
-
 class SubscriptionGenerator:
     """订阅链接生成器"""
     
-    def __init__(self, db_path: str = "proxies.db", output_dir: str = "subscribe"):
-        self.db = ProxyDatabase(db_path)
+    def __init__(self, json_path: str = "proxies.json", output_dir: str = "subscribe"):
+        self.json_path = json_path
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(exist_ok=True)
         self.logger = logging.getLogger(__name__)
+        self.proxies = self._load_proxies()
     
-    def generate_all_formats(self, limit: int = 100, min_score: float = 1.0):
+    def _load_proxies(self) -> List[Dict]:
+        """从 JSON 文件加载代理"""
+        if not os.path.exists(self.json_path):
+            self.logger.warning(f"找不到代理文件: {self.json_path}")
+            return []
+        
+        try:
+            with open(self.json_path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except Exception as e:
+            self.logger.error(f"加载代理文件失败: {e}")
+            return []
+    
+    def generate_all_formats(self, min_score: float = 10.0):
         """生成所有格式的订阅文件"""
-        # 获取高质量代理
-        proxies = self.db.get_best_proxies(
-            limit=limit,
-            min_checks=3,
-            min_success_rate=0.6
-        )
+        # 过滤评分 (假设满分100，这里默认只取10分以上的，或者根据实际评分逻辑调整)
+        # 注意：新的评分系统可能是 0-100 分制
+        valid_proxies = [p for p in self.proxies if p.get('score', 0) >= min_score]
         
-        # 过滤评分
-        proxies = [p for p in proxies if p.get('avg_score', 0) >= min_score]
+        # 按分数排序
+        valid_proxies.sort(key=lambda x: x.get('score', 0), reverse=True)
         
-        if not proxies:
+        if not valid_proxies:
             self.logger.warning("没有符合条件的代理")
             return
         
-        self.logger.info(f"生成订阅文件，共 {len(proxies)} 个代理")
+        self.logger.info(f"生成订阅文件，共 {len(valid_proxies)} 个代理")
         
         # 生成各种格式
-        self.generate_clash_yaml(proxies)
-        self.generate_v2ray_json(proxies)
-        self.generate_base64(proxies)
-        self.generate_plain_text(proxies)
-        self.generate_shadowrocket(proxies)
+        self.generate_clash_yaml(valid_proxies)
+        self.generate_v2ray_json(valid_proxies)
+        self.generate_base64(valid_proxies)
+        self.generate_plain_text(valid_proxies)
+        self.generate_shadowrocket(valid_proxies)
         
         self.logger.info(f"所有订阅文件已生成到: {self.output_dir}")
     
@@ -56,12 +65,17 @@ class SubscriptionGenerator:
         proxy_names = []
         
         for idx, proxy in enumerate(proxies, 1):
-            ip, port = proxy['proxy_address'].split(':')
-            country = proxy.get('country_code', 'UN')
-            score = proxy.get('avg_score', 0)
+            # 兼容不同的字段名
+            address = proxy.get('proxy', '') or f"{proxy.get('ip')}:{proxy.get('port')}"
+            if ':' not in address:
+                continue
+                
+            ip, port = address.split(':')
+            country = proxy.get('country', 'UN')
+            score = proxy.get('score', 0)
             
             # 生成代理名称
-            name = f"{country}_{idx:03d}_S{score:.1f}"
+            name = f"{country}_{idx:03d}_S{int(score)}"
             proxy_names.append(name)
             
             # Clash 代理配置
@@ -161,8 +175,12 @@ class SubscriptionGenerator:
         
         # 添加代理出站
         for idx, proxy in enumerate(proxies):
-            ip, port = proxy['proxy_address'].split(':')
-            country = proxy.get('country_code', 'UN')
+            address = proxy.get('proxy', '') or f"{proxy.get('ip')}:{proxy.get('port')}"
+            if ':' not in address:
+                continue
+                
+            ip, port = address.split(':')
+            country = proxy.get('country', 'UN')
             
             outbound = {
                 'tag': f'{country}_{idx:03d}',
@@ -196,8 +214,9 @@ class SubscriptionGenerator:
         proxy_lines = []
         
         for proxy in proxies:
+            address = proxy.get('proxy', '') or f"{proxy.get('ip')}:{proxy.get('port')}"
             # socks5://ip:port 格式
-            proxy_url = f"socks5://{proxy['proxy_address']}"
+            proxy_url = f"socks5://{address}"
             proxy_lines.append(proxy_url)
         
         # Base64 编码
@@ -226,20 +245,18 @@ class SubscriptionGenerator:
             by_country = {}
             for proxy in proxies:
                 country = proxy.get('country', 'Unknown')
-                country_code = proxy.get('country_code', 'UN')
-                key = f"{country} ({country_code})"
-                
-                if key not in by_country:
-                    by_country[key] = []
-                by_country[key].append(proxy)
+                if country not in by_country:
+                    by_country[country] = []
+                by_country[country].append(proxy)
             
             # 写入代理
             for country, country_proxies in sorted(by_country.items()):
                 f.write(f"\n# {country} - {len(country_proxies)} 个代理\n")
                 for proxy in country_proxies:
-                    score = proxy.get('avg_score', 0)
-                    response_time = proxy.get('avg_response_time', 0)
-                    f.write(f"socks5://{proxy['proxy_address']} # Score: {score:.1f}, RT: {response_time:.2f}s\n")
+                    address = proxy.get('proxy', '') or f"{proxy.get('ip')}:{proxy.get('port')}"
+                    score = proxy.get('score', 0)
+                    response_time = proxy.get('response_time', 0)
+                    f.write(f"socks5://{address} # Score: {score:.1f}, RT: {response_time:.2f}s\n")
         
         self.logger.info(f"✅ 纯文本代理列表已生成: {output_file}")
     
@@ -248,13 +265,17 @@ class SubscriptionGenerator:
         sr_lines = []
         
         for idx, proxy in enumerate(proxies):
-            ip, port = proxy['proxy_address'].split(':')
-            country = proxy.get('country_code', 'UN')
-            score = proxy.get('avg_score', 0)
+            address = proxy.get('proxy', '') or f"{proxy.get('ip')}:{proxy.get('port')}"
+            if ':' not in address:
+                continue
+                
+            ip, port = address.split(':')
+            country = proxy.get('country', 'UN')
+            score = proxy.get('score', 0)
             
             # ShadowRocket SOCKS5 格式
             # socks5://ip:port#备注
-            name = f"{country}_{idx:03d}_S{score:.1f}"
+            name = f"{country}_{idx:03d}_S{int(score)}"
             sr_line = f"socks5://{ip}:{port}#{name}"
             sr_lines.append(sr_line)
         
@@ -271,7 +292,6 @@ class SubscriptionGenerator:
     
     def get_subscription_info(self) -> Dict:
         """获取订阅信息统计"""
-        stats = self.db.get_database_stats()
         
         # 读取文件大小
         files_info = {}
@@ -284,10 +304,15 @@ class SubscriptionGenerator:
                     'path': str(file_path)
                 }
         
+        # 简单的国家统计
+        countries = {}
+        for p in self.proxies:
+            c = p.get('country', 'Unknown')
+            countries[c] = countries.get(c, 0) + 1
+
         return {
-            'total_proxies': stats.get('total_proxies', 0),
-            'active_proxies': stats.get('active_proxies_24h', 0),
-            'countries': stats.get('country_distribution', {}),
+            'total_proxies': len(self.proxies),
+            'countries': countries,
             'files': files_info,
             'update_time': datetime.now().isoformat()
         }
@@ -307,13 +332,12 @@ def main():
     generator = SubscriptionGenerator()
     
     # 生成所有格式
-    generator.generate_all_formats(limit=200, min_score=1.0)
+    generator.generate_all_formats(min_score=10.0)
     
     # 显示统计信息
     info = generator.get_subscription_info()
     print(f"\n📊 订阅统计:")
     print(f"  总代理数: {info['total_proxies']}")
-    print(f"  活跃代理: {info['active_proxies']}")
     print(f"\n📁 生成的文件:")
     for file_name, file_info in info['files'].items():
         print(f"  ✅ {file_name} ({file_info['size_kb']} KB)")
