@@ -51,7 +51,7 @@ jobs:
           SCAN_TIMEOUT: 8
           MAX_CONCURRENCY: 50
         run: |
-          python proxy_scanner_enhanced.py --timeout 8 --max-concurrency 50
+          python proxy_scanner_enhanced.py --timeout 8 --max-concurrency 50 --enable-blacklist --auto-blacklist --blacklist-threshold 5
       
       - name: 生成订阅文件
         run: |
