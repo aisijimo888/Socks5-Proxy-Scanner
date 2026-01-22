@@ -42,14 +42,21 @@ jobs:
           SCAN_TIMEOUT: 8
           MAX_CONCURRENCY: 100  # 提升到100（适应Actions环境）
         run: |
+          # 创建subscribe目录（确保存在且有写入权限）
+          mkdir -p subscribe
+          chmod 755 subscribe
           # 运行主程序，启用黑名单功能（一次失败即拉黑，7天清理）
           python proxy_scanner_enhanced.py --timeout 8 --max-concurrency 100 --output subscribe/proxies.json --enable-blacklist --auto-blacklist --blacklist-threshold 1 --cleanup-days 7
       
       - name: 生成订阅文件
         run: |
           echo "📦 生成订阅文件..."
+          # 确保subscribe目录存在
+          ls -la subscribe/
           python subscription_generator.py
           echo "✅ 订阅文件生成完成"
+          # 显示生成的文件
+          ls -la subscribe/
       
       - name: 生成统计摘要
         run: |
