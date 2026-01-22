@@ -133,6 +133,8 @@ jobs:
           git add -f subscribe/ proxies.db
           # 只有在有变化时才提交
           git diff --quiet && git diff --staged --quiet || git commit -m "🔄 自动更新代理池 $(date +'%Y-%m-%d %H:%M:%S')"
+          # 拉取远程更新并推送（避免冲突）
+          git pull --rebase origin main || true
           git push
 
       - name: 上传构建产物
