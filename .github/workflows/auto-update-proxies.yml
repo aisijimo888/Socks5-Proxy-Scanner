@@ -127,3 +127,12 @@ jobs:
           # 只有在有变化时才提交
           git diff --quiet && git diff --staged --quiet || git commit -m "🔄 自动更新代理池 $(date +'%Y-%m-%d %H:%M:%S')"
           git push
+
+      - name: 上传构建产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: proxy-results
+          path: |
+            subscribe/proxies.json
+            proxies.db
+          retention-days: 5
