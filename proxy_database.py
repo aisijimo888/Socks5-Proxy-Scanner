@@ -132,7 +132,8 @@ class ProxyDatabase:
                     reason = ?
             """, (proxy_address, reason, auto_added, reason))
             
-            self.logger.info(f"代理 {proxy_address} 已加入黑名单: {reason}")
+            # 改为debug级别，避免日志刷屏
+            self.logger.debug(f"代理 {proxy_address} 已加入黑名单: {reason}")
     
     def is_blacklisted(self, proxy_address: str) -> bool:
         """检查代理是否在黑名单中"""
