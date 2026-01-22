@@ -62,13 +62,17 @@ This project is for educational, research, and legitimate network testing purpos
 - **地理位置** (15%) - 目标国家加分
 - **历史表现** (20%) - 长期可用性奖励
 
-#### 3. 代理源健康监控
+#### 3. 🛡️ 代理源健康监控 & 智能超时
+- 🚀 **智能超时 (Smart Timeouts)**: 连接超时(5s) vs 传输超时(10s)，快速剔除死代理
 - 实时检测源可用性
 - 统计源质量(有效代理比例)
 - 自动禁用失效源
 - 生成源质量报告
 
-#### 4. Telegram集成
+#### 4. 📝 黑名单与订阅管理
+- **自动黑名单**: 自动过滤掉长期失效的代理
+- **黑名单导出**: 生成 `subscribe/blacklist.txt`
+- **Telegram集成** (下文详述)
 - 🤖 **Bot命令**
   - `/stats` - 查看代理池统计
   - `/best` - 获取最佳代理
@@ -95,7 +99,7 @@ This project is for educational, research, and legitimate network testing purpos
 - 🌐 **直接访问**: 通过 GitHub Raw URL 获取
 
 #### 7. GitHub Actions自动化
-- ⏰ 每6小时自动更新代理池
+- ⏰ 每12小时自动更新代理池 (00:00 & 12:00 UTC)
 - 📦 自动提交最新数据和订阅文件
 - 📊 Actions Summary 显示详细统计
 - 📧 成功/失败时Telegram通知
@@ -286,7 +290,8 @@ ENABLE_WEB=True
 2. **proxies.txt** - 纯代理列表 (`ip:port`)
 3. **proxies.csv** - 详细信息表格
 4. **best_proxies.txt** - 最佳代理列表 (基于综合评分)
-5. **proxies.db** - SQLite数据库 (历史记录)
+5. **blacklist.txt** - 代理黑名单
+6. **proxies.db** - SQLite数据库 (历史记录)
 
 ## 🏗️ 架构设计
 
