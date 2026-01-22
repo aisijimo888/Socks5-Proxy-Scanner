@@ -16,6 +16,11 @@ output/*
 !subscribe/*.json
 !subscribe/*.yaml
 
+# 允许根目录的输出文件
+!proxies.json
+!proxies.txt
+!proxies.csv
+
 # 但忽略其他目录的这些文件
 *.json
 *.txt
