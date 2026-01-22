@@ -117,8 +117,12 @@ class ProxyValidator:
                     async with session.get(test_url) as response:
                         if response.status == 200:
                             response_time = time.time() - start_time
-                            geo_info = await self._get_geo_info(session)
-                            
+                            try:
+                                geo_info = await self._get_geo_info(session)
+                            except Exception as e:
+                                self.logger.debug(f"获取地理位置失败 (非致命): {e}")
+                                geo_info = {}
+
                             # 创建完整的验证结果
                             result = {
                                 'proxy': proxy,
