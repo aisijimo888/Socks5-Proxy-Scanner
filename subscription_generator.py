@@ -15,7 +15,7 @@ from datetime import datetime
 class SubscriptionGenerator:
     """订阅链接生成器"""
     
-    def __init__(self, json_path: str = "proxies.json", output_dir: str = "subscribe"):
+    def __init__(self, json_path: str = "subscribe/proxies.json", output_dir: str = "subscribe"):
         self.json_path = json_path
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(exist_ok=True)
