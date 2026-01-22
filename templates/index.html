@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOCKS5代理池 - Dashboard</title>
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header>
+            <h1>
+                <span class="logo">🌐</span>
+                SOCKS5代理池监控
+            </h1>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="refreshAll()">
+                    <span class="refresh-icon">🔄</span> 刷新
+                </button>
+                <button class="btn btn-primary" onclick="exportProxies()">
+                    <span>⬇️</span> 导出
+                </button>
+            </div>
+        </header>
+
+        <!-- 统计卡片 -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-content">
+                    <div class="stat-label">总代理数</div>
+                    <div class="stat-value" id="total-proxies">-</div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-content">
+                    <div class="stat-label">24小时活跃</div>
+                    <div class="stat-value" id="active-proxies">-</div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-content">
+                    <div class="stat-label">成功率</div>
+                    <div class="stat-value" id="success-rate">-</div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">🔍</div>
+                <div class="stat-content">
+                    <div class="stat-label">总验证次数</div>
+                    <div class="stat-value" id="total-validations">-</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图表区域 -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>国家分布</h3>
+                <canvas id="countryChart"></canvas>
+            </div>
+            
+            <div class="chart-card">
+                <h3>代理源状态</h3>
+                <canvas id="sourcesChart"></canvas>
+            </div>
+        </div>
+
+        <!-- 搜索和过滤 -->
+        <div class="toolbar">
+            <input 
+                type="text" 
+                id="search-input" 
+                class="search-box" 
+                placeholder="搜索代理地址、国家..." 
+                onkeyup="filterProxies()"
+            >
+            <select id="country-filter" class="filter-select" onchange="filterProxies()">
+                <option value="">所有国家</option>
+            </select>
+        </div>
+
+        <!-- 代理列表表格 -->
+        <div class="table-container">
+            <table class="proxy-table">
+                <thead>
+                    <tr>
+                        <th onclick="sortTable('proxy_address')">代理地址 ⇅</th>
+                        <th onclick="sortTable('country')">国家 ⇅</th>
+                        <th onclick="sortTable('avg_score')">评分 ⇅</th>
+                        <th onclick="sortTable('success_rate')">成功率 ⇅</th>
+                        <th onclick="sortTable('avg_response_time')">响应时间 ⇅</th>
+                        <th onclick="sortTable('total_checks')">检查次数 ⇅</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="proxy-table-body">
+                    <tr>
+                        <td colspan="7" class="loading">加载中...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 页脚 -->
+        <footer>
+            <p>最后更新: <span id="last-update">-</span></p>
+            <p>自动刷新: <label class="switch">
+                <input type="checkbox" id="auto-refresh" checked onchange="toggleAutoRefresh()">
+                <span class="slider"></span>
+            </label></p>
+        </footer>
+    </div>
+
+    <!-- 代理详情模态框 -->
+    <div id="proxy-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>代理详情</h2>
+            <div id="proxy-details"></div>
+        </div>
+    </div>
+
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

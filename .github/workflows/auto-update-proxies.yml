@@ -1,0 +1,89 @@
+name: 自动更新代理池
+
+on:
+  schedule:
+    # 每6小时运行一次（推荐）
+    - cron: '0 */6 * * *'
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  update-proxies:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v3
+      
+      - name: 设置Python环境
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+      
+      - name: 缓存pip依赖
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      
+      - name: 安装依赖
+        run: |
+          pip install -r requirements.txt
+      
+      - name: 下载GeoLite2数据库
+        run: |
+          # 如果需要GeoIP数据库，在这里下载
+          # wget -O GeoLite2-ASN.mmdb "你的下载链接"
+          echo "跳过GeoIP数据库下载"
+      
+      - name: 运行代理扫描器
+        env:
+          DATABASE_PATH: proxies.db
+          SCAN_TIMEOUT: 8
+          MAX_CONCURRENCY: 50
+        run: |
+          python proxy_scanner_enhanced.py --timeout 8 --max-concurrency 50
+      
+      - name: 生成报告
+        if: always()
+        run: |
+          python -c "
+          from proxy_database import ProxyDatabase
+          db = ProxyDatabase('proxies.db')
+          stats = db.get_database_stats()
+          print('📊 代理池统计:')
+          print(f'总代理数: {stats[\"total_proxies\"]}')
+          print(f'24小时活跃: {stats[\"active_proxies_24h\"]}')
+          print(f'成功率: {stats[\"success_rate_24h\"]*100:.1f}%')
+          "
+      
+      - name: 提交更新
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add proxies.json proxies.txt proxies.csv proxies.db || true
+          git diff --quiet && git diff --staged --quiet || git commit -m "自动更新代理池 $(date +'%Y-%m-%d %H:%M:%S')"
+          git push || echo "没有更新需要推送"
+      
+      - name: 清理旧数据
+        run: |
+          python -c "
+          from proxy_database import ProxyDatabase
+          db = ProxyDatabase('proxies.db')
+          deleted_v, deleted_p = db.cleanup_old_records(days=30)
+          print(f'清理完成: 删除{deleted_v}条验证记录, {deleted_p}个代理')
+          "
+      
+      - name: 发送Telegram通知
+        if: failure()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ]; then
+            curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+              -d chat_id="${TELEGRAM_CHAT_ID}" \
+              -d text="⚠️ 代理池更新失败！请检查GitHub Actions日志。"
+          fi

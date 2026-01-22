@@ -1,0 +1,65 @@
+# 数据库文件
+*.db
+!GeoLite2-ASN.mmdb
+
+# 日志文件
+*.log
+
+# 输出目录 (结构保留，内容忽略)
+output/*
+!output/README.md
+!output/.gitkeep
+*.json
+*.txt
+*.csv
+!requirements.txt
+!Industrial_Socks5.txt
+
+# 环境变量配置
+.env
+
+# 演示和个人文件（不上传GitHub）
+demo.py
+demo.db
+GITHUB_PREP.md
+QUICK_SETUP.md
+Industrial_Socks5.txt
+
+# Python缓存
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# 虚拟环境
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 操作系统
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 临时文件
+*.tmp
+*.bak
+*.swp
+
+# 测试
+.pytest_cache/
+.coverage
+htmlcov/
+
+# 分发/打包
+build/
+dist/
+*.egg-info/
