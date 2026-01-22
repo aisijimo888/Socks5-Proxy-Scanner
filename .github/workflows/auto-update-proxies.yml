@@ -174,3 +174,49 @@ jobs:
             proxies.db
           retention-days: 5
 
+      - name: 发送Telegram成功通知
+        if: success()
+        run: |
+          if [ -n "${{ secrets.TELEGRAM_BOT_TOKEN }}" ] && [ -n "${{ secrets.TELEGRAM_CHAT_ID }}" ]; then
+            # 读取代理统计
+            TOTAL_PROXIES=$(grep -o '"total_proxies": [0-9]*' subscribe/proxies.json | grep -o '[0-9]*' | head -1 || echo "0")
+            
+            MESSAGE="✅ *代理池更新成功*
+
+📊 统计信息:
+- 总代理数: ${TOTAL_PROXIES}
+- 更新时间: $(date +'%Y-%m-%d %H:%M:%S')
+
+📁 生成的文件:
+$(ls -lh subscribe/ | tail -n +2 | awk '{print "- " $9 " (" $5 ")"}'  || echo "- 文件列表获取失败")
+
+🔗 仓库: https://github.com/${{ github.repository }}"
+
+            curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+              -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+              -d "text=${MESSAGE}" \
+              -d "parse_mode=Markdown" \
+              -d "disable_web_page_preview=true"
+            
+            echo "✅ Telegram通知已发送"
+          else
+            echo "⚠️ 跳过Telegram通知: 未配置TELEGRAM_BOT_TOKEN或TELEGRAM_CHAT_ID"
+          fi
+
+      - name: 发送Telegram失败通知
+        if: failure()
+        run: |
+          if [ -n "${{ secrets.TELEGRAM_BOT_TOKEN }}" ] && [ -n "${{ secrets.TELEGRAM_CHAT_ID }}" ]; then
+            MESSAGE="❌ *代理池更新失败*
+
+⏰ 时间: $(date +'%Y-%m-%d %H:%M:%S')
+🔗 查看日志: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+            curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+              -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+              -d "text=${MESSAGE}" \
+              -d "parse_mode=Markdown"
+            
+            echo "✅ Telegram失败通知已发送"
+          fi
+
