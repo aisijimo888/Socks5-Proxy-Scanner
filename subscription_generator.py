@@ -74,8 +74,12 @@ class SubscriptionGenerator:
             country = proxy.get('country', 'UN')
             score = proxy.get('score', 0)
             
-            # 生成代理名称
-            name = f"{country}_{idx:03d}_S{int(score)}"
+            # 获取匿名性和速度等级
+            anonymity = proxy.get('anonymity_level', 'Unknown')[:1]  # E/A/T/U
+            speed = proxy.get('speed_tier', 'Unknown')[:1]  # F/M/S/U
+            
+            # 生成增强的代理名称: Country_idx_Score_Anonymity_Speed
+            name = f"{country}_{idx:03d}_S{int(score)}_{anonymity}{speed}"
             proxy_names.append(name)
             
             # Clash 代理配置
