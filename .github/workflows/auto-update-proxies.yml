@@ -123,7 +123,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           # 添加所有生成的文件（都在subscribe目录）
-          git add subscribe/ proxies.db
+          git add -f subscribe/ proxies.db
           # 只有在有变化时才提交
           git diff --quiet && git diff --staged --quiet || git commit -m "🔄 自动更新代理池 $(date +'%Y-%m-%d %H:%M:%S')"
           git push
