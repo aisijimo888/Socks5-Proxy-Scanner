@@ -10,23 +10,15 @@ output/*
 !output/README.md
 !output/.gitkeep
 
-# 订阅文件目录 (允许提交)
+# 订阅文件目录 (允许提交所有内容)
 !subscribe/
-!subscribe/*.txt
-!subscribe/*.json
-!subscribe/*.yaml
-
-# 允许根目录的输出文件
-!proxies.json
-!proxies.txt
-!proxies.csv
+!subscribe/*
 
 # 但忽略其他目录的这些文件
 *.json
 *.txt
 *.csv
 !requirements.txt
-!Industrial_Socks5.txt
 
 # 环境变量配置
 .env
