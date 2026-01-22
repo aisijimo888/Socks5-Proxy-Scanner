@@ -129,13 +129,21 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          # 添加所有生成的文件（都在subscribe目录）
-          git add -f subscribe/ proxies.db
+          # 添加所有生成的文件（明确指定每个文件类型）
+          git add -f subscribe/*.json subscribe/*.txt subscribe/*.csv subscribe/*.yaml subscribe/*.yml proxies.db
+          # 显示将要提交的文件（调试用）
+          echo "Files to commit:"
+          git diff --staged --name-only
           # 只有在有变化时才提交
-          git diff --quiet && git diff --staged --quiet || git commit -m "🔄 自动更新代理池 $(date +'%Y-%m-%d %H:%M:%S')"
-          # 拉取远程更新并推送（避免冲突）
-          git pull --rebase origin main || true
-          git push
+          if ! git diff --quiet || ! git diff --staged --quiet; then
+            git commit -m "🔄 自动更新代理池 $(date +'%Y-%m-%d %H:%M:%S')"
+            # 拉取远程更新并推送（避免冲突）
+            git pull --rebase origin main || true
+            git push
+            echo "✅ 文件已成功推送到GitHub"
+          else
+            echo "⚠️ 没有文件变化，跳过提交"
+          fi
 
       - name: 上传构建产物
         uses: actions/upload-artifact@v4
