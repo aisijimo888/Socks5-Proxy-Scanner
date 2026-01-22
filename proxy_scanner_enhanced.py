@@ -240,6 +240,23 @@ async def main():
             logger.info(f"   手动添加: {bl_stats['manual_added']}")
         else:
             logger.info(f"   ℹ️ 没有发现需要加入黑名单的代理")
+
+    # 导出黑名单文件
+    if args.enable_blacklist:
+        try:
+            blacklist_file = 'subscribe/blacklist.txt'
+            all_blacklisted = db.get_blacklisted_proxies()
+            if all_blacklisted:
+                logger.info(f"\n导出黑名单到 {blacklist_file}...")
+                with open(blacklist_file, 'w', encoding='utf-8') as f:
+                    f.write("# Proxy Blacklist\n")
+                    f.write(f"# Total: {len(all_blacklisted)}\n")
+                    f.write(f"# Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+                    for proxy in sorted(all_blacklisted):
+                        f.write(f"{proxy}\n")
+                logger.info(f"✅ 黑名单已保存 ({len(all_blacklisted)}个)")
+        except Exception as e:
+            logger.error(f"导出黑名单失败: {e}")
     
     # 启动可选功能
     if args.enable_telegram or config_mgr.enable_telegram:
