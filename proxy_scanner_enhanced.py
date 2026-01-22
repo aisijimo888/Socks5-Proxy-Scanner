@@ -205,10 +205,11 @@ async def main():
     logger.info("\n生成最佳代理列表...")
     best_proxies = db.get_best_proxies(limit=50, min_checks=2, min_success_rate=0.6)
     if best_proxies:
-        with open('best_proxies.txt', 'w', encoding='utf-8') as f:
+        best_proxies_file = 'subscribe/best_proxies.txt'
+        with open(best_proxies_file, 'w', encoding='utf-8') as f:
             for proxy in best_proxies:
                 f.write(f"{proxy['proxy_address']}\n")
-        logger.info(f"✅ 最佳代理列表已保存到 best_proxies.txt ({len(best_proxies)}个)")
+        logger.info(f"✅ 最佳代理列表已保存到 {best_proxies_file} ({len(best_proxies)}个)")
     
     # 数据库统计
     logger.info("\n数据库统计:")
