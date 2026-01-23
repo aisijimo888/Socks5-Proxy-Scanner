@@ -1,6 +1,6 @@
 # 部署指南
 
-本指南涵盖Web Dashboard的使用、局域网访问、Cloudflare公网部署等所有部署相关内容。
+本指南涵盖Web Dashboard的使用、局域网访问等所有部署相关内容。
 
 ---
 
@@ -8,7 +8,7 @@
 
 1. [Web Dashboard使用](#web-dashboard使用)
 2. [局域网访问](#局域网访问)
-3. [Cloudflare公网部署](#cloudflare公网部署)
+
 4. [生产环境部署](#生产环境部署)
 
 ---
@@ -150,102 +150,6 @@ python web_dashboard.py
 
 ---
 
-# Cloudflare公网部署
-
-## ☁️ Cloudflare Tunnel (推荐)
-
-### 特点
-
-- ✅ 完全免费
-- ✅ 无需公网IP
-- ✅ 自动HTTPS
-- ✅ 访问控制
-
-### 部署步骤
-
-#### 1. 安装cloudflared
-
-**Windows:**
-```bash
-winget install Cloudflare.cloudflared
-```
-
-**Linux:**
-```bash
-wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64
-sudo mv cloudflared-linux-amd64 /usr/local/bin/cloudflared
-sudo chmod +x /usr/local/bin/cloudflared
-```
-
-#### 2. 登录Cloudflare
-
-```bash
-cloudflared tunnel login
-```
-
-会打开浏览器，选择域名并授权
-
-#### 3. 创建隧道
-
-```bash
-cloudflared tunnel create proxy-dashboard
-```
-
-记下UUID，例如: `a1b2c3d4-e5f6-7890-abcd-ef1234567890`
-
-#### 4. 配置隧道
-
-创建 `~/.cloudflared/config.yml`:
-
-```yaml
-tunnel: a1b2c3d4-e5f6-7890-abcd-ef1234567890
-credentials-file: /path/to/credentials.json
-
-ingress:
-  - hostname: proxy.你的域名.com
-    service: http://localhost:5000
-  - service: http_status:404
-```
-
-#### 5. 添加DNS记录
-
-```bash
-cloudflared tunnel route dns proxy-dashboard proxy.你的域名.com
-```
-
-#### 6. 启动服务
-
-```bash
-# 终端1: 启动Dashboard
-python web_dashboard.py
-
-# 终端2: 启动隧道
-cloudflared tunnel run proxy-dashboard
-```
-
-#### 7. 访问
-
-```
-https://proxy.你的域名.com
-```
-
-### 一键启动脚本
-
-创建 `start_tunnel.bat`:
-
-```batch
-@echo off
-echo 启动Web Dashboard...
-start python web_dashboard.py
-
-timeout /t 3
-
-echo 启动Cloudflare Tunnel...
-cloudflared tunnel run proxy-dashboard
-```
-
----
-
 ## 🔒 安全建议
 
 ### 1. 添加访问认证
@@ -263,12 +167,6 @@ def check_auth():
     if token != f'Bearer {API_TOKEN}':
         abort(401)
 ```
-
-### 2. 使用Cloudflare Access
-
-在Cloudflare Zero Trust中配置:
-- 允许特定邮箱访问
-- 使用一次性PIN码
 
 ---
 
@@ -380,7 +278,7 @@ docker-compose up -d
 |------|------|------|------|--------|
 | **本地** | 免费 | ⭐ | 快 | ⭐⭐⭐ |
 | **局域网** | 免费 | ⭐ | 快 | ⭐⭐⭐⭐ |
-| **Cloudflare Tunnel** | 免费 | ⭐⭐ | 中 | ⭐⭐⭐⭐⭐ |
+
 | **VPS** | $5/月 | ⭐⭐⭐ | 快 | ⭐⭐⭐⭐ |
 | **Docker** | 免费 | ⭐⭐⭐ | 快 | ⭐⭐⭐⭐ |
 
@@ -402,10 +300,7 @@ python web_dashboard.py
 
 ### 阶段3: 公网访问
 
-**有域名 → Cloudflare Tunnel**
-```bash
-cloudflared tunnel run proxy-dashboard
-```
+
 
 **有VPS → Nginx + SSL**
 ```bash

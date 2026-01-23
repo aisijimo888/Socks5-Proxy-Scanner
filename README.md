@@ -163,7 +163,7 @@ python web_dashboard.py
 然后访问: 
 - **本地**: http://localhost:5000
 - **局域网**: http://你的IP地址:5000 (同WiFi下的手机/平板可访问)
-- **公网**: 参见 [部署指南](docs/DEPLOYMENT_GUIDE.md#cloudflare公网部署)
+- **公网**: 参见 [部署指南](docs/DEPLOYMENT_GUIDE.md)
 
 ### 4. 启动Telegram Bot
 ```bash
@@ -279,7 +279,7 @@ python subscription_generator.py
 
 **核心文档:**
 - [配置指南](docs/CONFIGURATION_GUIDE.md) - 超时、黑名单、国家白名单配置
-- [部署指南](docs/DEPLOYMENT_GUIDE.md) - Web Dashboard、局域网、Cloudflare部署
+- [部署指南](docs/DEPLOYMENT_GUIDE.md) - Web Dashboard、局域网部署
 - [高级用法](docs/ADVANCED_USAGE.md) - 数据库查询、性能优化、API集成
 - [项目结构](docs/PROJECT_STRUCTURE.md) - 文件说明、开发指南
 
