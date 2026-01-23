@@ -108,8 +108,16 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           
-          # Add files
-          git add subscribe/ socks5.txt proxies.db proxies.json 2>/dev/null || true
+          # Force add all subscription files (override .gitignore)
+          echo "Adding subscription files..."
+          git add -f subscribe/*.txt subscribe/*.json subscribe/*.yaml 2>/dev/null || true
+          git add -f subscribe/by-country/*.txt 2>/dev/null || true
+          git add -f socks5.txt 2>/dev/null || true
+          git add -f proxies.json proxies.db 2>/dev/null || true
+          
+          # Show what will be committed
+          echo "Files staged for commit:"
+          git status --short
           
           # Check if there are changes
           if git diff --staged --quiet; then
