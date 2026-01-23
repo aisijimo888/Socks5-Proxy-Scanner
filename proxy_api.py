@@ -13,6 +13,7 @@ from flask_cors import CORS
 
 from proxy_database import ProxyDatabase
 from config_manager import ConfigManager
+from timezone_utils import now_utc
 
 app = Flask(__name__)
 CORS(app)
@@ -240,7 +241,7 @@ def get_stats():
         return jsonify({
             'success': True,
             'data': stats,
-            'timestamp': datetime.now().isoformat()
+            'timestamp': now_utc().isoformat()
         })
     except Exception as e:
         logger.error(f"获取统计失败: {e}")
@@ -272,7 +273,7 @@ def export_proxies(format_type):
         elif format_type == 'json':
             return jsonify({
                 'count': len(proxies),
-                'timestamp': datetime.now().isoformat(),
+                'timestamp': now_utc().isoformat(),
                 'proxies': [
                     {
                         'address': p['proxy_address'],
@@ -446,7 +447,7 @@ def health_check():
     """健康检查"""
     return jsonify({
         'status': 'healthy',
-        'timestamp': datetime.now().isoformat(),
+        'timestamp': now_utc().isoformat(),
         'database': db.db_path,
         'total_proxies': db.get_database_stats().get('total_proxies', 0)
     })

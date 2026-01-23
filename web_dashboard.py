@@ -11,6 +11,7 @@ from flask_cors import CORS
 
 from proxy_database import ProxyDatabase
 from config_manager import ConfigManager
+from timezone_utils import now_utc
 
 
 # 初始化Flask应用
@@ -38,7 +39,7 @@ def get_stats():
         return jsonify({
             'success': True,
             'data': stats,
-            'timestamp': datetime.now().isoformat()
+            'timestamp': now_utc().isoformat()
         })
     except Exception as e:
         logger.error(f"获取统计数据失败: {e}")
@@ -67,7 +68,7 @@ def get_proxies():
             'success': True,
             'data': proxies,
             'count': len(proxies),
-            'timestamp': datetime.now().isoformat()
+            'timestamp': now_utc().isoformat()
         })
     except Exception as e:
         logger.error(f"获取代理列表失败: {e}")
@@ -92,7 +93,7 @@ def get_proxy_detail(proxy_address):
         return jsonify({
             'success': True,
             'data': stats,
-            'timestamp': datetime.now().isoformat()
+            'timestamp': now_utc().isoformat()
         })
     except Exception as e:
         logger.error(f"获取代理详情失败: {e}")
@@ -112,7 +113,7 @@ def get_sources():
             'success': True,
             'data': sources,
             'count': len(sources),
-            'timestamp': datetime.now().isoformat()
+            'timestamp': now_utc().isoformat()
         })
     except Exception as e:
         logger.error(f"获取代理源状态失败: {e}")
@@ -133,7 +134,7 @@ def get_active_proxies():
             'success': True,
             'data': proxies,
             'count': len(proxies),
-            'timestamp': datetime.now().isoformat()
+            'timestamp': now_utc().isoformat()
         })
     except Exception as e:
         logger.error(f"获取活跃代理失败: {e}")
@@ -156,7 +157,7 @@ def trigger_cleanup():
                 'deleted_validations': deleted_validations,
                 'deleted_proxies': deleted_proxies
             },
-            'timestamp': datetime.now().isoformat()
+            'timestamp': now_utc().isoformat()
         })
     except Exception as e:
         logger.error(f"数据库清理失败: {e}")
@@ -196,7 +197,7 @@ def export_proxies():
                 'success': True,
                 'data': proxies,
                 'count': len(proxies),
-                'timestamp': datetime.now().isoformat()
+                'timestamp': now_utc().isoformat()
             })
             
     except Exception as e:
@@ -212,7 +213,7 @@ def health_check():
     """健康检查端点"""
     return jsonify({
         'status': 'healthy',
-        'timestamp': datetime.now().isoformat()
+        'timestamp': now_utc().isoformat()
     })
 
 

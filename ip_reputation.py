@@ -8,6 +8,7 @@ import asyncio
 import logging
 from typing import Dict, Optional
 from datetime import datetime, timedelta
+from timezone_utils import now_utc
 
 
 class IPReputationChecker:
@@ -34,7 +35,7 @@ class IPReputationChecker:
         # 检查缓存
         if ip in self.cache:
             cached_data, cached_time = self.cache[ip]
-            if datetime.now() - cached_time < self.cache_ttl:
+            if now_utc() - cached_time < self.cache_ttl:
                 return cached_data
         
         reputation = {
@@ -46,7 +47,7 @@ class IPReputationChecker:
             'is_tor': False,
             'is_datacenter': False,
             'threat_score': 0,  # 0-100，100最差
-            'check_time': datetime.now().isoformat()
+            'check_time': now_utc().isoformat()
         }
         
         # 并发检查多个服务
@@ -62,7 +63,7 @@ class IPReputationChecker:
         reputation['threat_score'] = self._calculate_threat_score(reputation)
         
         # 缓存结果
-        self.cache[ip] = (reputation, datetime.now())
+        self.cache[ip] = (reputation, now_utc())
         
         return reputation
     

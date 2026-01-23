@@ -21,6 +21,7 @@ output/*.csv
 /*.txt
 /*.csv
 !requirements.txt
+!socks5*.txt  # 允许提交 socks5 订阅文件
 
 # 环境变量配置
 .env

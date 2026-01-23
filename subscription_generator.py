@@ -11,6 +11,7 @@ import os
 from pathlib import Path
 from typing import List, Dict
 from datetime import datetime
+from timezone_utils import now_utc, format_china_time, get_display_time
 
 class SubscriptionGenerator:
     """订阅链接生成器"""
@@ -74,7 +75,101 @@ class SubscriptionGenerator:
         self.generate_plain_text(valid_proxies)
         self.generate_shadowrocket(valid_proxies)
         
+        # 生成简化的 SOCKS5 订阅列表（多质量等级）
+        self.generate_socks5_subscriptions()
+        
+        # 生成按国家分类的订阅
+        self.generate_socks5_by_country()
+        
         self.logger.info(f"所有订阅文件已生成到: {self.output_dir}")
+    
+    def generate_socks5_subscriptions(self):
+        """生成多层级 SOCKS5 订阅文件"""
+        # 1. 标准版（所有有效代理，评分 >= 10）
+        all_valid = [p for p in self.proxies if self._get_score(p) >= 10.0]
+        all_valid.sort(key=lambda x: self._get_score(x), reverse=True)
+        
+        # 2. 高质量版（评分 >= 70）
+        premium = [p for p in self.proxies if self._get_score(p) >= 70.0]
+        premium.sort(key=lambda x: self._get_score(x), reverse=True)
+        
+        # 3. 快速版（响应时间 < 2s）
+        fast = [p for p in self.proxies 
+                if self._get_score(p) >= 10.0 
+                and p.get('response_time', 999) < 2.0]
+        fast.sort(key=lambda x: x.get('response_time', 999))
+        
+        # 生成文件
+        if all_valid:
+            self._save_socks5_list(all_valid, self.output_dir / 'socks5-all.txt', 
+                                   '所有有效 SOCKS5 代理（评分 >= 10）')
+        
+        if premium:
+            self._save_socks5_list(premium, self.output_dir / 'socks5-premium.txt',
+                                   '高质量 SOCKS5 代理（评分 >= 70）')
+        
+        if fast:
+            self._save_socks5_list(fast, self.output_dir / 'socks5-fast.txt',
+                                   '快速 SOCKS5 代理（响应 < 2s）')
+        
+        self.logger.info(f"✅ SOCKS5 订阅: 标准 {len(all_valid)} | 高质量 {len(premium)} | 快速 {len(fast)}")
+    
+    def _save_socks5_list(self, proxies: List[Dict], file_path, description: str):
+        """保存 SOCKS5 代理列表（纯文本格式）"""
+        with open(file_path, 'w', encoding='utf-8') as f:
+            # 简洁的头部
+            f.write(f"# {description}\n")
+            f.write(f"# 更新时间: {get_display_time()} (北京时间)\n")
+            f.write(f"# 总数: {len(proxies)}\n")
+            f.write(f"# 格式: IP:PORT\n\n")
+            
+            # 输出代理地址（一行一个）
+            for proxy in proxies:
+                address = proxy.get('proxy', '') or f"{proxy.get('ip')}:{proxy.get('port')}"
+                f.write(f"{address}\n")
+        
+        self.logger.info(f"  生成 {file_path.name} ({len(proxies)} 个代理)")
+    
+    def generate_socks5_by_country(self):
+        """按国家生成 SOCKS5 订阅文件"""
+        # 按国家分组
+        by_country = {}
+        for p in self.proxies:
+            if self._get_score(p) < 10.0:
+                continue
+            
+            country_code = p.get('country_code', 'UN')
+            country_name = p.get('country', 'Unknown')
+            
+            if country_code not in by_country:
+                by_country[country_code] = {
+                    'name': country_name,
+                    'proxies': []
+                }
+            by_country[country_code]['proxies'].append(p)
+        
+        # 创建国家分类目录
+        country_dir = self.output_dir / 'by-country'
+        country_dir.mkdir(exist_ok=True)
+        
+        # 只为代理数 >= 5 的国家生成文件
+        generated_count = 0
+        for country_code, data in sorted(by_country.items()):
+            proxies = data['proxies']
+            if len(proxies) >= 5:
+                file_path = country_dir / f'socks5-{country_code}.txt'
+                self._save_socks5_list(
+                    proxies, 
+                    file_path,
+                    f'{data["name"]} ({country_code}) SOCKS5 代理'
+                )
+                generated_count += 1
+        
+        if generated_count > 0:
+            self.logger.info(f"✅ 按国家分类: 生成 {generated_count} 个国家的订阅文件")
+        else:
+            self.logger.info("ℹ️  没有足够的代理生成国家分类文件")
+    
     
     def generate_clash_yaml(self, proxies: List[Dict]):
         """生成 Clash YAML 格式订阅"""
@@ -264,7 +359,7 @@ class SubscriptionGenerator:
         with open(output_file, 'w', encoding='utf-8') as f:
             # 添加头部信息
             f.write(f"# SOCKS5 代理列表\n")
-            f.write(f"# 更新时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+            f.write(f"# 更新时间: {get_display_time()} (北京时间)\n")
             f.write(f"# 总数: {len(proxies)}\n")
             f.write(f"# 格式: socks5://IP:PORT\n\n")
             
@@ -341,7 +436,7 @@ class SubscriptionGenerator:
             'total_proxies': len(self.proxies),
             'countries': countries,
             'files': files_info,
-            'update_time': datetime.now().isoformat()
+            'update_time': now_utc().isoformat()  # UTC 时间，前端可根据需要转换
         }
 
 

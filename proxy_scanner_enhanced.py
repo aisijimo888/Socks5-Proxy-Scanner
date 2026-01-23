@@ -17,6 +17,7 @@ from exporters import ResultExporter
 from proxy_database import ProxyDatabase
 from enhanced_validator import EnhancedValidator, ProxyScorer
 from source_health_checker import SourceHealthChecker
+from timezone_utils import get_display_time
 
 
 async def main():
@@ -251,7 +252,7 @@ async def main():
                 with open(blacklist_file, 'w', encoding='utf-8') as f:
                     f.write("# Proxy Blacklist\n")
                     f.write(f"# Total: {len(all_blacklisted)}\n")
-                    f.write(f"# Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+                    f.write(f"# Updated: {get_display_time()} (北京时间)\n\n")
                     for proxy in sorted(all_blacklisted):
                         f.write(f"{proxy}\n")
                 logger.info(f"✅ 黑名单已保存 ({len(all_blacklisted)}个)")

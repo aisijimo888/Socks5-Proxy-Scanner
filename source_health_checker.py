@@ -9,6 +9,7 @@ import logging
 from typing import List, Dict
 from datetime import datetime
 import re
+from timezone_utils import now_utc, get_display_time
 
 
 class SourceHealthChecker:
@@ -39,7 +40,7 @@ class SourceHealthChecker:
             'proxies_found': 0,
             'valid_proxies': 0,
             'error': None,
-            'check_time': datetime.now().isoformat()
+            'check_time': now_utc().isoformat()
         }
         
         try:
@@ -107,7 +108,7 @@ class SourceHealthChecker:
                     'url': sources[i],
                     'is_available': False,
                     'error': str(result),
-                    'check_time': datetime.now().isoformat()
+                    'check_time': now_utc().isoformat()
                 })
         
         return valid_results
@@ -155,7 +156,7 @@ class SourceHealthChecker:
             "=" * 70,
             "代理源健康检查报告",
             "=" * 70,
-            f"检查时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+            f"检查时间: {get_display_time()} (北京时间)",
             f"总源数量: {total}",
             f"可用源数: {available} ({available/total*100:.1f}%)",
             f"总代理数: {total_proxies}",

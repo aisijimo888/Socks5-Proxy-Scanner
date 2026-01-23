@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from typing import List, Dict, Optional, Tuple, Set
 import logging
 from contextlib import contextmanager
+from timezone_utils import now_utc, format_china_time
 
 
 class ProxyDatabase:
@@ -168,7 +169,7 @@ class ProxyDatabase:
         with self._get_connection() as conn:
             cursor = conn.cursor()
             
-            cutoff_date = datetime.now() - timedelta(days=days)
+            cutoff_date = now_utc() - timedelta(days=days)
             
             # 找出连续失败的代理
             cursor.execute("""
@@ -409,7 +410,7 @@ class ProxyDatabase:
         with self._get_connection() as conn:
             cursor = conn.cursor()
             
-            cutoff_time = datetime.now() - timedelta(hours=hours)
+            cutoff_time = now_utc() - timedelta(hours=hours)
             
             cursor.execute("""
                 SELECT proxy_address 
@@ -425,7 +426,7 @@ class ProxyDatabase:
         with self._get_connection() as conn:
             cursor = conn.cursor()
             
-            cutoff_date = datetime.now() - timedelta(days=days)
+            cutoff_date = now_utc() - timedelta(days=days)
             
             # 删除旧的验证历史
             cursor.execute("""

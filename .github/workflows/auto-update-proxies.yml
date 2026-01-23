@@ -2,8 +2,8 @@ name: 自动更新代理池
 
 on:
   schedule:
-    # 每天运行两次 (00:00 UTC, 12:00 UTC)
-    - cron: '0 0,12 * * *'
+    # 每 6 小时运行一次 (00:00, 06:00, 12:00, 18:00 UTC)
+    - cron: '0 */6 * * *'
   workflow_dispatch:  # 允许手动触发
 
 permissions:
@@ -40,13 +40,13 @@ jobs:
         env:
           DATABASE_PATH: proxies.db
           SCAN_TIMEOUT: 8
-          MAX_CONCURRENCY: 100  # 提升到100（适应Actions环境）
+          MAX_CONCURRENCY: 150  # 提升到150（提高验证速度）
         run: |
           # 创建subscribe目录（确保存在且有写入权限）
           mkdir -p subscribe
           chmod 755 subscribe
           # 运行主程序，启用黑名单功能（一次失败即拉黑，7天清理）
-          python proxy_scanner_enhanced.py --timeout 8 --max-concurrency 100 --output subscribe/proxies.json --enable-blacklist --auto-blacklist --blacklist-threshold 1 --cleanup-days 7
+          python proxy_scanner_enhanced.py --timeout 8 --max-concurrency 150 --output subscribe/proxies.json --enable-blacklist --auto-blacklist --blacklist-threshold 1 --cleanup-days 7
       
       - name: 生成订阅文件
         run: |
@@ -55,8 +55,23 @@ jobs:
           ls -la subscribe/
           python subscription_generator.py
           echo "✅ 订阅文件生成完成"
+          
+          # 复制 socks5-all.txt 到根目录作为主订阅文件
+          if [ -f subscribe/socks5-all.txt ]; then
+            cp subscribe/socks5-all.txt socks5.txt
+            echo "✅ 已生成主订阅 socks5.txt ($(wc -l < socks5.txt) 代理)"
+          elif [ -f subscribe/proxies.txt ]; then
+            # 后备方案：如果 socks5-all.txt 不存在，使用 proxies.txt
+            cp subscribe/proxies.txt socks5.txt
+            echo "⚠️ 使用 proxies.txt 作为主订阅 ($(wc -l < socks5.txt) 代理)"
+          fi
+          
           # 显示生成的文件
-          ls -la subscribe/
+          echo ""
+          echo "📋 生成的订阅文件列表:"
+          ls -lh subscribe/*.txt 2>/dev/null || true
+          ls -lh subscribe/by-country/*.txt 2>/dev/null | head -5 || true
+          [ -f socks5.txt ] && echo "✓ 根目录 socks5.txt: $(wc -l < socks5.txt) 行" || echo "✗ socks5.txt 未生成"
       
       - name: 生成统计摘要
         run: |
@@ -91,7 +106,7 @@ jobs:
               summary = f'''
               # 📊 代理池更新摘要
               
-              **更新时间:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}
+              **更新时间:** {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')}
               
               ## 📈 统计信息
               
@@ -142,9 +157,9 @@ jobs:
           echo "📂 subscribe目录文件列表:"
           ls -lh subscribe/
           
-          # 直接添加整个subscribe目录和数据库文件
+          # 直接添加整个subscribe目录、数据库文件和 socks5.txt
           git add -A subscribe/
-          git add -f proxies.db
+          git add -f proxies.db socks5.txt 2>/dev/null || true
           
           # 显示将要提交的文件
           echo ""
@@ -173,6 +188,29 @@ jobs:
             subscribe/
             proxies.db
           retention-days: 5
+      
+      # 部署到 GitHub Pages (提供更快的 CDN 访问)
+      - name: 部署订阅到 GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: success()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./subscribe
+          destination_dir: subscribe
+          keep_files: false
+          commit_message: "📦 Update SOCKS5 subscription files"
+      
+      # 同时部署根目录的 socks5.txt
+      - name: 部署主订阅文件
+        uses: peaceiris/actions-gh-pages@v3
+        if: success()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          keep_files: true
+          commit_message: "🔄 Update socks5.txt"
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
 
       - name: 发送Telegram成功通知
         if: success()

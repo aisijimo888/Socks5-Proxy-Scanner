@@ -88,22 +88,32 @@ This project is for educational, research, and legitimate network testing purpos
 - 🌙 现代化深色主题
 - 🔄 自动刷新 (30秒)
 
-#### 6. 🔗 订阅链接系统
+#### 6. 🔗 订阅链接系统（全新升级）⭐
 - 📱 **多格式支持**
   - Clash YAML - 完整配置
   - V2Ray JSON - 标准格式
   - ShadowRocket - Base64编码
   - 通用 Base64 - 兼容多客户端
   - 纯文本 - 直接使用
+- 🎯 **SOCKS5 专用订阅**（新增）
+  - **标准版** (`socks5-all.txt`) - 所有有效代理
+  - **高质量版** (`socks5-premium.txt`) - 评分 >= 70
+  - **快速版** (`socks5-fast.txt`) - 响应 < 2s
+- 🌍 **按国家分类订阅**（新增）
+  - 自动生成美国、日本、德国等国家的专属订阅
+  - 目录：`subscribe/by-country/socks5-*.txt`
 - 🔄 **自动更新**: GitHub Actions 每6小时更新
-- 🌐 **直接访问**: 通过 GitHub Raw URL 获取
+- 🌐 **双重访问方式**: 
+  - GitHub Raw URL（稳定）
+  - GitHub Pages（CDN 加速）
 
-#### 7. GitHub Actions自动化
-- ⏰ 每12小时自动更新代理池 (00:00 & 12:00 UTC)
+#### 7. GitHub Actions自动化（性能优化）
+- ⏰ 自动更新频率提升至每6小时 (00:00, 06:00, 12:00, 18:00 UTC)
+- ⚡ 并发扫描提升至 150（性能提升50%）
 - 📦 自动提交最新数据和订阅文件
 - 📊 Actions Summary 显示详细统计
 - 📧 成功/失败时Telegram通知
-- 🔗 自动生成订阅链接
+- 🚀 自动部署到 GitHub Pages（CDN 加速）
 
 ## 📦 安装依赖
 
@@ -165,28 +175,62 @@ python telegram_bot.py
 ```
 
 
-### 5. 使用订阅链接 ⭐
-```bash
-# 方法1: 通过 GitHub Raw URL (无需运行服务)
-# 复制订阅链接，导入到你的代理客户端
+### 5. 使用订阅链接 ⭐（推荐）
 
+**主订阅链接**（根目录，最简单）:
+```
+https://raw.githubusercontent.com/你的用户名/仓库名/main/socks5.txt
+```
+
+**SOCKS5 专用订阅**:
+```
+# 标准版 - 所有有效代理（评分 >= 10）
+https://raw.githubusercontent.com/你的用户名/仓库名/main/subscribe/socks5-all.txt
+
+# 高质量版 - 优质代理（评分 >= 70）⭐ 推荐
+https://raw.githubusercontent.com/你的用户名/仓库名/main/subscribe/socks5-premium.txt
+
+# 快速版 - 快速响应（< 2s）
+https://raw.githubusercontent.com/你的用户名/仓库名/main/subscribe/socks5-fast.txt
+```
+
+**按国家分类**:
+```
+# 美国代理
+https://raw.githubusercontent.com/你的用户名/仓库名/main/subscribe/by-country/socks5-US.txt
+
+# 日本代理
+https://raw.githubusercontent.com/你的用户名/仓库名/main/subscribe/by-country/socks5-JP.txt
+```
+
+**传统格式订阅**:
+```
 # Clash 订阅
 https://raw.githubusercontent.com/你的用户名/仓库名/main/subscribe/clash.yaml
 
 # V2Ray 订阅
 https://raw.githubusercontent.com/你的用户名/仓库名/main/subscribe/v2ray.json
+```
 
-# ShadowRocket 订阅
-https://raw.githubusercontent.com/你的用户名/仓库名/main/subscribe/shadowrocket.txt
+**使用方法**:
+```bash
+# 下载代理列表
+curl https://raw.githubusercontent.com/你的用户名/仓库名/main/socks5.txt
 
-# 方法2: 通过API服务器 (需要先运行 proxy_api.py)
-# 启动 API 服务器
-python proxy_api.py
+# 测试第一个代理
+proxy=$(curl -s URL | grep -v '^#' | head -1)
+curl --socks5 $proxy https://ipinfo.io
+```
 
-# 然后访问订阅端点
-http://localhost:8080/api/subscribe/clash
-http://localhost:8080/api/subscribe/v2ray
-http://localhost:8080/api/subscribe/base64
+**可选：GitHub Pages 访问（CDN 加速）**
+
+推送后启用 Pages (Settings → Pages → gh-pages 分支)：
+```
+# 标准版（CDN 加速）
+https://你的用户名.github.io/仓库名/subscribe/socks5-all.txt
+
+# 高质量版（CDN 加速）
+https://你的用户名.github.io/仓库名/subscribe/socks5-premium.txt
 ```
 
 ### 6. 生成订阅文件
@@ -195,6 +239,13 @@ http://localhost:8080/api/subscribe/base64
 python subscription_generator.py
 
 # 生成的文件保存在 subscribe/ 目录:
+# SOCKS5 专用:
+# - socks5-all.txt (标准版)
+# - socks5-premium.txt (高质量版)
+# - socks5-fast.txt (快速版)
+# - by-country/socks5-*.txt (按国家分类)
+#
+# 传统格式:
 # - clash.yaml (Clash)
 # - v2ray.json (V2Ray)
 # - shadowrocket.txt (ShadowRocket)
@@ -226,11 +277,16 @@ python subscription_generator.py
 
 ## 📚 文档
 
-
+**核心文档:**
 - [配置指南](docs/CONFIGURATION_GUIDE.md) - 超时、黑名单、国家白名单配置
 - [部署指南](docs/DEPLOYMENT_GUIDE.md) - Web Dashboard、局域网、Cloudflare部署
 - [高级用法](docs/ADVANCED_USAGE.md) - 数据库查询、性能优化、API集成
 - [项目结构](docs/PROJECT_STRUCTURE.md) - 文件说明、开发指南
+
+**优化文档:**（新增）
+- [优化总结](OPTIMIZATION_SUMMARY.md) - 所有优化改进的完整记录
+- [项目审计](PROJECT_AUDIT.md) - 文件输出流程和问题修复
+- [订阅说明](subscribe/README.md) - GitHub Pages 订阅链接使用指南
 
 ---
 
@@ -477,11 +533,15 @@ MIT License
 **项目亮点:**
 - ✅ 25+ 高质量代理源
 - ✅ SQLite持久化存储
-- ✅ 多维度智能评分
+- ✅ 多维度智能评分（100分制）
 - ✅ Web可视化监控
 - ✅ Telegram Bot集成
-- ✅ 🆕 多格式订阅系统 (Clash/V2Ray/ShadowRocket)
-- ✅ GitHub Actions自动化 + 统计输出
+- ✅ 🆕 多层级 SOCKS5 订阅系统（标准/高质量/快速）
+- ✅ 🆕 按国家分类订阅
+- ✅ 🆕 GitHub Pages 自动部署（CDN 加速）
+- ✅ 🆕 性能优化（6h更新频率 + 150并发）
+- ✅ 🆕 时区准确处理（UTC存储 + 北京时间显示）
+- ✅ GitHub Actions全自动化 + 统计输出
 - ✅ 模块化架构设计
 
 
