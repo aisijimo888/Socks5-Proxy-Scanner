@@ -1,12 +1,12 @@
-name: 自动更新代理池
+name: Auto Update Proxy Pool
 
 on:
   schedule:
-    # 每 6 小时运行一次 (00:00, 06:00, 12:00, 18:00 UTC)
+    # Run every 6 hours (00:00, 06:00, 12:00, 18:00 UTC)
     - cron: '0 */6 * * *'
-  workflow_dispatch:  # 允许手动触发
+  workflow_dispatch:  # Allow manual trigger
 
-# 权限配置（公开仓库必需）
+# Required permissions for public repositories
 permissions:
   contents: write
   actions: read
@@ -16,246 +16,88 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: 检出代码
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
       
-      - name: 设置Python环境
-        uses: actions/setup-python@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
           cache: 'pip'
       
-      - name: 缓存pip依赖
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-      
-      - name: 安装依赖
+      - name: Install dependencies
         run: |
+          pip install --upgrade pip
           pip install -r requirements.txt
       
-      - name: 运行代理扫描器
+      - name: Run proxy scanner
         env:
           DATABASE_PATH: proxies.db
-          SCAN_TIMEOUT: 8
-          MAX_CONCURRENCY: 150  # 提升到150（提高验证速度）
+          SCAN_TIMEOUT: 10
+          MAX_CONCURRENCY: 150
         run: |
-          # 创建subscribe目录（确保存在且有写入权限）
           mkdir -p subscribe
           chmod 755 subscribe
-          # 运行主程序，启用黑名单功能（一次失败即拉黑，7天清理）
-          python proxy_scanner_enhanced.py --timeout 8 --max-concurrency 150 --output subscribe/proxies.json --enable-blacklist --auto-blacklist --blacklist-threshold 1 --cleanup-days 7
-      
-      - name: 生成订阅文件
-        run: |
-          echo "📦 生成订阅文件..."
-          # 确保subscribe目录存在
-          ls -la subscribe/
-          python subscription_generator.py
-          echo "✅ 订阅文件生成完成"
           
-          # 复制 socks5-all.txt 到根目录作为主订阅文件
-          if [ -f subscribe/socks5-all.txt ]; then
-            cp subscribe/socks5-all.txt socks5.txt
-            echo "✅ 已生成主订阅 socks5.txt ($(wc -l < socks5.txt) 代理)"
-          elif [ -f subscribe/proxies.txt ]; then
-            # 后备方案：如果 socks5-all.txt 不存在，使用 proxies.txt
-            cp subscribe/proxies.txt socks5.txt
-            echo "⚠️ 使用 proxies.txt 作为主订阅 ($(wc -l < socks5.txt) 代理)"
+          echo "Starting proxy scan..."
+          python proxy_scanner_enhanced.py \
+            --timeout 10 \
+            --max-concurrency 150 \
+            --enable-blacklist \
+            --auto-blacklist \
+            --blacklist-threshold 1 \
+            --cleanup-days 7
+          
+          echo "Scan completed"
+      
+      - name: Generate subscription files
+        run: |
+          echo "Generating subscription files..."
+          
+          # Run subscription generator from optional directory
+          if [ -f optional/subscription/subscription_generator.py ]; then
+            python optional/subscription/subscription_generator.py
           fi
           
-          # 显示生成的文件
-          echo ""
-          echo "📋 生成的订阅文件列表:"
-          ls -lh subscribe/*.txt 2>/dev/null || true
-          ls -lh subscribe/by-country/*.txt 2>/dev/null | head -5 || true
-          [ -f socks5.txt ] && echo "✓ 根目录 socks5.txt: $(wc -l < socks5.txt) 行" || echo "✗ socks5.txt 未生成"
-      
-      - name: 生成统计摘要
-        run: |
-          python -c "
-          import json
-          import os
-          from datetime import datetime
+          # Create main subscription file
+          if [ -f subscribe/socks5-all.txt ]; then
+            cp subscribe/socks5-all.txt socks5.txt
+            echo "Created socks5.txt with $(wc -l < socks5.txt) proxies"
+          fi
           
-          try:
-              # 从 subscribe 目录读取
-              if os.path.exists('subscribe/proxies.json'):
-                  with open('subscribe/proxies.json', 'r', encoding='utf-8') as f:
-                      data = json.load(f)
-                      # 处理新格式：包含metadata的包装结构
-                      if isinstance(data, dict) and 'proxies' in data:
-                          proxies = data['proxies']
-                      elif isinstance(data, list):
-                          proxies = data
-                      else:
-                          proxies = []
-              else:
-                  proxies = []
-              
-              total = len(proxies)
-              # 简单的国家统计
-              countries = {}
-              for p in proxies:
-                  c = p.get('country', 'Unknown')
-                  countries[c] = countries.get(c, 0) + 1
-              
-              # 生成 Markdown 摘要
-              summary = f'''
-              # 📊 代理池更新摘要
-              
-              **更新时间:** {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')}
-              
-              ## 📈 统计信息
-              
-              | 指标 | 数值 |
-              |------|------|
-              | ✅ 总代理数 | {total} |
-              | 🌍 国家数量 | {len(countries)} |
-              
-              ## 🌍 国家分布 (Top 10)
-              
-              '''
-              
-              # 添加国家分布
-              if countries:
-                  sorted_countries = sorted(countries.items(), key=lambda x: x[1], reverse=True)[:10]
-                  summary += '| 国家 | 数量 |\\n|------|------|\\n'
-                  for country, count in sorted_countries:
-                      summary += f'| {country} | {count} |\\n'
-              else:
-                  summary += '*暂无数据*\\n'
-              
-              summary += '''
-              
-              ## 📁 订阅链接
-              
-              点击下方链接获取最新代理订阅：
-              
-              - 🔷 [Clash 订阅](https://raw.githubusercontent.com/${{ github.repository }}/main/subscribe/clash.yaml)
-              - 🔶 [V2Ray 订阅](https://raw.githubusercontent.com/${{ github.repository }}/main/subscribe/v2ray.json)
-              - 📄 [纯文本列表](https://raw.githubusercontent.com/${{ github.repository }}/main/subscribe/proxies.txt)
-              '''
-              
-              # 写入到 GitHub Step Summary
-              with open(os.environ['GITHUB_STEP_SUMMARY'], 'w', encoding='utf-8') as f:
-                  f.write(summary)
-              
-              print('✅ Actions 摘要已生成')
-          except Exception as e:
-              print(f'❌ 生成摘要失败: {e}')
-          "
+          # List generated files
+          echo "Generated subscription files:"
+          ls -lh subscribe/*.txt 2>/dev/null || echo "No txt files in subscribe/"
       
-      - name: 提交更新
+      - name: Commit and push changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           
-          # 显示subscribe目录内容
-          echo "📂 subscribe目录文件列表:"
-          ls -lh subscribe/
+          # Add files
+          git add subscribe/ socks5.txt proxies.db 2>/dev/null || true
           
-          # 直接添加整个subscribe目录、数据库文件和 socks5.txt
-          git add -A subscribe/
-          git add -f proxies.db socks5.txt 2>/dev/null || true
-          
-          # 显示将要提交的文件
-          echo ""
-          echo "📋 将要提交的文件:"
-          git diff --staged --name-only
-          
-          # 检查是否有文件被staged
+          # Check if there are changes
           if git diff --staged --quiet; then
-            echo "⚠️ 没有文件被staged，跳过提交"
-            exit 0
-          fi
-          
-          # 提交
-          git commit -m "🔄 自动更新代理池 $(date +'%Y-%m-%d %H:%M:%S')"
-          
-          # 拉取并推送
-          git pull --rebase origin main || true
-          git push
-          echo "✅ 文件已成功推送到GitHub"
-
-      - name: 上传构建产物
-        uses: actions/upload-artifact@v4
-        with:
-          name: proxy-results
-          path: |
-            subscribe/
-            proxies.db
-          retention-days: 5
-      
-      # 部署到 GitHub Pages (提供更快的 CDN 访问)
-      - name: 部署订阅到 GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        if: success()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./subscribe
-          destination_dir: subscribe
-          keep_files: false
-          commit_message: "📦 Update SOCKS5 subscription files"
-      
-      # 同时部署根目录的 socks5.txt
-      - name: 部署主订阅文件
-        uses: peaceiris/actions-gh-pages@v3
-        if: success()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./
-          keep_files: true
-          commit_message: "🔄 Update socks5.txt"
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
-
-      - name: 发送Telegram成功通知
-        if: success()
-        run: |
-          if [ -n "${{ secrets.TELEGRAM_BOT_TOKEN }}" ] && [ -n "${{ secrets.TELEGRAM_CHAT_ID }}" ]; then
-            # 读取代理统计
-            TOTAL_PROXIES=$(grep -o '"total_proxies": [0-9]*' subscribe/proxies.json | grep -o '[0-9]*' | head -1 || echo "0")
-            
-            MESSAGE="✅ *代理池更新成功*
-
-📊 统计信息:
-- 总代理数: ${TOTAL_PROXIES}
-- 更新时间: $(date +'%Y-%m-%d %H:%M:%S')
-
-📁 生成的文件:
-$(ls -lh subscribe/ | tail -n +2 | awk '{print "- " $9 " (" $5 ")"}'  || echo "- 文件列表获取失败")
-
-🔗 仓库: https://github.com/${{ github.repository }}"
-
-            curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-              -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
-              -d "text=${MESSAGE}" \
-              -d "parse_mode=Markdown" \
-              -d "disable_web_page_preview=true"
-            
-            echo "✅ Telegram通知已发送"
+            echo "No changes to commit"
           else
-            echo "⚠️ 跳过Telegram通知: 未配置TELEGRAM_BOT_TOKEN或TELEGRAM_CHAT_ID"
+            git commit -m "Auto update: $(date +'%Y-%m-%d %H:%M:%S UTC')"
+            git push
+            echo "Changes pushed successfully"
           fi
-
-      - name: 发送Telegram失败通知
-        if: failure()
+      
+      - name: Generate summary
+        if: always()
         run: |
-          if [ -n "${{ secrets.TELEGRAM_BOT_TOKEN }}" ] && [ -n "${{ secrets.TELEGRAM_CHAT_ID }}" ]; then
-            MESSAGE="❌ *代理池更新失败*
-
-⏰ 时间: $(date +'%Y-%m-%d %H:%M:%S')
-🔗 查看日志: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-
-            curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-              -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
-              -d "text=${MESSAGE}" \
-              -d "parse_mode=Markdown"
-            
-            echo "✅ Telegram失败通知已发送"
+          echo "# Proxy Pool Update Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f subscribe/socks5-all.txt ]; then
+            PROXY_COUNT=$(wc -l < subscribe/socks5-all.txt)
+            echo "## Success" >> $GITHUB_STEP_SUMMARY
+            echo "- Total proxies: ${PROXY_COUNT}" >> $GITHUB_STEP_SUMMARY
+            echo "- Updated: $(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## Status" >> $GITHUB_STEP_SUMMARY
+            echo "Check logs for details" >> $GITHUB_STEP_SUMMARY
           fi
-
