@@ -60,9 +60,9 @@ jobs:
         run: |
           echo "Generating subscription files..."
           
-          # Run subscription generator from optional directory
+          # Run subscription generator from optional directory with PYTHONPATH
           if [ -f optional/subscription/subscription_generator.py ]; then
-            python optional/subscription/subscription_generator.py
+            PYTHONPATH="${GITHUB_WORKSPACE}" python optional/subscription/subscription_generator.py
           fi
           
           # Create main subscription file
