@@ -16,12 +16,14 @@ output/*.csv
 # subscribe/ 目录的文件需要提交，所以不要在这里忽略
 # (不写任何规则 = 默认允许提交)
 
-# 忽略根目录的这些文件
+# Ignore root directory json/txt/csv files
 /*.json
 /*.txt
 /*.csv
 !requirements.txt
-!socks5*.txt  # 允许提交 socks5 订阅文件
+!socks5*.txt  # Allow SOCKS5 subscription files
+!cloudflare.json  # Allow Cloudflare Pages config
+
 
 # 环境变量配置
 .env
