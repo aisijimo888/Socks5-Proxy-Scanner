@@ -50,7 +50,8 @@ jobs:
             --enable-blacklist \
             --auto-blacklist \
             --blacklist-threshold 1 \
-            --cleanup-days 7
+            --cleanup-days 7 \
+            --check-sources
           
           echo "Scan completed"
           ls -lh proxies.json 2>/dev/null || echo "proxies.json not found"
