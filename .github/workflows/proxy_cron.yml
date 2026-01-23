@@ -23,6 +23,11 @@ on:
 # - TELEGRAM_BOT_TOKEN: Telegram Bot Token
 # - TELEGRAM_CHAT_ID: Telegram Chat ID
 
+# 权限配置（公开仓库必需）
+permissions:
+  contents: write
+  actions: read
+
 jobs:
   update-proxies:
     runs-on: ubuntu-latest
