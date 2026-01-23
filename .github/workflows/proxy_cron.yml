@@ -1,29 +1,12 @@
-name: 代理池自动更新并同步�?Cloudflare KV
+name: Proxy Pool Auto Update and Sync to Cloudflare KV
 
 on:
   schedule:
-    # �?6 小时运行一�?(00:00, 06:00, 12:00, 18:00 UTC)
+    # Run every 6 hours (00:00, 06:00, 12:00, 18:00 UTC)
     - cron: '0 */6 * * *'
-  workflow_dispatch:  # 允许手动触发
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
+  workflow_dispatch:  # Allow manual trigger
 
-# GitHub Secrets 配置说明�?
-# 需要在仓库 Settings -> Secrets and variables -> Actions 中配置以下变量：
-#
-# 必需变量�?
-# - CLOUDFLARE_API_TOKEN: Cloudflare API Token (需�?Workers KV:Edit 权限)
-# - CLOUDFLARE_ACCOUNT_ID: Cloudflare 账户 ID
-#
-# 可选变量（如果需�?Telegram 通知）：
-# - TELEGRAM_BOT_TOKEN: Telegram Bot Token
-# - TELEGRAM_CHAT_ID: Telegram Chat ID
-
-# 权限配置（公开仓库必需）
+# Required permissions for public repositories
 permissions:
   contents: write
   actions: read
@@ -33,31 +16,31 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      # 1. 检出代�?
-      - name: 检出代�?
+      # 1. Checkout code
+      - name: Checkout code
         uses: actions/checkout@v4
       
-      # 2. 设置 Python 环境
-      - name: 设置 Python 环境
+      # 2. Setup Python environment
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: 'pip'
       
-      # 3. 安装依赖
-      - name: 安装依赖
+      # 3. Install dependencies
+      - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
       
-      # 4. 运行代理扫描�?
-      - name: 运行代理扫描�?
+      # 4. Run proxy scanner
+      - name: Run proxy scanner
         env:
           DATABASE_PATH: proxies.db
           SCAN_TIMEOUT: 10
           MAX_CONCURRENCY: 150
         run: |
-          echo "🔍 开始扫描代�?.."
+          echo "Starting proxy scan..."
           python proxy_scanner_enhanced.py \
             --timeout 10 \
             --max-concurrency 150 \
@@ -66,35 +49,31 @@ jobs:
             --blacklist-threshold 1 \
             --cleanup-days 7
           
-          echo "📊 检查生成的文件..."
-          ls -lh proxies.json || echo "⚠️ proxies.json 未生�?
+          echo "Checking generated files..."
+          ls -lh proxies.json || echo "Warning: proxies.json not generated"
           
-          # 显示代理数量
+          # Show proxy count
           if [ -f proxies.json ]; then
             PROXY_COUNT=$(python -c "import json; data=json.load(open('proxies.json')); print(data['metadata']['total'])")
-            echo "�?成功获取 ${PROXY_COUNT} 个有效代�?
+            echo "Successfully obtained ${PROXY_COUNT} valid proxies"
           fi
       
-      # 5. 上传�?Cloudflare KV
-      - name: 上传�?Cloudflare KV
+      # 5. Upload to Cloudflare KV
+      - name: Upload to Cloudflare KV
         if: success()
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          echo "📤 上传 proxies.json �?Cloudflare KV..."
+          echo "Uploading proxies.json to Cloudflare KV..."
           
-          # 检查文件是否存�?
+          # Check if file exists
           if [ ! -f proxies.json ]; then
-            echo "�?proxies.json 不存在，跳过上传"
+            echo "Error: proxies.json does not exist, skipping upload"
             exit 1
           fi
           
-          # 读取 JSON 内容
-          PROXY_DATA=$(cat proxies.json)
-          
-          # 使用 Cloudflare API 上传�?KV
-          # 假设您的 KV namespace ID �?PROXY_POOL_ID (需要在仓库 Secrets 中配�?
+          # Upload to KV
           KV_NAMESPACE_ID="${{ secrets.KV_NAMESPACE_ID }}"
           
           curl -X PUT "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/storage/kv/namespaces/${KV_NAMESPACE_ID}/values/current_proxies" \
@@ -102,10 +81,10 @@ jobs:
             -H "Content-Type: application/json" \
             --data-binary @proxies.json
           
-          echo "�?已上传到 Cloudflare KV (键名: current_proxies)"
+          echo "Uploaded to Cloudflare KV (key: current_proxies)"
       
-      # 6. 备份�?GitHub Artifacts
-      - name: 备份�?Artifacts
+      # 6. Backup to GitHub Artifacts
+      - name: Backup to Artifacts
         uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -117,75 +96,28 @@ jobs:
           retention-days: 7
           if-no-files-found: warn
       
-      # 7. 发送成功通知 (可�?
-      - name: 发�?Telegram 成功通知
-        if: success() && vars.TELEGRAM_BOT_TOKEN != ''
-        run: |
-          if [ -n "${{ secrets.TELEGRAM_BOT_TOKEN }}" ] && [ -n "${{ secrets.TELEGRAM_CHAT_ID }}" ]; then
-            PROXY_COUNT=$(python -c "import json; data=json.load(open('proxies.json')); print(data['metadata']['total'])" 2>/dev/null || echo "0")
-            UPDATE_TIME=$(python -c "import json; data=json.load(open('proxies.json')); print(data['metadata']['updated_at'])" 2>/dev/null || echo "Unknown")
-            
-            MESSAGE="�?*代理池更新成�?
-
-📊 统计信息:
-- 总代理数: ${PROXY_COUNT}
-- 更新时间: ${UPDATE_TIME}
-- 运行编号: #${{ github.run_number }}
-
-📦 已同步到 Cloudflare KV
-🔗 仓库: https://github.com/${{ github.repository }}"
-
-            curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-              -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
-              -d "text=${MESSAGE}" \
-              -d "parse_mode=Markdown" \
-              -d "disable_web_page_preview=true"
-            
-            echo "�?Telegram 通知已发�?
-          else
-            echo "ℹ️ 跳过 Telegram 通知 (未配�?"
-          fi
-      
-      # 8. 发送失败通知 (可�?
-      - name: 发�?Telegram 失败通知
-        if: failure() && vars.TELEGRAM_BOT_TOKEN != ''
-        run: |
-          if [ -n "${{ secrets.TELEGRAM_BOT_TOKEN }}" ] && [ -n "${{ secrets.TELEGRAM_CHAT_ID }}" ]; then
-            MESSAGE="�?*代理池更新失�?
-
-�?时间: $(date +'%Y-%m-%d %H:%M:%S UTC')
-🔗 查看日志: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-
-            curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-              -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
-              -d "text=${MESSAGE}" \
-              -d "parse_mode=Markdown"
-            
-            echo "�?Telegram 失败通知已发�?
-          fi
-      
-      # 9. 生成工作流摘�?
-      - name: 生成工作流摘�?
+      # 7. Generate workflow summary
+      - name: Generate summary
         if: always()
         run: |
-          echo "# 📊 代理池更新摘�? >> $GITHUB_STEP_SUMMARY
+          echo "# Proxy Pool Update Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           
           if [ -f proxies.json ]; then
             PROXY_COUNT=$(python -c "import json; data=json.load(open('proxies.json')); print(data['metadata']['total'])" 2>/dev/null || echo "0")
             UPDATE_TIME=$(python -c "import json; data=json.load(open('proxies.json')); print(data['metadata']['updated_at'])" 2>/dev/null || echo "Unknown")
             
-            echo "## �?执行成功" >> $GITHUB_STEP_SUMMARY
+            echo "## Success" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "| 指标 | 数�?|" >> $GITHUB_STEP_SUMMARY
-            echo "|------|------|" >> $GITHUB_STEP_SUMMARY
-            echo "| 总代理数 | ${PROXY_COUNT} |" >> $GITHUB_STEP_SUMMARY
-            echo "| 更新时间 | ${UPDATE_TIME} |" >> $GITHUB_STEP_SUMMARY
-            echo "| 运行编号 | #${{ github.run_number }} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+            echo "| Total Proxies | ${PROXY_COUNT} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Updated At | ${UPDATE_TIME} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Run Number | #${{ github.run_number }} |" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "�?已同步到 Cloudflare KV (键名: current_proxies)" >> $GITHUB_STEP_SUMMARY
+            echo "Synced to Cloudflare KV (key: current_proxies)" >> $GITHUB_STEP_SUMMARY
           else
-            echo "## �?执行失败" >> $GITHUB_STEP_SUMMARY
+            echo "## Failed" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "proxies.json 文件未生成，请查看日志�? >> $GITHUB_STEP_SUMMARY
+            echo "proxies.json was not generated. Please check the logs." >> $GITHUB_STEP_SUMMARY
           fi
