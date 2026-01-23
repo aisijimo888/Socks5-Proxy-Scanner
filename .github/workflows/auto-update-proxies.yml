@@ -6,7 +6,10 @@ on:
     - cron: '0 */6 * * *'
   workflow_dispatch:  # 允许手动触发
 
-
+# 权限配置（公开仓库必需）
+permissions:
+  contents: write
+  actions: read
 
 jobs:
   update-proxies:
