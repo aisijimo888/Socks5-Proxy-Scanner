@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "total": 2,
+    "updated_at": "2026-01-23 21:20:00 (北京时间)",
+    "update_time_utc": "2026-01-23T13:20:00Z",
+    "description": "SOCKS5 代理列表"
+  },
+  "proxies": [
+    {
+      "ip": "1.2.3.4",
+      "port": 1080,
+      "protocol": "socks5",
+      "anonymity": "high",
+      "latency": 1.23,
+      "country": "United States",
+      "country_code": "US",
+      "score": 85.5,
+      "last_check": "2026-01-23 13:15:00"
+    },
+    {
+      "ip": "5.6.7.8",
+      "port": 8080,
+      "protocol": "socks5",
+      "anonymity": "medium",
+      "latency": 2.45,
+      "country": "Japan",
+      "country_code": "JP",
+      "score": 65.0,
+      "last_check": "2026-01-23 13:15:00"
+    }
+  ]
+}

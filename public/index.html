@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOCKS5 代理池 - 实时监控面板</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        /* 统计卡片 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card h3 {
+            color: #667eea;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .value {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .stat-card .label {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* 控制按钮 */
+        .controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 0 5px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+
+        /* 代理表格 */
+        .proxy-table {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h2 {
+            font-size: 1.3em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f8f9fa;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .proxy-address {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        /* 徽章 */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .badge-high {
+            background: #10b981;
+            color: white;
+        }
+
+        .badge-medium {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .badge-low {
+            background: #ef4444;
+            color: white;
+        }
+
+        .score-high {
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .score-medium {
+            color: #f59e0b;
+            font-weight: bold;
+        }
+
+        .score-low {
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        /* 加载和错误状态 */
+        .loading,
+        .error,
+        .empty {
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 1.1em;
+        }
+
+        .loading {
+            color: #667eea;
+        }
+
+        .error {
+            background: #fee;
+            color: #c33;
+            border-radius: 8px;
+            margin: 20px;
+        }
+
+        .empty {
+            color: #999;
+        }
+
+        /* 加载动画 */
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            th,
+            td {
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <h1>🚀 SOCKS5 代理池</h1>
+            <p>实时监控 · 自动更新 · Cloudflare Pages</p>
+        </div>
+
+        <!-- 统计信息 -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>总代理数</h3>
+                <div class="value" id="totalProxies">-</div>
+                <div class="label">Total Proxies</div>
+            </div>
+            <div class="stat-card">
+                <h3>高质量代理</h3>
+                <div class="value" id="highQuality">-</div>
+                <div class="label">Score ≥ 70</div>
+            </div>
+            <div class="stat-card">
+                <h3>中等质量</h3>
+                <div class="value" id="mediumQuality">-</div>
+                <div class="label">Score 40-70</div>
+            </div>
+            <div class="stat-card">
+                <h3>最后更新</h3>
+                <div class="value" style="font-size: 1.3em;" id="lastUpdate">-</div>
+                <div class="label" id="updateTimeUTC">-</div>
+            </div>
+        </div>
+
+        <!-- 控制按钮 -->
+        <div class="controls">
+            <button class="btn btn-primary" onclick="loadProxies()">🔄 刷新数据</button>
+            <button class="btn" onclick="getRandomProxy()">🎲 随机代理</button>
+            <button class="btn" onclick="exportJSON()">💾 导出 JSON</button>
+            <button class="btn" onclick="copyAllProxies()">📋 复制全部</button>
+        </div>
+
+        <!-- 代理表格 -->
+        <div class="proxy-table">
+            <div class="table-header">
+                <h2>📊 代理列表</h2>
+                <span id="proxyCount">加载中...</span>
+            </div>
+            <div id="tableContainer">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>正在加载代理数据...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let proxyData = null;
+        let allProxies = [];
+
+        // 页面加载时自动获取数据
+        document.addEventListener('DOMContentLoaded', function () {
+            loadProxies();
+            // 每 5 分钟自动刷新
+            setInterval(loadProxies, 5 * 60 * 1000);
+        });
+
+        // 加载代理列表
+        async function loadProxies() {
+            const container = document.getElementById('tableContainer');
+            container.innerHTML = '<div class="loading"><div class="spinner"></div><p>正在加载代理数据...</p></div>';
+
+            try {
+                const response = await fetch('/api/proxies');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                proxyData = await response.json();
+                allProxies = proxyData.proxies || [];
+
+                // 更新统计信息
+                updateStats();
+
+                // 渲染表格
+                renderTable();
+
+            } catch (error) {
+                console.error('加载失败:', error);
+                container.innerHTML = `<div class="error">❌ 加载失败: ${error.message}<br><br>请检查网络连接或稍后重试</div>`;
+            }
+        }
+
+        // 更新统计信息
+        function updateStats() {
+            const metadata = proxyData.metadata || {};
+            const proxies = allProxies;
+
+            document.getElementById('totalProxies').textContent = metadata.total || proxies.length;
+            document.getElementById('highQuality').textContent = proxies.filter(p => p.score >= 70).length;
+            document.getElementById('mediumQuality').textContent = proxies.filter(p => p.score >= 40 && p.score < 70).length;
+            document.getElementById('lastUpdate').textContent = formatUpdateTime(metadata.updated_at);
+            document.getElementById('updateTimeUTC').textContent = metadata.update_time_utc ?
+                'UTC: ' + new Date(metadata.update_time_utc).toLocaleString() : '-';
+        }
+
+        // 格式化更新时间
+        function formatUpdateTime(timeStr) {
+            if (!timeStr) return '未知';
+            const match = timeStr.match(/(\d{2}:\d{2})/);
+            return match ? match[1] : timeStr;
+        }
+
+        // 渲染表格
+        function renderTable() {
+            const container = document.getElementById('tableContainer');
+
+            if (allProxies.length === 0) {
+                container.innerHTML = '<div class="empty">暂无可用代理</div>';
+                document.getElementById('proxyCount').textContent = '0 个代理';
+                return;
+            }
+
+            document.getElementById('proxyCount').textContent = `${allProxies.length} 个代理`;
+
+            const tableHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>代理地址</th>
+                            <th>匿名度</th>
+                            <th>国家</th>
+                            <th>评分</th>
+                            <th>延迟</th>
+                            <th>最后检查</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${allProxies.map((proxy, index) => `
+                            <tr>
+                                <td class="proxy-address">${proxy.ip}:${proxy.port}</td>
+                                <td><span class="badge badge-${proxy.anonymity}">${proxy.anonymity.toUpperCase()}</span></td>
+                                <td>
+                                    <span title="${proxy.country}">${proxy.country_code}</span>
+                                    ${proxy.country}
+                                </td>
+                                <td class="score-${getScoreClass(proxy.score)}">${proxy.score.toFixed(1)}</td>
+                                <td>${proxy.latency !== null ? proxy.latency.toFixed(2) + 's' : '-'}</td>
+                                <td>${formatLastCheck(proxy.last_check)}</td>
+                                <td>
+                                    <button class="btn" style="padding: 6px 12px; font-size: 0.85em;" 
+                                        onclick="copyProxy('${proxy.ip}:${proxy.port}')">
+                                        复制
+                                    </button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            container.innerHTML = tableHTML;
+        }
+
+        // 获取评分等级
+        function getScoreClass(score) {
+            if (score >= 70) return 'high';
+            if (score >= 40) return 'medium';
+            return 'low';
+        }
+
+        // 格式化最后检查时间
+        function formatLastCheck(timeStr) {
+            if (!timeStr) return '-';
+            return timeStr.replace(/\.\d+$/, '').substring(0, 19);
+        }
+
+        // 复制单个代理
+        function copyProxy(address) {
+            navigator.clipboard.writeText(address).then(() => {
+                alert('✅ 已复制: ' + address);
+            }).catch(err => {
+                alert('❌ 复制失败: ' + err);
+            });
+        }
+
+        // 复制所有代理
+        function copyAllProxies() {
+            if (allProxies.length === 0) {
+                alert('⚠️ 没有可复制的代理');
+                return;
+            }
+
+            const text = allProxies.map(p => `${p.ip}:${p.port}`).join('\n');
+            navigator.clipboard.writeText(text).then(() => {
+                alert(`✅ 已复制 ${allProxies.length} 个代理地址`);
+            }).catch(err => {
+                alert('❌ 复制失败: ' + err);
+            });
+        }
+
+        // 获取随机代理
+        async function getRandomProxy() {
+            try {
+                const response = await fetch('/api/random');
+                const data = await response.json();
+
+                if (data.error) {
+                    alert('❌ ' + data.message);
+                } else {
+                    const info = `🎯 随机代理\n\n` +
+                        `地址: ${data.proxy}\n` +
+                        `国家: ${data.country} (${data.country_code})\n` +
+                        `延迟: ${data.latency}s\n` +
+                        `评分: ${data.score}\n` +
+                        `匿名度: ${data.anonymity}\n\n` +
+                        `总可用: ${data.metadata.total_available} 个`;
+
+                    if (confirm(info + '\n\n是否复制此代理？')) {
+                        copyProxy(data.proxy);
+                    }
+                }
+            } catch (error) {
+                alert('❌ 获取失败: ' + error.message);
+            }
+        }
+
+        // 导出 JSON
+        function exportJSON() {
+            if (!proxyData) {
+                alert('⚠️ 请先加载数据');
+                return;
+            }
+
+            const dataStr = JSON.stringify(proxyData, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `proxies-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            alert('✅ JSON 文件已下载');
+        }
+    </script>
+</body>
+
+</html>
