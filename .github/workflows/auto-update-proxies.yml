@@ -16,20 +16,24 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      # 1. Checkout code
       - name: Checkout code
         uses: actions/checkout@v4
       
+      # 2. Setup Python
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: 'pip'
       
+      # 3. Install dependencies
       - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
       
+      # 4. Run proxy scanner
       - name: Run proxy scanner
         env:
           DATABASE_PATH: proxies.db
@@ -49,7 +53,9 @@ jobs:
             --cleanup-days 7
           
           echo "Scan completed"
+          ls -lh proxies.json 2>/dev/null || echo "proxies.json not found"
       
+      # 5. Generate subscription files (for GitHub)
       - name: Generate subscription files
         run: |
           echo "Generating subscription files..."
@@ -69,13 +75,41 @@ jobs:
           echo "Generated subscription files:"
           ls -lh subscribe/*.txt 2>/dev/null || echo "No txt files in subscribe/"
       
+      # 6. Upload to Cloudflare KV (for API)
+      - name: Upload to Cloudflare KV
+        if: success() && env.CLOUDFLARE_API_TOKEN != ''
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          KV_NAMESPACE_ID: ${{ secrets.KV_NAMESPACE_ID }}
+        run: |
+          echo "Uploading to Cloudflare KV..."
+          
+          if [ ! -f proxies.json ]; then
+            echo "Warning: proxies.json not found, skipping KV upload"
+            exit 0
+          fi
+          
+          if [ -z "$KV_NAMESPACE_ID" ]; then
+            echo "Warning: KV_NAMESPACE_ID not set, skipping KV upload"
+            exit 0
+          fi
+          
+          curl -X PUT "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/storage/kv/namespaces/${KV_NAMESPACE_ID}/values/current_proxies" \
+            -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+            -H "Content-Type: application/json" \
+            --data-binary @proxies.json
+          
+          echo "Uploaded to Cloudflare KV (key: current_proxies)"
+      
+      # 7. Commit and push changes (for GitHub subscription)
       - name: Commit and push changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           
           # Add files
-          git add subscribe/ socks5.txt proxies.db 2>/dev/null || true
+          git add subscribe/ socks5.txt proxies.db proxies.json 2>/dev/null || true
           
           # Check if there are changes
           if git diff --staged --quiet; then
@@ -86,17 +120,35 @@ jobs:
             echo "Changes pushed successfully"
           fi
       
+      # 8. Backup to Artifacts
+      - name: Backup to Artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: proxy-results-${{ github.run_number }}
+          path: |
+            proxies.json
+            proxies.db
+            subscribe/
+          retention-days: 7
+          if-no-files-found: warn
+      
+      # 9. Generate summary
       - name: Generate summary
         if: always()
         run: |
           echo "# Proxy Pool Update Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           
-          if [ -f subscribe/socks5-all.txt ]; then
-            PROXY_COUNT=$(wc -l < subscribe/socks5-all.txt)
+          if [ -f proxies.json ]; then
+            PROXY_COUNT=$(python -c "import json; data=json.load(open('proxies.json')); print(data['metadata']['total'])" 2>/dev/null || echo "0")
             echo "## Success" >> $GITHUB_STEP_SUMMARY
             echo "- Total proxies: ${PROXY_COUNT}" >> $GITHUB_STEP_SUMMARY
             echo "- Updated: $(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Outputs" >> $GITHUB_STEP_SUMMARY
+            echo "- GitHub subscription files: subscribe/*.txt" >> $GITHUB_STEP_SUMMARY
+            echo "- Cloudflare KV: current_proxies" >> $GITHUB_STEP_SUMMARY
           else
             echo "## Status" >> $GITHUB_STEP_SUMMARY
             echo "Check logs for details" >> $GITHUB_STEP_SUMMARY
