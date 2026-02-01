@@ -7,1328 +7,1258 @@ external-controller: 127.0.0.1:9090
 proxies:
 - name: United States_001_S60_EF
   type: socks5
-  server: 184.178.172.25
-  port: 15291
+  server: 72.49.49.11
+  port: 31034
   udp: true
 - name: United States_002_S60_EF
-  type: socks5
-  server: 184.181.217.213
-  port: 4145
-  udp: true
-- name: United States_003_S60_EF
-  type: socks5
-  server: 98.191.0.47
-  port: 4145
-  udp: true
-- name: United States_004_S60_EF
-  type: socks5
-  server: 184.170.251.30
-  port: 11288
-  udp: true
-- name: United States_005_S60_EF
-  type: socks5
-  server: 192.252.220.92
-  port: 17328
-  udp: true
-- name: United States_006_S60_EF
-  type: socks5
-  server: 184.178.172.5
-  port: 15303
-  udp: true
-- name: United States_007_S60_EF
-  type: socks5
-  server: 198.8.94.174
-  port: 39078
-  udp: true
-- name: United States_008_S60_EF
-  type: socks5
-  server: 199.58.184.97
-  port: 4145
-  udp: true
-- name: United States_009_S60_EF
-  type: socks5
-  server: 72.37.216.68
-  port: 4145
-  udp: true
-- name: United States_010_S60_EF
-  type: socks5
-  server: 199.102.107.145
-  port: 4145
-  udp: true
-- name: United States_011_S60_EF
-  type: socks5
-  server: 199.102.104.70
-  port: 4145
-  udp: true
-- name: United States_012_S60_EF
-  type: socks5
-  server: 70.166.167.38
-  port: 57728
-  udp: true
-- name: United States_013_S60_EF
-  type: socks5
-  server: 152.53.171.242
-  port: 13435
-  udp: true
-- name: United States_014_S60_EF
-  type: socks5
-  server: 72.37.217.3
-  port: 4145
-  udp: true
-- name: Canada_015_S60_EF
-  type: socks5
-  server: 152.53.171.242
-  port: 28241
-  udp: true
-- name: United States_016_S60_EF
-  type: socks5
-  server: 192.111.138.29
-  port: 4145
-  udp: true
-- name: United States_017_S60_EF
-  type: socks5
-  server: 184.178.172.14
-  port: 4145
-  udp: true
-- name: United States_018_S60_EF
-  type: socks5
-  server: 68.1.210.163
-  port: 4145
-  udp: true
-- name: United States_019_S60_EF
-  type: socks5
-  server: 184.178.172.26
-  port: 4145
-  udp: true
-- name: United States_020_S60_EF
-  type: socks5
-  server: 72.195.101.99
-  port: 4145
-  udp: true
-- name: United States_021_S60_EF
-  type: socks5
-  server: 184.178.172.23
-  port: 4145
-  udp: true
-- name: United States_022_S60_EF
-  type: socks5
-  server: 184.178.172.17
-  port: 4145
-  udp: true
-- name: United States_023_S60_EF
-  type: socks5
-  server: 192.252.215.2
-  port: 4145
-  udp: true
-- name: Germany_024_S60_EF
-  type: socks5
-  server: 43.157.34.94
-  port: 1777
-  udp: true
-- name: United States_025_S60_EF
-  type: socks5
-  server: 184.170.245.148
-  port: 4145
-  udp: true
-- name: United States_026_S60_EF
-  type: socks5
-  server: 67.201.33.10
-  port: 25283
-  udp: true
-- name: United States_027_S60_EF
-  type: socks5
-  server: 98.188.47.150
-  port: 4145
-  udp: true
-- name: United States_028_S60_EF
-  type: socks5
-  server: 174.75.211.222
-  port: 4145
-  udp: true
-- name: United States_029_S60_EF
-  type: socks5
-  server: 184.178.172.3
-  port: 4145
-  udp: true
-- name: United States_030_S60_EF
-  type: socks5
-  server: 67.201.59.70
-  port: 4145
-  udp: true
-- name: United States_031_S60_EF
-  type: socks5
-  server: 184.182.240.211
-  port: 4145
-  udp: true
-- name: United States_032_S60_EF
-  type: socks5
-  server: 142.54.231.38
-  port: 4145
-  udp: true
-- name: United States_033_S60_EF
-  type: socks5
-  server: 107.152.98.5
-  port: 4145
-  udp: true
-- name: United States_034_S60_EF
-  type: socks5
-  server: 72.195.34.35
-  port: 27360
-  udp: true
-- name: United States_035_S60_EF
-  type: socks5
-  server: 184.185.2.12
-  port: 4145
-  udp: true
-- name: Germany_036_S60_EF
-  type: socks5
-  server: 193.233.254.9
-  port: 1080
-  udp: true
-- name: United States_037_S60_EF
-  type: socks5
-  server: 192.252.209.155
-  port: 14455
-  udp: true
-- name: United States_038_S60_EF
-  type: socks5
-  server: 192.111.134.10
-  port: 4145
-  udp: true
-- name: United States_039_S60_EF
-  type: socks5
-  server: 192.111.130.5
-  port: 17002
-  udp: true
-- name: United States_040_S60_EF
-  type: socks5
-  server: 192.252.215.5
-  port: 16137
-  udp: true
-- name: United States_041_S60_EF
-  type: socks5
-  server: 199.102.105.242
-  port: 4145
-  udp: true
-- name: United States_042_S60_EF
-  type: socks5
-  server: 142.54.226.214
-  port: 4145
-  udp: true
-- name: United States_043_S60_EF
-  type: socks5
-  server: 98.170.57.241
-  port: 4145
-  udp: true
-- name: United States_044_S60_EF
-  type: socks5
-  server: 184.181.178.33
-  port: 4145
-  udp: true
-- name: United States_045_S60_EF
-  type: socks5
-  server: 68.71.247.130
-  port: 4145
-  udp: true
-- name: United States_046_S60_EF
-  type: socks5
-  server: 98.178.72.30
-  port: 4145
-  udp: true
-- name: United States_047_S60_EF
-  type: socks5
-  server: 68.71.242.118
-  port: 4145
-  udp: true
-- name: United States_048_S60_EF
-  type: socks5
-  server: 184.181.217.206
-  port: 4145
-  udp: true
-- name: United States_049_S60_EF
-  type: socks5
-  server: 98.181.137.83
-  port: 4145
-  udp: true
-- name: United States_050_S60_EF
-  type: socks5
-  server: 68.71.252.38
-  port: 4145
-  udp: true
-- name: United States_051_S60_EF
-  type: socks5
-  server: 68.71.249.153
-  port: 48606
-  udp: true
-- name: United States_052_S60_EF
-  type: socks5
-  server: 68.71.254.6
-  port: 4145
-  udp: true
-- name: United States_053_S60_EF
-  type: socks5
-  server: 98.190.239.3
-  port: 4145
-  udp: true
-- name: United States_054_S60_EF
-  type: socks5
-  server: 192.111.130.2
-  port: 4145
-  udp: true
-- name: Canada_055_S60_EF
-  type: socks5
-  server: 152.53.171.242
-  port: 30905
-  udp: true
-- name: United States_056_S60_EF
-  type: socks5
-  server: 142.54.232.6
-  port: 4145
-  udp: true
-- name: United States_057_S60_EF
-  type: socks5
-  server: 184.181.217.220
-  port: 4145
-  udp: true
-- name: United States_058_S60_EF
-  type: socks5
-  server: 184.178.172.11
-  port: 4145
-  udp: true
-- name: United States_059_S60_EF
-  type: socks5
-  server: 198.177.254.157
-  port: 4145
-  udp: true
-- name: United States_060_S60_EF
-  type: socks5
-  server: 142.54.228.193
-  port: 4145
-  udp: true
-- name: United States_061_S60_EF
-  type: socks5
-  server: 152.53.171.242
-  port: 20159
-  udp: true
-- name: United States_062_S60_EF
-  type: socks5
-  server: 206.220.175.2
-  port: 4145
-  udp: true
-- name: Germany_063_S60_EF
-  type: socks5
-  server: 193.233.254.7
-  port: 1080
-  udp: true
-- name: United States_064_S60_EF
-  type: socks5
-  server: 98.170.57.249
-  port: 4145
-  udp: true
-- name: United States_065_S60_EF
-  type: socks5
-  server: 62.60.131.192
-  port: 4624
-  udp: true
-- name: United States_066_S60_EF
-  type: socks5
-  server: 68.71.245.206
-  port: 4145
-  udp: true
-- name: United States_067_S60_EF
-  type: socks5
-  server: 107.181.168.145
-  port: 4145
-  udp: true
-- name: United States_068_S60_EF
-  type: socks5
-  server: 192.252.208.67
-  port: 14287
-  udp: true
-- name: United States_069_S60_EF
-  type: socks5
-  server: 192.252.220.89
-  port: 4145
-  udp: true
-- name: United States_070_S60_EF
-  type: socks5
-  server: 142.54.239.1
-  port: 4145
-  udp: true
-- name: United States_071_S60_EF
-  type: socks5
-  server: 192.252.211.197
-  port: 14921
-  udp: true
-- name: United States_072_S60_EF
-  type: socks5
-  server: 192.252.209.158
-  port: 4145
-  udp: true
-- name: United States_073_S60_EF
-  type: socks5
-  server: 192.111.135.18
-  port: 18301
-  udp: true
-- name: United States_074_S60_EF
-  type: socks5
-  server: 192.111.139.165
-  port: 4145
-  udp: true
-- name: United States_075_S60_EF
-  type: socks5
-  server: 72.207.33.64
-  port: 4145
-  udp: true
-- name: United States_076_S60_EF
-  type: socks5
-  server: 70.166.167.55
-  port: 57745
-  udp: true
-- name: United States_077_S60_EF
-  type: socks5
-  server: 184.178.172.28
-  port: 15294
-  udp: true
-- name: United States_078_S60_EF
-  type: socks5
-  server: 68.71.243.14
-  port: 4145
-  udp: true
-- name: United States_079_S60_EF
-  type: socks5
-  server: 192.111.137.37
-  port: 18762
-  udp: true
-- name: United States_080_S60_EF
-  type: socks5
-  server: 74.119.147.209
-  port: 4145
-  udp: true
-- name: United States_081_S60_EF
-  type: socks5
-  server: 198.8.94.170
-  port: 4145
-  udp: true
-- name: United States_082_S60_EF
-  type: socks5
-  server: 192.111.129.150
-  port: 4145
-  udp: true
-- name: United States_083_S60_EF
-  type: socks5
-  server: 174.77.111.197
-  port: 4145
-  udp: true
-- name: United States_084_S60_EF
-  type: socks5
-  server: 152.53.171.242
-  port: 30283
-  udp: true
-- name: United States_085_S60_EF
-  type: socks5
-  server: 199.116.112.6
-  port: 4145
-  udp: true
-- name: United States_086_S60_EF
-  type: socks5
-  server: 192.252.214.20
-  port: 15864
-  udp: true
-- name: United States_087_S60_EF
-  type: socks5
-  server: 174.64.199.82
-  port: 4145
-  udp: true
-- name: United States_088_S60_EF
-  type: socks5
-  server: 98.191.0.37
-  port: 4145
-  udp: true
-- name: United States_089_S60_EF
-  type: socks5
-  server: 72.195.114.169
-  port: 4145
-  udp: true
-- name: United States_090_S60_EF
-  type: socks5
-  server: 184.181.217.194
-  port: 4145
-  udp: true
-- name: United States_091_S60_EF
-  type: socks5
-  server: 192.252.216.86
-  port: 4145
-  udp: true
-- name: United States_092_S60_EF
-  type: socks5
-  server: 192.252.216.81
-  port: 4145
-  udp: true
-- name: United States_093_S60_EF
-  type: socks5
-  server: 152.53.171.242
-  port: 29715
-  udp: true
-- name: United States_094_S60_EF
-  type: socks5
-  server: 184.178.172.13
-  port: 15311
-  udp: true
-- name: United States_095_S60_EF
-  type: socks5
-  server: 192.111.137.35
-  port: 4145
-  udp: true
-- name: United States_096_S60_EF
-  type: socks5
-  server: 192.111.135.17
-  port: 18302
-  udp: true
-- name: United States_097_S60_EF
-  type: socks5
-  server: 192.111.139.162
-  port: 4145
-  udp: true
-- name: United States_098_S60_EF
-  type: socks5
-  server: 98.182.147.97
-  port: 4145
-  udp: true
-- name: United States_099_S60_EF
   type: socks5
   server: 192.252.208.70
   port: 14282
   udp: true
-- name: United States_100_S60_EF
+- name: United States_003_S60_EF
   type: socks5
-  server: 184.170.249.65
+  server: 184.178.172.28
+  port: 15294
+  udp: true
+- name: United States_004_S60_EF
+  type: socks5
+  server: 199.229.254.129
   port: 4145
   udp: true
-- name: United States_101_S60_EF
+- name: United States_005_S60_EF
   type: socks5
-  server: 199.58.185.9
+  server: 199.58.184.97
   port: 4145
   udp: true
-- name: United States_102_S60_EF
+- name: United States_006_S60_EF
   type: socks5
-  server: 72.207.109.5
+  server: 67.201.39.14
   port: 4145
   udp: true
-- name: United States_103_S60_EF
-  type: socks5
-  server: 174.77.111.196
-  port: 4145
-  udp: true
-- name: United States_104_S60_EF
-  type: socks5
-  server: 199.116.114.11
-  port: 4145
-  udp: true
-- name: United States_105_S60_EF
-  type: socks5
-  server: 104.200.135.46
-  port: 4145
-  udp: true
-- name: United States_106_S60_EF
-  type: socks5
-  server: 74.119.144.60
-  port: 4145
-  udp: true
-- name: United States_107_S60_EF
-  type: socks5
-  server: 152.53.171.242
-  port: 51077
-  udp: true
-- name: United States_108_S60_EF
-  type: socks5
-  server: 192.252.211.193
-  port: 4145
-  udp: true
-- name: United States_109_S60_EF
-  type: socks5
-  server: 184.181.217.210
-  port: 4145
-  udp: true
-- name: United States_110_S60_EF
-  type: socks5
-  server: 174.77.111.198
-  port: 49547
-  udp: true
-- name: United States_111_S60_EF
-  type: socks5
-  server: 142.54.237.38
-  port: 4145
-  udp: true
-- name: United States_112_S60_EF
-  type: socks5
-  server: 166.62.88.163
-  port: 45842
-  udp: true
-- name: United States_113_S60_EF
-  type: socks5
-  server: 72.195.34.42
-  port: 4145
-  udp: true
-- name: United States_114_S60_EF
-  type: socks5
-  server: 184.170.248.5
-  port: 4145
-  udp: true
-- name: United States_115_S60_EF
-  type: socks5
-  server: 72.206.74.126
-  port: 4145
-  udp: true
-- name: United States_116_S60_EF
-  type: socks5
-  server: 98.175.31.195
-  port: 4145
-  udp: true
-- name: United States_117_S60_EF
-  type: socks5
-  server: 174.138.61.184
-  port: 1080
-  udp: true
-- name: United Kingdom_118_S60_EF
-  type: socks5
-  server: 192.252.210.233
-  port: 4145
-  udp: true
-- name: United States_119_S60_EF
-  type: socks5
-  server: 184.178.172.18
-  port: 15280
-  udp: true
-- name: Germany_120_S60_EF
-  type: socks5
-  server: 62.60.131.183
-  port: 4499
-  udp: true
-- name: United States_121_S60_EF
-  type: socks5
-  server: 98.178.72.21
-  port: 10919
-  udp: true
-- name: United States_122_S55_EM
-  type: socks5
-  server: 184.182.240.12
-  port: 4145
-  udp: true
-- name: United States_123_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 12457
-  udp: true
-- name: United States_124_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 47671
-  udp: true
-- name: United States_125_S55_TF
-  type: socks5
-  server: 16.51.157.105
-  port: 57998
-  udp: true
-- name: United States_126_S55_EM
-  type: socks5
-  server: 68.1.210.189
-  port: 4145
-  udp: true
-- name: Canada_127_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 50403
-  udp: true
-- name: United Kingdom_128_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 56981
-  udp: true
-- name: United States_129_S55_EM
-  type: socks5
-  server: 72.211.46.99
-  port: 4145
-  udp: true
-- name: France_130_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 32943
-  udp: true
-- name: France_131_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 23332
-  udp: true
-- name: United States_132_S55_EM
-  type: socks5
-  server: 192.111.137.34
-  port: 18765
-  udp: true
-- name: United States_133_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 35849
-  udp: true
-- name: United States_134_S55_TF
-  type: socks5
-  server: 16.78.219.183
-  port: 3128
-  udp: true
-- name: United States_135_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 21567
-  udp: true
-- name: United States_136_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 11067
-  udp: true
-- name: Germany_137_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 32255
-  udp: true
-- name: United States_138_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 11378
-  udp: true
-- name: United States_139_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 13641
-  udp: true
-- name: United States_140_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 14723
-  udp: true
-- name: United States_141_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 24061
-  udp: true
-- name: United States_142_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 38893
-  udp: true
-- name: United States_143_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 15864
-  udp: true
-- name: France_144_S55_EM
-  type: socks5
-  server: 185.194.217.97
-  port: 1080
-  udp: true
-- name: Germany_145_S55_EM
-  type: socks5
-  server: 43.131.9.114
-  port: 1777
-  udp: true
-- name: United States_146_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 15996
-  udp: true
-- name: United States_147_S55_EM
-  type: socks5
-  server: 24.249.199.12
-  port: 4145
-  udp: true
-- name: Singapore_148_S55_EM
-  type: socks5
-  server: 188.166.211.102
-  port: 1080
-  udp: true
-- name: United States_149_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 15115
-  udp: true
-- name: United States_150_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 38863
-  udp: true
-- name: United States_151_S55_EM
-  type: socks5
-  server: 72.195.34.58
-  port: 4145
-  udp: true
-- name: United States_152_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 33341
-  udp: true
-- name: United Kingdom_153_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 17328
-  udp: true
-- name: United States_154_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 11748
-  udp: true
-- name: Germany_155_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 15207
-  udp: true
-- name: France_156_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 18647
-  udp: true
-- name: United States_157_S55_EM
-  type: socks5
-  server: 72.223.188.67
-  port: 4145
-  udp: true
-- name: United States_158_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 19571
-  udp: true
-- name: United States_159_S55_EM
+- name: United States_007_S60_EF
   type: socks5
   server: 67.201.58.190
   port: 4145
   udp: true
-- name: Canada_160_S55_EM
+- name: United States_008_S60_EF
   type: socks5
-  server: 152.53.171.242
-  port: 31294
-  udp: true
-- name: United States_161_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 10846
-  udp: true
-- name: France_162_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 10799
-  udp: true
-- name: Canada_163_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 45741
-  udp: true
-- name: United States_164_S55_EM
-  type: socks5
-  server: 47.238.203.170
-  port: 50000
-  udp: true
-- name: United Kingdom_165_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 16140
-  udp: true
-- name: United States_166_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 38477
-  udp: true
-- name: United States_167_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 15629
-  udp: true
-- name: United Kingdom_168_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 22691
-  udp: true
-- name: United States_169_S55_EM
-  type: socks5
-  server: 24.249.199.4
+  server: 67.201.59.70
   port: 4145
   udp: true
-- name: Canada_170_S55_EM
+- name: United States_009_S60_EF
   type: socks5
-  server: 152.53.171.242
-  port: 11666
-  udp: true
-- name: United States_171_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 55419
-  udp: true
-- name: United States_172_S55_EM
-  type: socks5
-  server: 68.71.241.33
+  server: 199.102.105.242
   port: 4145
   udp: true
-- name: United States_173_S55_EM
-  type: socks5
-  server: 98.170.57.231
-  port: 4145
-  udp: true
-- name: United Kingdom_174_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 10100
-  udp: true
-- name: United States_175_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 46691
-  udp: true
-- name: United Kingdom_176_S55_EM
-  type: socks5
-  server: 62.60.131.196
-  port: 4060
-  udp: true
-- name: Germany_177_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 28077
-  udp: true
-- name: United States_178_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 30793
-  udp: true
-- name: Canada_179_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 25585
-  udp: true
-- name: United States_180_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 31209
-  udp: true
-- name: United Kingdom_181_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 26770
-  udp: true
-- name: United States_182_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 19313
-  udp: true
-- name: Japan_183_S55_EM
-  type: socks5
-  server: 139.162.78.109
-  port: 1080
-  udp: true
-- name: United States_184_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 29329
-  udp: true
-- name: United States_185_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 17795
-  udp: true
-- name: United States_186_S55_EM
+- name: United States_010_S60_EF
   type: socks5
   server: 68.71.240.210
   port: 4145
   udp: true
-- name: United States_187_S55_EM
+- name: United States_011_S60_EF
   type: socks5
-  server: 152.53.171.242
-  port: 20364
+  server: 72.195.34.60
+  port: 27391
   udp: true
-- name: South Korea_188_S55_EM
+- name: United States_012_S60_EF
   type: socks5
-  server: 121.169.46.116
-  port: 1090
-  udp: true
-- name: United States_189_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 38663
-  udp: true
-- name: United States_190_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 51443
-  udp: true
-- name: Germany_191_S55_EM
-  type: socks5
-  server: 62.60.131.185
-  port: 5773
-  udp: true
-- name: United States_192_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 10097
-  udp: true
-- name: United States_193_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 42745
-  udp: true
-- name: United States_194_S55_EM
-  type: socks5
-  server: 72.223.188.92
+  server: 68.71.245.206
   port: 4145
   udp: true
-- name: Germany_195_S55_EM
+- name: United States_013_S60_EF
   type: socks5
-  server: 64.188.124.97
+  server: 174.138.61.184
   port: 1080
   udp: true
-- name: United States_196_S55_EM
+- name: United States_014_S60_EF
   type: socks5
-  server: 142.54.235.9
+  server: 192.252.220.89
   port: 4145
   udp: true
-- name: United States_197_S55_EM
-  type: socks5
-  server: 198.177.252.24
-  port: 4145
-  udp: true
-- name: United States_198_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 14483
-  udp: true
-- name: Canada_199_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 28472
-  udp: true
-- name: United States_200_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 32764
-  udp: true
-- name: Germany_201_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 45157
-  udp: true
-- name: United States_202_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 31285
-  udp: true
-- name: United States_203_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 19624
-  udp: true
-- name: Canada_204_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 15323
-  udp: true
-- name: United States_205_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 28069
-  udp: true
-- name: United States_206_S55_EM
-  type: socks5
-  server: 198.177.253.13
-  port: 4145
-  udp: true
-- name: United Kingdom_207_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 28429
-  udp: true
-- name: United States_208_S55_EM
-  type: socks5
-  server: 192.111.129.145
-  port: 16894
-  udp: true
-- name: United States_209_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 24411
-  udp: true
-- name: France_210_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 19404
-  udp: true
-- name: Singapore_211_S55_EM
-  type: socks5
-  server: 128.199.202.122
-  port: 1080
-  udp: true
-- name: Canada_212_S55_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 26707
-  udp: true
-- name: United States_213_S55_EM
-  type: socks5
-  server: 72.207.113.97
-  port: 4145
-  udp: true
-- name: United Kingdom_214_S50_EM
+- name: Germany_015_S60_EF
   type: socks5
   server: 36.255.98.160
-  port: 4867
+  port: 12679
   udp: true
-- name: United States_215_S50_EM
+- name: France_016_S60_EF
   type: socks5
-  server: 192.104.242.158
-  port: 4145
-  udp: true
-- name: Germany_216_S50_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 17753
-  udp: true
-- name: United Kingdom_217_S50_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 32515
-  udp: true
-- name: United Kingdom_218_S50_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 16835
-  udp: true
-- name: United Kingdom_219_S50_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 27202
-  udp: true
-- name: United States_220_S50_EM
-  type: socks5
-  server: 208.65.90.3
-  port: 4145
-  udp: true
-- name: United States_221_S50_EM
-  type: socks5
-  server: 70.166.65.160
-  port: 4145
-  udp: true
-- name: United Kingdom_222_S50_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 37887
-  udp: true
-- name: United States_223_S50_EM
-  type: socks5
-  server: 72.205.0.93
-  port: 4145
-  udp: true
-- name: United States_224_S50_EM
-  type: socks5
-  server: 91.84.125.92
+  server: 185.194.217.97
   port: 1080
   udp: true
-- name: United States_225_S50_EM
+- name: United States_017_S60_EF
+  type: socks5
+  server: 184.178.172.11
+  port: 4145
+  udp: true
+- name: United States_018_S60_EF
+  type: socks5
+  server: 184.178.172.13
+  port: 15311
+  udp: true
+- name: United States_019_S60_EF
+  type: socks5
+  server: 192.111.139.163
+  port: 19404
+  udp: true
+- name: United States_020_S60_EF
+  type: socks5
+  server: 142.54.239.1
+  port: 4145
+  udp: true
+- name: United States_021_S60_EF
+  type: socks5
+  server: 98.190.239.3
+  port: 4145
+  udp: true
+- name: United States_022_S60_EF
+  type: socks5
+  server: 68.71.254.6
+  port: 4145
+  udp: true
+- name: United States_023_S60_EF
+  type: socks5
+  server: 184.170.245.148
+  port: 4145
+  udp: true
+- name: United States_024_S60_EF
+  type: socks5
+  server: 192.252.214.17
+  port: 4145
+  udp: true
+- name: United States_025_S60_EF
+  type: socks5
+  server: 107.181.161.81
+  port: 4145
+  udp: true
+- name: United States_026_S60_EF
   type: socks5
   server: 184.181.217.201
   port: 4145
   udp: true
-- name: United States_226_S50_EM
+- name: United States_027_S60_EF
   type: socks5
-  server: 62.60.131.186
-  port: 18318
-  udp: true
-- name: United States_227_S50_EM
-  type: socks5
-  server: 62.60.131.194
-  port: 8097
-  udp: true
-- name: United States_228_S50_EM
-  type: socks5
-  server: 72.195.34.41
+  server: 184.182.240.12
   port: 4145
   udp: true
-- name: United States_229_S50_EM
+- name: United States_028_S60_EF
   type: socks5
-  server: 152.53.171.242
-  port: 13141
-  udp: true
-- name: United States_230_S50_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 29125
-  udp: true
-- name: United States_231_S50_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 24069
-  udp: true
-- name: United States_232_S50_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 13123
-  udp: true
-- name: France_233_S50_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 10154
-  udp: true
-- name: United States_234_S50_EM
-  type: socks5
-  server: 98.182.171.161
+  server: 192.111.130.2
   port: 4145
   udp: true
-- name: United States_235_S50_EM
+- name: United States_029_S60_EF
   type: socks5
-  server: 152.53.171.242
-  port: 20737
-  udp: true
-- name: United States_236_S50_EM
-  type: socks5
-  server: 72.195.114.184
+  server: 192.111.138.29
   port: 4145
   udp: true
-- name: United States_237_S50_EM
+- name: United States_030_S60_EF
   type: socks5
-  server: 152.53.171.242
-  port: 27579
+  server: 184.181.217.210
+  port: 4145
   udp: true
-- name: Australia_238_S48_EM
+- name: Germany_031_S60_EF
   type: socks5
-  server: 152.53.171.242
-  port: 10015
-  udp: true
-- name: Australia_239_S48_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 46097
-  udp: true
-- name: Australia_240_S48_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 28312
-  udp: true
-- name: France_241_S45_ES
-  type: socks5
-  server: 36.255.98.168
-  port: 7978
-  udp: true
-- name: United States_242_S45_ES
-  type: socks5
-  server: 152.53.171.242
-  port: 59001
-  udp: true
-- name: United States_243_S45_ES
-  type: socks5
-  server: 72.49.49.11
-  port: 31034
-  udp: true
-- name: France_244_S45_ES
-  type: socks5
-  server: 194.163.167.32
+  server: 193.233.254.9
   port: 1080
   udp: true
-- name: United States_245_S45_ES
+- name: United States_032_S60_EF
   type: socks5
-  server: 104.219.236.127
-  port: 1080
-  udp: true
-- name: France_246_S45_ES
-  type: socks5
-  server: 194.163.182.6
-  port: 1080
-  udp: true
-- name: United States_247_S45_ES
-  type: socks5
-  server: 62.60.131.197
-  port: 4070
-  udp: true
-- name: Singapore_248_S45_ES
-  type: socks5
-  server: 146.235.19.84
-  port: 10852
-  udp: true
-- name: France_249_S45_ES
-  type: socks5
-  server: 62.60.131.182
-  port: 4032
-  udp: true
-- name: Australia_250_S43_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 59469
-  udp: true
-- name: Australia_251_S43_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 40971
-  udp: true
-- name: Australia_252_S43_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 14675
-  udp: true
-- name: Australia_253_S43_EM
-  type: socks5
-  server: 152.53.171.242
-  port: 32933
-  udp: true
-- name: United States_254_S40_ES
-  type: socks5
-  server: 66.42.224.229
-  port: 41679
-  udp: true
-- name: United States_255_S40_ES
-  type: socks5
-  server: 72.205.0.67
+  server: 184.178.172.17
   port: 4145
   udp: true
-- name: United States_256_S40_ES
+- name: United States_033_S60_EF
   type: socks5
-  server: 69.61.200.104
-  port: 36181
+  server: 174.64.199.79
+  port: 4145
   udp: true
-- name: United States_257_S40_ES
+- name: United States_034_S60_EF
+  type: socks5
+  server: 142.54.237.34
+  port: 4145
+  udp: true
+- name: United States_035_S60_EF
+  type: socks5
+  server: 199.102.107.145
+  port: 4145
+  udp: true
+- name: United States_036_S60_EF
+  type: socks5
+  server: 192.111.135.18
+  port: 18301
+  udp: true
+- name: United States_037_S60_EF
+  type: socks5
+  server: 184.181.217.213
+  port: 4145
+  udp: true
+- name: United States_038_S60_EF
+  type: socks5
+  server: 68.71.242.118
+  port: 4145
+  udp: true
+- name: United States_039_S60_EF
+  type: socks5
+  server: 184.178.172.5
+  port: 15303
+  udp: true
+- name: United States_040_S60_EF
+  type: socks5
+  server: 192.252.214.20
+  port: 15864
+  udp: true
+- name: United States_041_S60_EF
+  type: socks5
+  server: 192.252.211.193
+  port: 4145
+  udp: true
+- name: United States_042_S60_EF
+  type: socks5
+  server: 142.54.235.9
+  port: 4145
+  udp: true
+- name: United States_043_S60_EF
+  type: socks5
+  server: 184.178.172.18
+  port: 15280
+  udp: true
+- name: United States_044_S60_EF
+  type: socks5
+  server: 192.252.209.155
+  port: 14455
+  udp: true
+- name: United States_045_S60_EF
+  type: socks5
+  server: 198.8.94.174
+  port: 39078
+  udp: true
+- name: United States_046_S60_EF
+  type: socks5
+  server: 192.111.129.150
+  port: 4145
+  udp: true
+- name: United States_047_S60_EF
+  type: socks5
+  server: 192.111.130.5
+  port: 17002
+  udp: true
+- name: United States_048_S60_EF
+  type: socks5
+  server: 174.77.111.198
+  port: 49547
+  udp: true
+- name: United States_049_S60_EF
+  type: socks5
+  server: 205.185.113.92
+  port: 1080
+  udp: true
+- name: United States_050_S60_EF
+  type: socks5
+  server: 199.116.112.6
+  port: 4145
+  udp: true
+- name: United States_051_S60_EF
+  type: socks5
+  server: 142.54.231.38
+  port: 4145
+  udp: true
+- name: United States_052_S60_EF
+  type: socks5
+  server: 184.178.172.23
+  port: 4145
+  udp: true
+- name: Germany_053_S60_EF
+  type: socks5
+  server: 193.233.254.7
+  port: 1080
+  udp: true
+- name: United States_054_S60_EF
+  type: socks5
+  server: 184.181.217.220
+  port: 4145
+  udp: true
+- name: United States_055_S60_EF
+  type: socks5
+  server: 67.201.35.145
+  port: 4145
+  udp: true
+- name: United States_056_S60_EF
+  type: socks5
+  server: 192.252.209.158
+  port: 4145
+  udp: true
+- name: United States_057_S60_EF
+  type: socks5
+  server: 192.111.139.165
+  port: 4145
+  udp: true
+- name: United States_058_S60_EF
+  type: socks5
+  server: 192.252.211.197
+  port: 14921
+  udp: true
+- name: United States_059_S60_EF
+  type: socks5
+  server: 152.53.171.242
+  port: 14229
+  udp: true
+- name: United States_060_S60_EF
+  type: socks5
+  server: 24.249.199.12
+  port: 4145
+  udp: true
+- name: United States_061_S60_EF
+  type: socks5
+  server: 68.71.252.38
+  port: 4145
+  udp: true
+- name: United States_062_S60_EF
+  type: socks5
+  server: 142.54.236.97
+  port: 4145
+  udp: true
+- name: United States_063_S60_EF
+  type: socks5
+  server: 152.53.171.242
+  port: 51443
+  udp: true
+- name: United States_064_S60_EF
+  type: socks5
+  server: 199.187.210.54
+  port: 4145
+  udp: true
+- name: United States_065_S60_EF
+  type: socks5
+  server: 98.170.57.231
+  port: 4145
+  udp: true
+- name: United States_066_S60_EF
+  type: socks5
+  server: 184.170.251.30
+  port: 11288
+  udp: true
+- name: United States_067_S60_EF
+  type: socks5
+  server: 192.252.216.86
+  port: 4145
+  udp: true
+- name: United States_068_S60_EF
+  type: socks5
+  server: 98.182.147.97
+  port: 4145
+  udp: true
+- name: United States_069_S60_EF
+  type: socks5
+  server: 184.170.249.65
+  port: 4145
+  udp: true
+- name: United States_070_S60_EF
+  type: socks5
+  server: 152.53.171.242
+  port: 19331
+  udp: true
+- name: United States_071_S60_EF
+  type: socks5
+  server: 107.150.105.163
+  port: 7777
+  udp: true
+- name: United States_072_S60_EF
+  type: socks5
+  server: 142.54.229.249
+  port: 4145
+  udp: true
+- name: United States_073_S60_EF
+  type: socks5
+  server: 152.53.171.242
+  port: 11067
+  udp: true
+- name: United States_074_S60_EF
+  type: socks5
+  server: 68.71.249.153
+  port: 48606
+  udp: true
+- name: United States_075_S60_EF
+  type: socks5
+  server: 152.53.171.242
+  port: 32283
+  udp: true
+- name: United States_076_S60_EF
+  type: socks5
+  server: 198.8.94.170
+  port: 4145
+  udp: true
+- name: United States_077_S60_EF
+  type: socks5
+  server: 104.200.135.46
+  port: 4145
+  udp: true
+- name: United States_078_S60_EF
+  type: socks5
+  server: 192.252.215.2
+  port: 4145
+  udp: true
+- name: United States_079_S60_EF
+  type: socks5
+  server: 72.207.109.5
+  port: 4145
+  udp: true
+- name: United States_080_S60_EF
+  type: socks5
+  server: 192.111.137.37
+  port: 18762
+  udp: true
+- name: United States_081_S60_EF
+  type: socks5
+  server: 107.181.168.145
+  port: 4145
+  udp: true
+- name: Germany_082_S60_EF
+  type: socks5
+  server: 193.233.254.8
+  port: 1080
+  udp: true
+- name: United States_083_S60_EF
+  type: socks5
+  server: 68.71.247.130
+  port: 4145
+  udp: true
+- name: United States_084_S60_EF
+  type: socks5
+  server: 98.191.0.37
+  port: 4145
+  udp: true
+- name: United States_085_S60_EF
+  type: socks5
+  server: 98.178.72.21
+  port: 10919
+  udp: true
+- name: United States_086_S60_EF
+  type: socks5
+  server: 152.53.171.242
+  port: 55419
+  udp: true
+- name: United States_087_S60_EF
+  type: socks5
+  server: 142.171.246.99
+  port: 7777
+  udp: true
+- name: United States_088_S60_EF
+  type: socks5
+  server: 192.111.135.17
+  port: 18302
+  udp: true
+- name: United States_089_S60_EF
+  type: socks5
+  server: 184.178.172.3
+  port: 4145
+  udp: true
+- name: United States_090_S60_EF
+  type: socks5
+  server: 192.252.215.5
+  port: 16137
+  udp: true
+- name: United States_091_S60_EF
+  type: socks5
+  server: 107.152.98.5
+  port: 4145
+  udp: true
+- name: United States_092_S60_EF
+  type: socks5
+  server: 199.58.185.9
+  port: 4145
+  udp: true
+- name: United States_093_S60_EF
+  type: socks5
+  server: 72.223.188.92
+  port: 4145
+  udp: true
+- name: United States_094_S60_EF
+  type: socks5
+  server: 142.54.228.193
+  port: 4145
+  udp: true
+- name: United States_095_S60_EF
+  type: socks5
+  server: 152.53.171.242
+  port: 15629
+  udp: true
+- name: United States_096_S60_EF
+  type: socks5
+  server: 199.102.106.94
+  port: 4145
+  udp: true
+- name: United States_097_S60_EF
+  type: socks5
+  server: 192.252.216.81
+  port: 4145
+  udp: true
+- name: United States_098_S60_EF
+  type: socks5
+  server: 67.201.33.10
+  port: 25283
+  udp: true
+- name: United States_099_S60_EF
+  type: socks5
+  server: 74.119.144.60
+  port: 4145
+  udp: true
+- name: United States_100_S60_EF
+  type: socks5
+  server: 72.37.217.3
+  port: 4145
+  udp: true
+- name: United States_101_S60_EF
+  type: socks5
+  server: 152.53.171.242
+  port: 33341
+  udp: true
+- name: United States_102_S60_EF
+  type: socks5
+  server: 192.111.129.145
+  port: 16894
+  udp: true
+- name: United States_103_S60_EF
+  type: socks5
+  server: 192.111.139.162
+  port: 4145
+  udp: true
+- name: United States_104_S60_EF
+  type: socks5
+  server: 192.111.137.35
+  port: 4145
+  udp: true
+- name: United States_105_S60_EF
+  type: socks5
+  server: 206.220.175.2
+  port: 4145
+  udp: true
+- name: United States_106_S60_EF
+  type: socks5
+  server: 98.191.0.47
+  port: 4145
+  udp: true
+- name: United States_107_S60_EF
+  type: socks5
+  server: 68.71.241.33
+  port: 4145
+  udp: true
+- name: United States_108_S60_EF
+  type: socks5
+  server: 74.119.147.209
+  port: 4145
+  udp: true
+- name: United States_109_S60_EF
+  type: socks5
+  server: 72.207.33.64
+  port: 4145
+  udp: true
+- name: United States_110_S60_EF
+  type: socks5
+  server: 198.8.84.3
+  port: 4145
+  udp: true
+- name: United States_111_S60_EF
+  type: socks5
+  server: 192.252.220.92
+  port: 17328
+  udp: true
+- name: United States_112_S60_EF
+  type: socks5
+  server: 184.178.172.25
+  port: 15291
+  udp: true
+- name: United States_113_S60_EF
+  type: socks5
+  server: 184.170.248.5
+  port: 4145
+  udp: true
+- name: United States_114_S60_EF
+  type: socks5
+  server: 68.71.249.158
+  port: 4145
+  udp: true
+- name: United States_115_S60_EF
+  type: socks5
+  server: 152.53.171.242
+  port: 10222
+  udp: true
+- name: United States_116_S60_EF
+  type: socks5
+  server: 152.53.171.242
+  port: 57715
+  udp: true
+- name: United States_117_S60_EF
+  type: socks5
+  server: 152.53.171.242
+  port: 19624
+  udp: true
+- name: United States_118_S60_EF
+  type: socks5
+  server: 98.178.72.30
+  port: 4145
+  udp: true
+- name: United States_119_S60_EF
+  type: socks5
+  server: 72.37.216.68
+  port: 4145
+  udp: true
+- name: United States_120_S60_EF
+  type: socks5
+  server: 152.53.171.242
+  port: 48221
+  udp: true
+- name: United Kingdom_121_S60_EF
+  type: socks5
+  server: 192.252.210.233
+  port: 4145
+  udp: true
+- name: United States_122_S60_EF
+  type: socks5
+  server: 184.181.217.194
+  port: 4145
+  udp: true
+- name: United States_123_S60_EF
+  type: socks5
+  server: 192.111.137.34
+  port: 18765
+  udp: true
+- name: United States_124_S60_EF
+  type: socks5
+  server: 192.252.208.67
+  port: 14287
+  udp: true
+- name: United States_125_S60_EF
+  type: socks5
+  server: 184.182.240.211
+  port: 4145
+  udp: true
+- name: United States_126_S60_EF
+  type: socks5
+  server: 72.206.74.126
+  port: 4145
+  udp: true
+- name: United States_127_S55_EM
+  type: socks5
+  server: 184.178.172.26
+  port: 4145
+  udp: true
+- name: United States_128_S55_EM
   type: socks5
   server: 216.68.128.121
   port: 4145
   udp: true
-- name: Singapore_258_S40_ES
+- name: United Kingdom_129_S55_EM
+  type: socks5
+  server: 89.46.249.190
+  port: 8070
+  udp: true
+- name: United States_130_S55_EM
+  type: socks5
+  server: 36.255.98.168
+  port: 4100
+  udp: true
+- name: United States_131_S55_EM
+  type: socks5
+  server: 72.195.34.42
+  port: 4145
+  udp: true
+- name: Singapore_132_S55_EM
+  type: socks5
+  server: 89.187.163.133
+  port: 9091
+  udp: true
+- name: France_133_S55_EM
+  type: socks5
+  server: 194.163.167.32
+  port: 1080
+  udp: true
+- name: United States_134_S55_EM
+  type: socks5
+  server: 174.64.199.82
+  port: 4145
+  udp: true
+- name: United States_135_S55_EM
+  type: socks5
+  server: 72.195.34.35
+  port: 27360
+  udp: true
+- name: United States_136_S55_EM
+  type: socks5
+  server: 98.188.47.150
+  port: 4145
+  udp: true
+- name: United States_137_S55_EM
+  type: socks5
+  server: 72.207.113.97
+  port: 4145
+  udp: true
+- name: Germany_138_S55_EM
+  type: socks5
+  server: 62.60.131.189
+  port: 4077
+  udp: true
+- name: France_139_S55_EM
+  type: socks5
+  server: 62.60.131.194
+  port: 8058
+  udp: true
+- name: United States_140_S55_EM
+  type: socks5
+  server: 98.182.171.161
+  port: 4145
+  udp: true
+- name: United States_141_S55_EM
+  type: socks5
+  server: 72.195.114.169
+  port: 4145
+  udp: true
+- name: United Kingdom_142_S55_EM
+  type: socks5
+  server: 134.209.29.120
+  port: 1080
+  udp: true
+- name: Germany_143_S55_EM
+  type: socks5
+  server: 89.19.209.217
+  port: 31285
+  udp: true
+- name: United States_144_S55_EM
+  type: socks5
+  server: 68.1.210.163
+  port: 4145
+  udp: true
+- name: United States_145_S55_EM
+  type: socks5
+  server: 72.205.0.67
+  port: 4145
+  udp: true
+- name: Singapore_146_S55_EM
+  type: socks5
+  server: 45.78.199.53
+  port: 7777
+  udp: true
+- name: Germany_147_S55_EM
+  type: socks5
+  server: 43.157.34.94
+  port: 1777
+  udp: true
+- name: Singapore_148_S55_EM
   type: socks5
   server: 213.35.110.67
-  port: 10811
+  port: 10852
   udp: true
-- name: Singapore_259_S40_ES
+- name: United States_149_S55_EM
   type: socks5
-  server: 146.235.19.84
-  port: 10919
+  server: 174.75.211.193
+  port: 4145
   udp: true
-- name: Singapore_260_S40_ES
+- name: United States_150_S55_EM
   type: socks5
-  server: 146.235.19.84
-  port: 10800
+  server: 142.54.226.214
+  port: 4145
   udp: true
-- name: Singapore_261_S40_ES
+- name: Singapore_151_S55_EM
   type: socks5
-  server: 213.35.110.67
-  port: 10814
+  server: 188.166.211.102
+  port: 1080
   udp: true
-- name: United States_262_S40_ES
+- name: United Kingdom_152_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 25542
+  udp: true
+- name: United States_153_S55_EM
+  type: socks5
+  server: 142.54.232.6
+  port: 4145
+  udp: true
+- name: United Kingdom_154_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 55841
+  udp: true
+- name: United States_155_S55_EM
+  type: socks5
+  server: 184.181.178.33
+  port: 4145
+  udp: true
+- name: United States_156_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 20415
+  udp: true
+- name: Canada_157_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 20002
+  udp: true
+- name: United Kingdom_158_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 16835
+  udp: true
+- name: United Kingdom_159_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 35849
+  udp: true
+- name: United States_160_S55_EM
+  type: socks5
+  server: 98.175.31.222
+  port: 4145
+  udp: true
+- name: France_161_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 42073
+  udp: true
+- name: United States_162_S55_EM
+  type: socks5
+  server: 68.1.210.189
+  port: 4145
+  udp: true
+- name: Canada_163_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 31008
+  udp: true
+- name: United States_164_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 11405
+  udp: true
+- name: Singapore_165_S55_EM
+  type: socks5
+  server: 162.128.160.202
+  port: 7777
+  udp: true
+- name: Germany_166_S55_EM
+  type: socks5
+  server: 62.60.131.182
+  port: 9998
+  udp: true
+- name: Canada_167_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 17382
+  udp: true
+- name: Germany_168_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 10377
+  udp: true
+- name: United States_169_S55_EM
+  type: socks5
+  server: 72.195.34.41
+  port: 4145
+  udp: true
+- name: United States_170_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 10523
+  udp: true
+- name: United States_171_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 31966
+  udp: true
+- name: United States_172_S55_EM
+  type: socks5
+  server: 98.170.57.249
+  port: 4145
+  udp: true
+- name: United States_173_S55_EM
+  type: socks5
+  server: 184.181.217.206
+  port: 4145
+  udp: true
+- name: Germany_174_S55_EM
+  type: socks5
+  server: 36.255.98.150
+  port: 11719
+  udp: true
+- name: United States_175_S55_EM
+  type: socks5
+  server: 184.178.172.14
+  port: 4145
+  udp: true
+- name: France_176_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 28255
+  udp: true
+- name: United States_177_S55_EM
   type: socks5
   server: 208.102.51.6
   port: 58208
   udp: true
-- name: France_263_S40_ES
+- name: United States_178_S55_TF
   type: socks5
-  server: 62.60.131.194
-  port: 10146
+  server: 16.51.157.105
+  port: 57998
   udp: true
-- name: United States_264_S40_ES
+- name: United States_179_S55_EM
   type: socks5
-  server: 36.255.98.151
-  port: 4045
+  server: 198.177.254.131
+  port: 4145
   udp: true
-- name: Germany_265_S40_ES
+- name: United Kingdom_180_S55_EM
   type: socks5
-  server: 36.255.98.167
-  port: 4324
+  server: 152.53.171.242
+  port: 26770
+  udp: true
+- name: United States_181_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 15072
+  udp: true
+- name: United States_182_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 19571
+  udp: true
+- name: United States_183_S55_EM
+  type: socks5
+  server: 72.211.46.124
+  port: 4145
+  udp: true
+- name: France_184_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 10811
+  udp: true
+- name: United States_185_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 44863
+  udp: true
+- name: United States_186_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 16167
+  udp: true
+- name: United States_187_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 11100
+  udp: true
+- name: United States_188_S55_EM
+  type: socks5
+  server: 98.188.47.132
+  port: 4145
+  udp: true
+- name: Canada_189_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 28472
+  udp: true
+- name: France_190_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 10799
+  udp: true
+- name: Singapore_191_S55_EM
+  type: socks5
+  server: 43.133.32.76
+  port: 1777
+  udp: true
+- name: United States_192_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 34013
+  udp: true
+- name: United Kingdom_193_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 17507
+  udp: true
+- name: United States_194_S55_TF
+  type: socks5
+  server: 16.78.219.183
+  port: 3128
+  udp: true
+- name: United States_195_S55_EM
+  type: socks5
+  server: 98.170.57.241
+  port: 4145
+  udp: true
+- name: United States_196_S55_EM
+  type: socks5
+  server: 184.185.2.12
+  port: 4145
+  udp: true
+- name: United States_197_S55_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 10376
+  udp: true
+- name: United Kingdom_198_S50_EM
+  type: socks5
+  server: 36.255.98.175
+  port: 5133
+  udp: true
+- name: United States_199_S50_EM
+  type: socks5
+  server: 72.211.46.99
+  port: 4145
+  udp: true
+- name: United States_200_S50_EM
+  type: socks5
+  server: 36.255.98.180
+  port: 4090
+  udp: true
+- name: United States_201_S50_EM
+  type: socks5
+  server: 98.175.31.195
+  port: 4145
+  udp: true
+- name: United States_202_S50_EM
+  type: socks5
+  server: 98.181.137.83
+  port: 4145
+  udp: true
+- name: United States_203_S50_EM
+  type: socks5
+  server: 70.166.167.38
+  port: 57728
+  udp: true
+- name: United States_204_S50_EM
+  type: socks5
+  server: 72.195.34.58
+  port: 4145
+  udp: true
+- name: Germany_205_S50_EM
+  type: socks5
+  server: 62.60.131.186
+  port: 5037
+  udp: true
+- name: United States_206_S50_EM
+  type: socks5
+  server: 70.166.167.55
+  port: 57745
+  udp: true
+- name: United States_207_S50_EM
+  type: socks5
+  server: 104.219.236.127
+  port: 1080
+  udp: true
+- name: United States_208_S50_EM
+  type: socks5
+  server: 174.77.111.197
+  port: 4145
+  udp: true
+- name: Singapore_209_S50_EM
+  type: socks5
+  server: 36.255.98.153
+  port: 7292
+  udp: true
+- name: Singapore_210_S50_EM
+  type: socks5
+  server: 62.60.131.178
+  port: 12305
+  udp: true
+- name: United States_211_S50_EM
+  type: socks5
+  server: 62.60.131.185
+  port: 4212
+  udp: true
+- name: United States_212_S50_EM
+  type: socks5
+  server: 69.61.200.104
+  port: 36181
+  udp: true
+- name: Singapore_213_S50_EM
+  type: socks5
+  server: 47.236.20.209
+  port: 1145
+  udp: true
+- name: Singapore_214_S50_EM
+  type: socks5
+  server: 213.35.110.67
+  port: 10807
+  udp: true
+- name: South Korea_215_S50_EM
+  type: socks5
+  server: 121.169.46.116
+  port: 1090
+  udp: true
+- name: United States_216_S50_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 12354
+  udp: true
+- name: Singapore_217_S50_EM
+  type: socks5
+  server: 213.35.110.67
+  port: 10921
+  udp: true
+- name: United States_218_S50_EM
+  type: socks5
+  server: 72.195.114.184
+  port: 4145
+  udp: true
+- name: Germany_219_S50_EM
+  type: socks5
+  server: 43.131.9.114
+  port: 1777
+  udp: true
+- name: Australia_220_S48_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 12806
+  udp: true
+- name: Australia_221_S48_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 35563
+  udp: true
+- name: Australia_222_S48_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 46097
+  udp: true
+- name: Australia_223_S48_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 10307
+  udp: true
+- name: Australia_224_S48_EM
+  type: socks5
+  server: 152.53.171.242
+  port: 19615
+  udp: true
+- name: France_225_S45_ES
+  type: socks5
+  server: 36.255.98.181
+  port: 4150
+  udp: true
+- name: United States_226_S45_ES
+  type: socks5
+  server: 208.65.90.3
+  port: 4145
+  udp: true
+- name: United States_227_S45_ES
+  type: socks5
+  server: 192.104.242.158
+  port: 4145
+  udp: true
+- name: United States_228_S45_ES
+  type: socks5
+  server: 198.177.252.24
+  port: 4145
+  udp: true
+- name: United States_229_S45_ES
+  type: socks5
+  server: 72.195.101.99
+  port: 4145
+  udp: true
+- name: United States_230_S45_ES
+  type: socks5
+  server: 36.255.98.181
+  port: 5163
+  udp: true
+- name: United States_231_S45_ES
+  type: socks5
+  server: 36.255.98.162
+  port: 4038
+  udp: true
+- name: Singapore_232_S45_ES
+  type: socks5
+  server: 213.35.110.67
+  port: 10907
+  udp: true
+- name: France_233_S45_ES
+  type: socks5
+  server: 62.60.131.185
+  port: 4315
+  udp: true
+- name: United States_234_S45_ES
+  type: socks5
+  server: 66.42.224.229
+  port: 41679
+  udp: true
+- name: Singapore_235_S45_ES
+  type: socks5
+  server: 213.35.110.67
+  port: 10819
+  udp: true
+- name: United States_236_S45_ES
+  type: socks5
+  server: 62.60.131.185
+  port: 4126
+  udp: true
+- name: France_237_S45_ES
+  type: socks5
+  server: 77.83.246.16
+  port: 9057
+  udp: true
+- name: United States_238_S45_ES
+  type: socks5
+  server: 174.75.211.222
+  port: 4145
+  udp: true
+- name: United States_239_S45_ES
+  type: socks5
+  server: 70.166.65.160
+  port: 4145
+  udp: true
+- name: United States_240_S45_ES
+  type: socks5
+  server: 72.205.0.93
+  port: 4145
+  udp: true
+- name: Germany_241_S45_ES
+  type: socks5
+  server: 62.60.131.188
+  port: 4588
+  udp: true
+- name: Singapore_242_S45_ES
+  type: socks5
+  server: 146.235.19.84
+  port: 10864
+  udp: true
+- name: United States_243_S45_ES
+  type: socks5
+  server: 62.60.131.182
+  port: 6237
+  udp: true
+- name: Germany_244_S45_ES
+  type: socks5
+  server: 64.188.124.97
+  port: 1080
+  udp: true
+- name: United States_245_S45_ES
+  type: socks5
+  server: 72.195.34.59
+  port: 4145
+  udp: true
+- name: United States_246_S45_ES
+  type: socks5
+  server: 62.60.131.186
+  port: 18318
+  udp: true
+- name: South Korea_247_S40_ES
+  type: socks5
+  server: 103.115.17.121
+  port: 1234
+  udp: true
+- name: Singapore_248_S40_ES
+  type: socks5
+  server: 146.235.19.84
+  port: 10907
+  udp: true
+- name: Singapore_249_S40_ES
+  type: socks5
+  server: 62.60.131.188
+  port: 6067
+  udp: true
+- name: United Kingdom_250_S40_ES
+  type: socks5
+  server: 36.255.98.162
+  port: 8899
+  udp: true
+- name: United States_251_S35_ES
+  type: socks5
+  server: 198.177.254.157
+  port: 4145
   udp: true
 proxy-groups:
 - name: 🚀 代理选择
@@ -1350,8 +1280,8 @@ proxy-groups:
   - United States_012_S60_EF
   - United States_013_S60_EF
   - United States_014_S60_EF
-  - Canada_015_S60_EF
-  - United States_016_S60_EF
+  - Germany_015_S60_EF
+  - France_016_S60_EF
   - United States_017_S60_EF
   - United States_018_S60_EF
   - United States_019_S60_EF
@@ -1359,19 +1289,19 @@ proxy-groups:
   - United States_021_S60_EF
   - United States_022_S60_EF
   - United States_023_S60_EF
-  - Germany_024_S60_EF
+  - United States_024_S60_EF
   - United States_025_S60_EF
   - United States_026_S60_EF
   - United States_027_S60_EF
   - United States_028_S60_EF
   - United States_029_S60_EF
   - United States_030_S60_EF
-  - United States_031_S60_EF
+  - Germany_031_S60_EF
   - United States_032_S60_EF
   - United States_033_S60_EF
   - United States_034_S60_EF
   - United States_035_S60_EF
-  - Germany_036_S60_EF
+  - United States_036_S60_EF
   - United States_037_S60_EF
   - United States_038_S60_EF
   - United States_039_S60_EF
@@ -1388,9 +1318,9 @@ proxy-groups:
   - United States_050_S60_EF
   - United States_051_S60_EF
   - United States_052_S60_EF
-  - United States_053_S60_EF
+  - Germany_053_S60_EF
   - United States_054_S60_EF
-  - Canada_055_S60_EF
+  - United States_055_S60_EF
   - United States_056_S60_EF
   - United States_057_S60_EF
   - United States_058_S60_EF
@@ -1398,7 +1328,7 @@ proxy-groups:
   - United States_060_S60_EF
   - United States_061_S60_EF
   - United States_062_S60_EF
-  - Germany_063_S60_EF
+  - United States_063_S60_EF
   - United States_064_S60_EF
   - United States_065_S60_EF
   - United States_066_S60_EF
@@ -1417,7 +1347,7 @@ proxy-groups:
   - United States_079_S60_EF
   - United States_080_S60_EF
   - United States_081_S60_EF
-  - United States_082_S60_EF
+  - Germany_082_S60_EF
   - United States_083_S60_EF
   - United States_084_S60_EF
   - United States_085_S60_EF
@@ -1453,154 +1383,140 @@ proxy-groups:
   - United States_115_S60_EF
   - United States_116_S60_EF
   - United States_117_S60_EF
-  - United Kingdom_118_S60_EF
+  - United States_118_S60_EF
   - United States_119_S60_EF
-  - Germany_120_S60_EF
-  - United States_121_S60_EF
-  - United States_122_S55_EM
-  - United States_123_S55_EM
-  - United States_124_S55_EM
-  - United States_125_S55_TF
-  - United States_126_S55_EM
-  - Canada_127_S55_EM
-  - United Kingdom_128_S55_EM
-  - United States_129_S55_EM
-  - France_130_S55_EM
-  - France_131_S55_EM
-  - United States_132_S55_EM
-  - United States_133_S55_EM
-  - United States_134_S55_TF
+  - United States_120_S60_EF
+  - United Kingdom_121_S60_EF
+  - United States_122_S60_EF
+  - United States_123_S60_EF
+  - United States_124_S60_EF
+  - United States_125_S60_EF
+  - United States_126_S60_EF
+  - United States_127_S55_EM
+  - United States_128_S55_EM
+  - United Kingdom_129_S55_EM
+  - United States_130_S55_EM
+  - United States_131_S55_EM
+  - Singapore_132_S55_EM
+  - France_133_S55_EM
+  - United States_134_S55_EM
   - United States_135_S55_EM
   - United States_136_S55_EM
-  - Germany_137_S55_EM
-  - United States_138_S55_EM
-  - United States_139_S55_EM
+  - United States_137_S55_EM
+  - Germany_138_S55_EM
+  - France_139_S55_EM
   - United States_140_S55_EM
   - United States_141_S55_EM
-  - United States_142_S55_EM
-  - United States_143_S55_EM
-  - France_144_S55_EM
-  - Germany_145_S55_EM
-  - United States_146_S55_EM
-  - United States_147_S55_EM
+  - United Kingdom_142_S55_EM
+  - Germany_143_S55_EM
+  - United States_144_S55_EM
+  - United States_145_S55_EM
+  - Singapore_146_S55_EM
+  - Germany_147_S55_EM
   - Singapore_148_S55_EM
   - United States_149_S55_EM
   - United States_150_S55_EM
-  - United States_151_S55_EM
-  - United States_152_S55_EM
-  - United Kingdom_153_S55_EM
-  - United States_154_S55_EM
-  - Germany_155_S55_EM
-  - France_156_S55_EM
-  - United States_157_S55_EM
-  - United States_158_S55_EM
-  - United States_159_S55_EM
-  - Canada_160_S55_EM
-  - United States_161_S55_EM
-  - France_162_S55_EM
+  - Singapore_151_S55_EM
+  - United Kingdom_152_S55_EM
+  - United States_153_S55_EM
+  - United Kingdom_154_S55_EM
+  - United States_155_S55_EM
+  - United States_156_S55_EM
+  - Canada_157_S55_EM
+  - United Kingdom_158_S55_EM
+  - United Kingdom_159_S55_EM
+  - United States_160_S55_EM
+  - France_161_S55_EM
+  - United States_162_S55_EM
   - Canada_163_S55_EM
   - United States_164_S55_EM
-  - United Kingdom_165_S55_EM
-  - United States_166_S55_EM
-  - United States_167_S55_EM
-  - United Kingdom_168_S55_EM
+  - Singapore_165_S55_EM
+  - Germany_166_S55_EM
+  - Canada_167_S55_EM
+  - Germany_168_S55_EM
   - United States_169_S55_EM
-  - Canada_170_S55_EM
+  - United States_170_S55_EM
   - United States_171_S55_EM
   - United States_172_S55_EM
   - United States_173_S55_EM
-  - United Kingdom_174_S55_EM
+  - Germany_174_S55_EM
   - United States_175_S55_EM
-  - United Kingdom_176_S55_EM
-  - Germany_177_S55_EM
-  - United States_178_S55_EM
-  - Canada_179_S55_EM
-  - United States_180_S55_EM
-  - United Kingdom_181_S55_EM
+  - France_176_S55_EM
+  - United States_177_S55_EM
+  - United States_178_S55_TF
+  - United States_179_S55_EM
+  - United Kingdom_180_S55_EM
+  - United States_181_S55_EM
   - United States_182_S55_EM
-  - Japan_183_S55_EM
-  - United States_184_S55_EM
+  - United States_183_S55_EM
+  - France_184_S55_EM
   - United States_185_S55_EM
   - United States_186_S55_EM
   - United States_187_S55_EM
-  - South Korea_188_S55_EM
-  - United States_189_S55_EM
-  - United States_190_S55_EM
-  - Germany_191_S55_EM
+  - United States_188_S55_EM
+  - Canada_189_S55_EM
+  - France_190_S55_EM
+  - Singapore_191_S55_EM
   - United States_192_S55_EM
-  - United States_193_S55_EM
-  - United States_194_S55_EM
-  - Germany_195_S55_EM
+  - United Kingdom_193_S55_EM
+  - United States_194_S55_TF
+  - United States_195_S55_EM
   - United States_196_S55_EM
   - United States_197_S55_EM
-  - United States_198_S55_EM
-  - Canada_199_S55_EM
-  - United States_200_S55_EM
-  - Germany_201_S55_EM
-  - United States_202_S55_EM
-  - United States_203_S55_EM
-  - Canada_204_S55_EM
-  - United States_205_S55_EM
-  - United States_206_S55_EM
-  - United Kingdom_207_S55_EM
-  - United States_208_S55_EM
-  - United States_209_S55_EM
-  - France_210_S55_EM
-  - Singapore_211_S55_EM
-  - Canada_212_S55_EM
-  - United States_213_S55_EM
-  - United Kingdom_214_S50_EM
-  - United States_215_S50_EM
-  - Germany_216_S50_EM
-  - United Kingdom_217_S50_EM
-  - United Kingdom_218_S50_EM
-  - United Kingdom_219_S50_EM
-  - United States_220_S50_EM
-  - United States_221_S50_EM
-  - United Kingdom_222_S50_EM
-  - United States_223_S50_EM
-  - United States_224_S50_EM
-  - United States_225_S50_EM
-  - United States_226_S50_EM
-  - United States_227_S50_EM
-  - United States_228_S50_EM
-  - United States_229_S50_EM
-  - United States_230_S50_EM
-  - United States_231_S50_EM
-  - United States_232_S50_EM
-  - France_233_S50_EM
-  - United States_234_S50_EM
-  - United States_235_S50_EM
-  - United States_236_S50_EM
-  - United States_237_S50_EM
-  - Australia_238_S48_EM
-  - Australia_239_S48_EM
-  - Australia_240_S48_EM
-  - France_241_S45_ES
-  - United States_242_S45_ES
+  - United Kingdom_198_S50_EM
+  - United States_199_S50_EM
+  - United States_200_S50_EM
+  - United States_201_S50_EM
+  - United States_202_S50_EM
+  - United States_203_S50_EM
+  - United States_204_S50_EM
+  - Germany_205_S50_EM
+  - United States_206_S50_EM
+  - United States_207_S50_EM
+  - United States_208_S50_EM
+  - Singapore_209_S50_EM
+  - Singapore_210_S50_EM
+  - United States_211_S50_EM
+  - United States_212_S50_EM
+  - Singapore_213_S50_EM
+  - Singapore_214_S50_EM
+  - South Korea_215_S50_EM
+  - United States_216_S50_EM
+  - Singapore_217_S50_EM
+  - United States_218_S50_EM
+  - Germany_219_S50_EM
+  - Australia_220_S48_EM
+  - Australia_221_S48_EM
+  - Australia_222_S48_EM
+  - Australia_223_S48_EM
+  - Australia_224_S48_EM
+  - France_225_S45_ES
+  - United States_226_S45_ES
+  - United States_227_S45_ES
+  - United States_228_S45_ES
+  - United States_229_S45_ES
+  - United States_230_S45_ES
+  - United States_231_S45_ES
+  - Singapore_232_S45_ES
+  - France_233_S45_ES
+  - United States_234_S45_ES
+  - Singapore_235_S45_ES
+  - United States_236_S45_ES
+  - France_237_S45_ES
+  - United States_238_S45_ES
+  - United States_239_S45_ES
+  - United States_240_S45_ES
+  - Germany_241_S45_ES
+  - Singapore_242_S45_ES
   - United States_243_S45_ES
-  - France_244_S45_ES
+  - Germany_244_S45_ES
   - United States_245_S45_ES
-  - France_246_S45_ES
-  - United States_247_S45_ES
-  - Singapore_248_S45_ES
-  - France_249_S45_ES
-  - Australia_250_S43_EM
-  - Australia_251_S43_EM
-  - Australia_252_S43_EM
-  - Australia_253_S43_EM
-  - United States_254_S40_ES
-  - United States_255_S40_ES
-  - United States_256_S40_ES
-  - United States_257_S40_ES
-  - Singapore_258_S40_ES
-  - Singapore_259_S40_ES
-  - Singapore_260_S40_ES
-  - Singapore_261_S40_ES
-  - United States_262_S40_ES
-  - France_263_S40_ES
-  - United States_264_S40_ES
-  - Germany_265_S40_ES
+  - United States_246_S45_ES
+  - South Korea_247_S40_ES
+  - Singapore_248_S40_ES
+  - Singapore_249_S40_ES
+  - United Kingdom_250_S40_ES
+  - United States_251_S35_ES
 - name: ♻️ 自动选择
   type: url-test
   proxies: &id001
@@ -1618,8 +1534,8 @@ proxy-groups:
   - United States_012_S60_EF
   - United States_013_S60_EF
   - United States_014_S60_EF
-  - Canada_015_S60_EF
-  - United States_016_S60_EF
+  - Germany_015_S60_EF
+  - France_016_S60_EF
   - United States_017_S60_EF
   - United States_018_S60_EF
   - United States_019_S60_EF
@@ -1627,19 +1543,19 @@ proxy-groups:
   - United States_021_S60_EF
   - United States_022_S60_EF
   - United States_023_S60_EF
-  - Germany_024_S60_EF
+  - United States_024_S60_EF
   - United States_025_S60_EF
   - United States_026_S60_EF
   - United States_027_S60_EF
   - United States_028_S60_EF
   - United States_029_S60_EF
   - United States_030_S60_EF
-  - United States_031_S60_EF
+  - Germany_031_S60_EF
   - United States_032_S60_EF
   - United States_033_S60_EF
   - United States_034_S60_EF
   - United States_035_S60_EF
-  - Germany_036_S60_EF
+  - United States_036_S60_EF
   - United States_037_S60_EF
   - United States_038_S60_EF
   - United States_039_S60_EF
@@ -1656,9 +1572,9 @@ proxy-groups:
   - United States_050_S60_EF
   - United States_051_S60_EF
   - United States_052_S60_EF
-  - United States_053_S60_EF
+  - Germany_053_S60_EF
   - United States_054_S60_EF
-  - Canada_055_S60_EF
+  - United States_055_S60_EF
   - United States_056_S60_EF
   - United States_057_S60_EF
   - United States_058_S60_EF
@@ -1666,7 +1582,7 @@ proxy-groups:
   - United States_060_S60_EF
   - United States_061_S60_EF
   - United States_062_S60_EF
-  - Germany_063_S60_EF
+  - United States_063_S60_EF
   - United States_064_S60_EF
   - United States_065_S60_EF
   - United States_066_S60_EF
@@ -1685,7 +1601,7 @@ proxy-groups:
   - United States_079_S60_EF
   - United States_080_S60_EF
   - United States_081_S60_EF
-  - United States_082_S60_EF
+  - Germany_082_S60_EF
   - United States_083_S60_EF
   - United States_084_S60_EF
   - United States_085_S60_EF
@@ -1721,154 +1637,140 @@ proxy-groups:
   - United States_115_S60_EF
   - United States_116_S60_EF
   - United States_117_S60_EF
-  - United Kingdom_118_S60_EF
+  - United States_118_S60_EF
   - United States_119_S60_EF
-  - Germany_120_S60_EF
-  - United States_121_S60_EF
-  - United States_122_S55_EM
-  - United States_123_S55_EM
-  - United States_124_S55_EM
-  - United States_125_S55_TF
-  - United States_126_S55_EM
-  - Canada_127_S55_EM
-  - United Kingdom_128_S55_EM
-  - United States_129_S55_EM
-  - France_130_S55_EM
-  - France_131_S55_EM
-  - United States_132_S55_EM
-  - United States_133_S55_EM
-  - United States_134_S55_TF
+  - United States_120_S60_EF
+  - United Kingdom_121_S60_EF
+  - United States_122_S60_EF
+  - United States_123_S60_EF
+  - United States_124_S60_EF
+  - United States_125_S60_EF
+  - United States_126_S60_EF
+  - United States_127_S55_EM
+  - United States_128_S55_EM
+  - United Kingdom_129_S55_EM
+  - United States_130_S55_EM
+  - United States_131_S55_EM
+  - Singapore_132_S55_EM
+  - France_133_S55_EM
+  - United States_134_S55_EM
   - United States_135_S55_EM
   - United States_136_S55_EM
-  - Germany_137_S55_EM
-  - United States_138_S55_EM
-  - United States_139_S55_EM
+  - United States_137_S55_EM
+  - Germany_138_S55_EM
+  - France_139_S55_EM
   - United States_140_S55_EM
   - United States_141_S55_EM
-  - United States_142_S55_EM
-  - United States_143_S55_EM
-  - France_144_S55_EM
-  - Germany_145_S55_EM
-  - United States_146_S55_EM
-  - United States_147_S55_EM
+  - United Kingdom_142_S55_EM
+  - Germany_143_S55_EM
+  - United States_144_S55_EM
+  - United States_145_S55_EM
+  - Singapore_146_S55_EM
+  - Germany_147_S55_EM
   - Singapore_148_S55_EM
   - United States_149_S55_EM
   - United States_150_S55_EM
-  - United States_151_S55_EM
-  - United States_152_S55_EM
-  - United Kingdom_153_S55_EM
-  - United States_154_S55_EM
-  - Germany_155_S55_EM
-  - France_156_S55_EM
-  - United States_157_S55_EM
-  - United States_158_S55_EM
-  - United States_159_S55_EM
-  - Canada_160_S55_EM
-  - United States_161_S55_EM
-  - France_162_S55_EM
+  - Singapore_151_S55_EM
+  - United Kingdom_152_S55_EM
+  - United States_153_S55_EM
+  - United Kingdom_154_S55_EM
+  - United States_155_S55_EM
+  - United States_156_S55_EM
+  - Canada_157_S55_EM
+  - United Kingdom_158_S55_EM
+  - United Kingdom_159_S55_EM
+  - United States_160_S55_EM
+  - France_161_S55_EM
+  - United States_162_S55_EM
   - Canada_163_S55_EM
   - United States_164_S55_EM
-  - United Kingdom_165_S55_EM
-  - United States_166_S55_EM
-  - United States_167_S55_EM
-  - United Kingdom_168_S55_EM
+  - Singapore_165_S55_EM
+  - Germany_166_S55_EM
+  - Canada_167_S55_EM
+  - Germany_168_S55_EM
   - United States_169_S55_EM
-  - Canada_170_S55_EM
+  - United States_170_S55_EM
   - United States_171_S55_EM
   - United States_172_S55_EM
   - United States_173_S55_EM
-  - United Kingdom_174_S55_EM
+  - Germany_174_S55_EM
   - United States_175_S55_EM
-  - United Kingdom_176_S55_EM
-  - Germany_177_S55_EM
-  - United States_178_S55_EM
-  - Canada_179_S55_EM
-  - United States_180_S55_EM
-  - United Kingdom_181_S55_EM
+  - France_176_S55_EM
+  - United States_177_S55_EM
+  - United States_178_S55_TF
+  - United States_179_S55_EM
+  - United Kingdom_180_S55_EM
+  - United States_181_S55_EM
   - United States_182_S55_EM
-  - Japan_183_S55_EM
-  - United States_184_S55_EM
+  - United States_183_S55_EM
+  - France_184_S55_EM
   - United States_185_S55_EM
   - United States_186_S55_EM
   - United States_187_S55_EM
-  - South Korea_188_S55_EM
-  - United States_189_S55_EM
-  - United States_190_S55_EM
-  - Germany_191_S55_EM
+  - United States_188_S55_EM
+  - Canada_189_S55_EM
+  - France_190_S55_EM
+  - Singapore_191_S55_EM
   - United States_192_S55_EM
-  - United States_193_S55_EM
-  - United States_194_S55_EM
-  - Germany_195_S55_EM
+  - United Kingdom_193_S55_EM
+  - United States_194_S55_TF
+  - United States_195_S55_EM
   - United States_196_S55_EM
   - United States_197_S55_EM
-  - United States_198_S55_EM
-  - Canada_199_S55_EM
-  - United States_200_S55_EM
-  - Germany_201_S55_EM
-  - United States_202_S55_EM
-  - United States_203_S55_EM
-  - Canada_204_S55_EM
-  - United States_205_S55_EM
-  - United States_206_S55_EM
-  - United Kingdom_207_S55_EM
-  - United States_208_S55_EM
-  - United States_209_S55_EM
-  - France_210_S55_EM
-  - Singapore_211_S55_EM
-  - Canada_212_S55_EM
-  - United States_213_S55_EM
-  - United Kingdom_214_S50_EM
-  - United States_215_S50_EM
-  - Germany_216_S50_EM
-  - United Kingdom_217_S50_EM
-  - United Kingdom_218_S50_EM
-  - United Kingdom_219_S50_EM
-  - United States_220_S50_EM
-  - United States_221_S50_EM
-  - United Kingdom_222_S50_EM
-  - United States_223_S50_EM
-  - United States_224_S50_EM
-  - United States_225_S50_EM
-  - United States_226_S50_EM
-  - United States_227_S50_EM
-  - United States_228_S50_EM
-  - United States_229_S50_EM
-  - United States_230_S50_EM
-  - United States_231_S50_EM
-  - United States_232_S50_EM
-  - France_233_S50_EM
-  - United States_234_S50_EM
-  - United States_235_S50_EM
-  - United States_236_S50_EM
-  - United States_237_S50_EM
-  - Australia_238_S48_EM
-  - Australia_239_S48_EM
-  - Australia_240_S48_EM
-  - France_241_S45_ES
-  - United States_242_S45_ES
+  - United Kingdom_198_S50_EM
+  - United States_199_S50_EM
+  - United States_200_S50_EM
+  - United States_201_S50_EM
+  - United States_202_S50_EM
+  - United States_203_S50_EM
+  - United States_204_S50_EM
+  - Germany_205_S50_EM
+  - United States_206_S50_EM
+  - United States_207_S50_EM
+  - United States_208_S50_EM
+  - Singapore_209_S50_EM
+  - Singapore_210_S50_EM
+  - United States_211_S50_EM
+  - United States_212_S50_EM
+  - Singapore_213_S50_EM
+  - Singapore_214_S50_EM
+  - South Korea_215_S50_EM
+  - United States_216_S50_EM
+  - Singapore_217_S50_EM
+  - United States_218_S50_EM
+  - Germany_219_S50_EM
+  - Australia_220_S48_EM
+  - Australia_221_S48_EM
+  - Australia_222_S48_EM
+  - Australia_223_S48_EM
+  - Australia_224_S48_EM
+  - France_225_S45_ES
+  - United States_226_S45_ES
+  - United States_227_S45_ES
+  - United States_228_S45_ES
+  - United States_229_S45_ES
+  - United States_230_S45_ES
+  - United States_231_S45_ES
+  - Singapore_232_S45_ES
+  - France_233_S45_ES
+  - United States_234_S45_ES
+  - Singapore_235_S45_ES
+  - United States_236_S45_ES
+  - France_237_S45_ES
+  - United States_238_S45_ES
+  - United States_239_S45_ES
+  - United States_240_S45_ES
+  - Germany_241_S45_ES
+  - Singapore_242_S45_ES
   - United States_243_S45_ES
-  - France_244_S45_ES
+  - Germany_244_S45_ES
   - United States_245_S45_ES
-  - France_246_S45_ES
-  - United States_247_S45_ES
-  - Singapore_248_S45_ES
-  - France_249_S45_ES
-  - Australia_250_S43_EM
-  - Australia_251_S43_EM
-  - Australia_252_S43_EM
-  - Australia_253_S43_EM
-  - United States_254_S40_ES
-  - United States_255_S40_ES
-  - United States_256_S40_ES
-  - United States_257_S40_ES
-  - Singapore_258_S40_ES
-  - Singapore_259_S40_ES
-  - Singapore_260_S40_ES
-  - Singapore_261_S40_ES
-  - United States_262_S40_ES
-  - France_263_S40_ES
-  - United States_264_S40_ES
-  - Germany_265_S40_ES
+  - United States_246_S45_ES
+  - South Korea_247_S40_ES
+  - Singapore_248_S40_ES
+  - Singapore_249_S40_ES
+  - United Kingdom_250_S40_ES
+  - United States_251_S35_ES
   url: http://www.gstatic.com/generate_204
   interval: 300
 - name: 🔰 故障转移
