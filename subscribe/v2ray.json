@@ -19,8 +19,8 @@
       "settings": {
         "servers": [
           {
-            "address": "184.170.248.5",
-            "port": 4145
+            "address": "192.252.214.20",
+            "port": 15864
           }
         ]
       }
@@ -31,8 +31,8 @@
       "settings": {
         "servers": [
           {
-            "address": "184.170.251.30",
-            "port": 11288
+            "address": "72.195.34.41",
+            "port": 4145
           }
         ]
       }
@@ -43,158 +43,14 @@
       "settings": {
         "servers": [
           {
-            "address": "142.248.80.110",
-            "port": 1080
+            "address": "192.111.135.18",
+            "port": 18301
           }
         ]
       }
     },
     {
       "tag": "United States_003",
-      "protocol": "socks",
-      "settings": {
-        "servers": [
-          {
-            "address": "98.190.239.3",
-            "port": 4145
-          }
-        ]
-      }
-    },
-    {
-      "tag": "United States_004",
-      "protocol": "socks",
-      "settings": {
-        "servers": [
-          {
-            "address": "72.195.34.59",
-            "port": 4145
-          }
-        ]
-      }
-    },
-    {
-      "tag": "United States_005",
-      "protocol": "socks",
-      "settings": {
-        "servers": [
-          {
-            "address": "184.178.172.23",
-            "port": 4145
-          }
-        ]
-      }
-    },
-    {
-      "tag": "United States_006",
-      "protocol": "socks",
-      "settings": {
-        "servers": [
-          {
-            "address": "98.178.72.30",
-            "port": 4145
-          }
-        ]
-      }
-    },
-    {
-      "tag": "United States_007",
-      "protocol": "socks",
-      "settings": {
-        "servers": [
-          {
-            "address": "174.77.111.196",
-            "port": 4145
-          }
-        ]
-      }
-    },
-    {
-      "tag": "United States_008",
-      "protocol": "socks",
-      "settings": {
-        "servers": [
-          {
-            "address": "67.201.59.70",
-            "port": 4145
-          }
-        ]
-      }
-    },
-    {
-      "tag": "United States_009",
-      "protocol": "socks",
-      "settings": {
-        "servers": [
-          {
-            "address": "199.58.184.97",
-            "port": 4145
-          }
-        ]
-      }
-    },
-    {
-      "tag": "United States_010",
-      "protocol": "socks",
-      "settings": {
-        "servers": [
-          {
-            "address": "72.195.114.184",
-            "port": 4145
-          }
-        ]
-      }
-    },
-    {
-      "tag": "United States_011",
-      "protocol": "socks",
-      "settings": {
-        "servers": [
-          {
-            "address": "184.178.172.17",
-            "port": 4145
-          }
-        ]
-      }
-    },
-    {
-      "tag": "France_012",
-      "protocol": "socks",
-      "settings": {
-        "servers": [
-          {
-            "address": "167.86.79.35",
-            "port": 1080
-          }
-        ]
-      }
-    },
-    {
-      "tag": "United States_013",
-      "protocol": "socks",
-      "settings": {
-        "servers": [
-          {
-            "address": "72.195.34.58",
-            "port": 4145
-          }
-        ]
-      }
-    },
-    {
-      "tag": "United States_014",
-      "protocol": "socks",
-      "settings": {
-        "servers": [
-          {
-            "address": "68.71.252.38",
-            "port": 4145
-          }
-        ]
-      }
-    },
-    {
-      "tag": "United States_015",
       "protocol": "socks",
       "settings": {
         "servers": [
@@ -206,12 +62,156 @@
       }
     },
     {
+      "tag": "United States_004",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "192.252.208.70",
+            "port": 14282
+          }
+        ]
+      }
+    },
+    {
+      "tag": "United States_005",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "199.102.106.94",
+            "port": 4145
+          }
+        ]
+      }
+    },
+    {
+      "tag": "United Kingdom_006",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "192.252.210.233",
+            "port": 4145
+          }
+        ]
+      }
+    },
+    {
+      "tag": "United States_007",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "184.178.172.17",
+            "port": 4145
+          }
+        ]
+      }
+    },
+    {
+      "tag": "United States_008",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "199.102.104.70",
+            "port": 4145
+          }
+        ]
+      }
+    },
+    {
+      "tag": "United States_009",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "24.249.199.4",
+            "port": 4145
+          }
+        ]
+      }
+    },
+    {
+      "tag": "United States_010",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "72.195.114.169",
+            "port": 4145
+          }
+        ]
+      }
+    },
+    {
+      "tag": "United States_011",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "192.252.211.193",
+            "port": 4145
+          }
+        ]
+      }
+    },
+    {
+      "tag": "United States_012",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "107.152.98.5",
+            "port": 4145
+          }
+        ]
+      }
+    },
+    {
+      "tag": "United States_013",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "67.201.58.190",
+            "port": 4145
+          }
+        ]
+      }
+    },
+    {
+      "tag": "United States_014",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "72.207.113.97",
+            "port": 4145
+          }
+        ]
+      }
+    },
+    {
+      "tag": "United States_015",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "67.201.35.145",
+            "port": 4145
+          }
+        ]
+      }
+    },
+    {
       "tag": "United States_016",
       "protocol": "socks",
       "settings": {
         "servers": [
           {
-            "address": "199.66.183.226",
+            "address": "192.252.215.2",
             "port": 4145
           }
         ]
@@ -223,8 +223,8 @@
       "settings": {
         "servers": [
           {
-            "address": "98.188.47.150",
-            "port": 4145
+            "address": "167.233.56.179",
+            "port": 1081
           }
         ]
       }
@@ -235,8 +235,8 @@
       "settings": {
         "servers": [
           {
-            "address": "184.178.172.25",
-            "port": 15291
+            "address": "72.37.216.68",
+            "port": 4145
           }
         ]
       }
@@ -247,20 +247,20 @@
       "settings": {
         "servers": [
           {
-            "address": "192.252.215.5",
-            "port": 16137
+            "address": "192.252.209.155",
+            "port": 14455
           }
         ]
       }
     },
     {
-      "tag": "South Korea_020",
+      "tag": "United States_020",
       "protocol": "socks",
       "settings": {
         "servers": [
           {
-            "address": "218.52.249.121",
-            "port": 1080
+            "address": "107.181.168.145",
+            "port": 4145
           }
         ]
       }
@@ -271,7 +271,7 @@
       "settings": {
         "servers": [
           {
-            "address": "98.170.57.231",
+            "address": "104.37.135.145",
             "port": 4145
           }
         ]
@@ -283,8 +283,8 @@
       "settings": {
         "servers": [
           {
-            "address": "68.71.249.153",
-            "port": 48606
+            "address": "68.71.241.33",
+            "port": 4145
           }
         ]
       }
@@ -295,8 +295,8 @@
       "settings": {
         "servers": [
           {
-            "address": "192.111.137.34",
-            "port": 18765
+            "address": "192.252.209.158",
+            "port": 4145
           }
         ]
       }
@@ -307,32 +307,32 @@
       "settings": {
         "servers": [
           {
-            "address": "184.178.172.13",
-            "port": 15311
-          }
-        ]
-      }
-    },
-    {
-      "tag": "United States_025",
-      "protocol": "socks",
-      "settings": {
-        "servers": [
-          {
-            "address": "142.54.231.38",
+            "address": "72.214.108.67",
             "port": 4145
           }
         ]
       }
     },
     {
-      "tag": "France_026",
+      "tag": "United Kingdom_025",
       "protocol": "socks",
       "settings": {
         "servers": [
           {
-            "address": "206.123.156.212",
-            "port": 4556
+            "address": "141.147.109.224",
+            "port": 1080
+          }
+        ]
+      }
+    },
+    {
+      "tag": "United States_026",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "192.252.211.197",
+            "port": 14921
           }
         ]
       }
@@ -343,32 +343,32 @@
       "settings": {
         "servers": [
           {
-            "address": "104.152.50.252",
-            "port": 8000
-          }
-        ]
-      }
-    },
-    {
-      "tag": "United States_028",
-      "protocol": "socks",
-      "settings": {
-        "servers": [
-          {
-            "address": "98.191.0.37",
+            "address": "68.71.254.6",
             "port": 4145
           }
         ]
       }
     },
     {
-      "tag": "United States_029",
+      "tag": "France_028",
       "protocol": "socks",
       "settings": {
         "servers": [
           {
-            "address": "24.249.199.12",
-            "port": 4145
+            "address": "51.210.5.144",
+            "port": 1088
+          }
+        ]
+      }
+    },
+    {
+      "tag": "United Kingdom_029",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "206.123.156.230",
+            "port": 4565
           }
         ]
       }
@@ -379,26 +379,62 @@
       "settings": {
         "servers": [
           {
-            "address": "216.68.128.121",
+            "address": "184.181.217.206",
             "port": 4145
           }
         ]
       }
     },
     {
-      "tag": "United States_031",
+      "tag": "South Korea_031",
       "protocol": "socks",
       "settings": {
         "servers": [
           {
-            "address": "142.54.229.249",
-            "port": 4145
+            "address": "152.70.241.59",
+            "port": 1080
           }
         ]
       }
     },
     {
-      "tag": "Taiwan_032",
+      "tag": "Germany_032",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "206.123.156.229",
+            "port": 7725
+          }
+        ]
+      }
+    },
+    {
+      "tag": "South Korea_033",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "121.169.46.116",
+            "port": 1090
+          }
+        ]
+      }
+    },
+    {
+      "tag": "United States_034",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "192.252.220.92",
+            "port": 17328
+          }
+        ]
+      }
+    },
+    {
+      "tag": "Taiwan_035",
       "protocol": "socks",
       "settings": {
         "servers": [
@@ -410,145 +446,109 @@
       }
     },
     {
-      "tag": "United States_033",
+      "tag": "France_036",
       "protocol": "socks",
       "settings": {
         "servers": [
           {
-            "address": "198.8.94.170",
-            "port": 4145
+            "address": "206.123.156.212",
+            "port": 5093
           }
         ]
       }
     },
     {
-      "tag": "United States_034",
+      "tag": "Taiwan_037",
       "protocol": "socks",
       "settings": {
         "servers": [
           {
-            "address": "198.8.94.174",
-            "port": 39078
+            "address": "103.227.224.96",
+            "port": 50161
           }
         ]
       }
     },
     {
-      "tag": "United Kingdom_035",
+      "tag": "Japan_038",
       "protocol": "socks",
       "settings": {
         "servers": [
           {
-            "address": "212.58.132.5",
+            "address": "34.84.162.206",
+            "port": 38081
+          }
+        ]
+      }
+    },
+    {
+      "tag": "Australia_039",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "170.64.170.204",
             "port": 1080
           }
         ]
       }
     },
     {
-      "tag": "Sweden_036",
+      "tag": "United States_040",
       "protocol": "socks",
       "settings": {
         "servers": [
           {
-            "address": "213.165.34.255",
-            "port": 1080
-          }
-        ]
-      }
-    },
-    {
-      "tag": "Sweden_037",
-      "protocol": "socks",
-      "settings": {
-        "servers": [
-          {
-            "address": "92.119.164.84",
-            "port": 1100
-          }
-        ]
-      }
-    },
-    {
-      "tag": "United States_038",
-      "protocol": "socks",
-      "settings": {
-        "servers": [
-          {
-            "address": "72.207.33.64",
+            "address": "142.54.232.6",
             "port": 4145
           }
         ]
       }
     },
     {
-      "tag": "Taiwan_039",
+      "tag": "United States_041",
       "protocol": "socks",
       "settings": {
         "servers": [
           {
-            "address": "125.227.45.186",
-            "port": 5001
+            "address": "192.111.137.37",
+            "port": 18762
           }
         ]
       }
     },
     {
-      "tag": "France_040",
+      "tag": "Netherlands_042",
       "protocol": "socks",
       "settings": {
         "servers": [
           {
-            "address": "43.153.71.188",
-            "port": 9050
+            "address": "206.123.156.230",
+            "port": 5388
           }
         ]
       }
     },
     {
-      "tag": "Germany_041",
+      "tag": "France_043",
       "protocol": "socks",
       "settings": {
         "servers": [
           {
-            "address": "91.107.182.124",
-            "port": 82
+            "address": "62.133.62.17",
+            "port": 1081
           }
         ]
       }
     },
     {
-      "tag": "United States_042",
+      "tag": "Netherlands_044",
       "protocol": "socks",
       "settings": {
         "servers": [
           {
-            "address": "74.119.147.209",
-            "port": 4145
-          }
-        ]
-      }
-    },
-    {
-      "tag": "United States_043",
-      "protocol": "socks",
-      "settings": {
-        "servers": [
-          {
-            "address": "199.58.185.9",
-            "port": 4145
-          }
-        ]
-      }
-    },
-    {
-      "tag": "Singapore_044",
-      "protocol": "socks",
-      "settings": {
-        "servers": [
-          {
-            "address": "8.210.49.13",
-            "port": 19999
+            "address": "206.123.156.229",
+            "port": 4923
           }
         ]
       }
